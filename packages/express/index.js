@@ -8,10 +8,14 @@ const port = 4040;
 app.use(cors());
 
 app.get("/fetch-robots-txt", async (req, res) => {
-  const targetUrl = "https://www.google.com";
+  const { url } = req.query; // Extract the 'url' query parameter
+
+  if (!url) {
+    return res.status(400).send("Missing url parameter");
+  }
 
   try {
-    const response = await axios.get(`${targetUrl}/robots.txt`);
+    const response = await axios.get(`${url}/robots.txt`);
     res.send(JSON.stringify(response.data));
   } catch (error) {
     res.status(500).send("Error fetching robots.txt");
