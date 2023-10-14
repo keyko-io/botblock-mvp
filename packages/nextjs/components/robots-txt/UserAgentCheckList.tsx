@@ -5,6 +5,7 @@ const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
 
 export const UserAgentCheckList = () => {
   const { parsedRobotsTxt } = useRobotsContext();
+  const [isLoading, setIsLoading] = useState(true);
   const [userAgents, setUserAgents] = useState<string[]>([]);
   const [newRobots, setNewRobots] = useState<Record<string, boolean>>(
     recommendedAgentsToBlock.reduce((acc, agent) => ({ ...acc, [agent]: true }), {}),
@@ -39,10 +40,11 @@ export const UserAgentCheckList = () => {
         {},
       );
       setNewRobots(simplifiedObj);
+      setIsLoading(false);
     }
   }, [parsedRobotsTxt, userAgents]);
 
-  return newRobots && parsedRobotsTxt && userAgents ? (
+  return !isLoading ? (
     <div>
       <ul>
         {userAgents.map((agent, idx) => (
@@ -55,5 +57,7 @@ export const UserAgentCheckList = () => {
         ))}
       </ul>
     </div>
-  ) : undefined;
+  ) : (
+    <span className="loading loading-spinner loading-sm" />
+  );
 };
