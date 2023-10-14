@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
+import { UserAgentCheckList } from "~~/components/robots-txt/UserAgentCheckList";
 import { useRobotsContext } from "~~/context/RobotsContext";
 
 export const RobotsTxt = () => {
   const router = useRouter();
-  const { originalRobotsTxt } = useRobotsContext();
+  const { parsedRobotsTxt } = useRobotsContext();
 
   const redirectToLanding = () => router.replace("/protect/landing");
 
-  if (!originalRobotsTxt) {
+  if (!parsedRobotsTxt) {
     return (
       <div className="p-32 flex-grow" data-theme="exampleUi">
         <h1 className="text-4xl sm:text-6xl mb-32">Please go to the previous page to initiate the protect process</h1>
@@ -23,7 +24,11 @@ export const RobotsTxt = () => {
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">On this page the CC user would analyze the robots.txt</h1>
+      <h1 className="text-4xl sm:text-6xl">Analyze your robots.txt</h1>
+      <h3 className="text-xl sm:text-2xl">
+        Please review the list of agents below and determine toggle their access permissions
+      </h3>
+      <UserAgentCheckList />
     </div>
   );
 };
