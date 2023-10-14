@@ -1,6 +1,7 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { createCtx } from ".";
 import axios from "axios";
+import { parseRobots } from "~~/utils/robots/parseRobots";
 
 // NGROK tunneling
 const EXPRESS_URL = "https://correctly-leading-chicken.ngrok-free.app";
@@ -22,6 +23,13 @@ const [useContext, RobotsContextProvider] = createCtx<RobotsContext>("web3Contex
 
 export const RobotsProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<RobotsContextState>();
+
+  useEffect(() => {
+    if (!!state?.originalRobotsTxt) {
+      const parsedRobotsTxt = parseRobots(state.originalRobotsTxt);
+      setState(prevState => ({ ...prevState, parsedRobotsTxt }));
+    }
+  }, [state?.originalRobotsTxt]);
 
   const getRobotsTxt = async (url: string) => {
     try {
