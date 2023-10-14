@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
-import { useRobots } from "~~/hooks/robots/useRobots";
+import { useRobotsContext } from "~~/context/RobotsContext";
 
 const TITLE = "Title";
 const DESCRIPTION = "Description";
@@ -12,7 +12,7 @@ const Landing = () => {
   const [url, setUrl] = useState("");
   const [submittedUrl, setSubmittedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { responseRobots } = useRobots(submittedUrl);
+  const { getRobotsTxt } = useRobotsContext();
   const router = useRouter();
 
   const handleOnSubmit = () => {
@@ -21,16 +21,21 @@ const Landing = () => {
   };
 
   useEffect(() => {
-    if (!!responseRobots && isLoading) {
-      setIsLoading(false);
-    }
-  }, [isLoading, responseRobots]);
+    const executeSubmission = async () => {
+      try {
+        await getRobotsTxt(submittedUrl);
+        await router.push("robots-txt");
+      } catch (error) {
+        alert(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    if (!!responseRobots && !isLoading) {
-      router.push("robots-txt");
+    if (isLoading && submittedUrl) {
+      executeSubmission();
     }
-  }, [isLoading, responseRobots, router]);
+  }, [getRobotsTxt, isLoading, router, submittedUrl]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
@@ -42,6 +47,7 @@ const Landing = () => {
           placeholder={INPUT_PLACEHOLDER}
           className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
           onChange={e => setUrl(e.target.value)}
+          onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
         />
       </div>
       {!!url && (
@@ -65,7 +71,6 @@ const Landing = () => {
           </div>
         </div>
       )}
-      {!!responseRobots && <h1 className="text-4xl sm:text-6xl mt-16">Robots fetched correctly :)</h1>}
     </div>
   );
 };
