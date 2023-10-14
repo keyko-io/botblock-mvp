@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { useRobots } from "~~/hooks/robots/useRobots";
 
 const TITLE = "Title";
 const DESCRIPTION = "Description";
@@ -8,13 +9,20 @@ const CTA_TEXT = "Submit";
 
 const Landing = () => {
   const [url, setUrl] = useState("");
+  const [submittedUrl, setSubmittedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { responseRobots } = useRobots(submittedUrl);
 
   const handleOnSubmit = () => {
     setIsLoading(true);
-    alert(url);
-    setIsLoading(false);
+    setSubmittedUrl(url);
   };
+
+  useEffect(() => {
+    if (!!responseRobots && isLoading) {
+      setIsLoading(false);
+    }
+  }, [isLoading, responseRobots]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
@@ -49,6 +57,7 @@ const Landing = () => {
           </div>
         </div>
       )}
+      {!!responseRobots && <h1 className="text-4xl sm:text-6xl mt-16">Robots fetched correctly :)</h1>}
     </div>
   );
 };
