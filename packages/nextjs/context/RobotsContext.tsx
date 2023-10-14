@@ -8,6 +8,7 @@ const EXPRESS_URL = "https://correctly-leading-chicken.ngrok-free.app";
 // State variables only
 type RobotsContextState = {
   originalRobotsTxt?: string;
+  parsedRobotsTxt?: Record<string, { allow: string[]; disallow: string[]; generallyAllowed: boolean }>;
 };
 
 // This interface differentiates from State
