@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import { useRobots } from "~~/hooks/robots/useRobots";
 
@@ -12,6 +13,7 @@ const Landing = () => {
   const [submittedUrl, setSubmittedUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { responseRobots } = useRobots(submittedUrl);
+  const router = useRouter();
 
   const handleOnSubmit = () => {
     setIsLoading(true);
@@ -23,6 +25,12 @@ const Landing = () => {
       setIsLoading(false);
     }
   }, [isLoading, responseRobots]);
+
+  useEffect(() => {
+    if (!!responseRobots && !isLoading) {
+      router.push("robots-txt");
+    }
+  }, [isLoading, responseRobots, router]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
