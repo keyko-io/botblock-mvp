@@ -25,9 +25,7 @@ export const RobotsTxt = () => {
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">Analyze your robots.txt</h1>
-      <h3 className="text-xl sm:text-2xl">
-        Please review the list of agents below and determine toggle their access permissions
-      </h3>
+      <h3 className="text-xl sm:text-2xl">Select which user agents you want to block from your site</h3>
       <UserAgentCheckList />
     </div>
   );
