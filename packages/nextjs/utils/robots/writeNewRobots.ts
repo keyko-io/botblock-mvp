@@ -1,3 +1,19 @@
+const PREFACE =
+  "\n\n# This file was modified by BotBlock's protection tool\n# The next section adds missing user-agents.\n\n";
+
+const appendRemainingAgents = (agents: string[], config: Record<string, boolean>) => {
+  return (
+    PREFACE +
+    agents
+      .map(item => {
+        const agentsLine = "User-agent: " + item + "\n";
+        const directiveLine = (config[item] ? "Disallow: " : "Allow: ") + "/" + "\n";
+        return agentsLine + directiveLine;
+      })
+      .join("\n")
+  );
+};
+
 export const writeNewRobots = (original: string, newConfig: Record<string, boolean>) => {
   const lines = original.split("\n");
   let currentAgent = "";
@@ -46,7 +62,7 @@ export const writeNewRobots = (original: string, newConfig: Record<string, boole
     return line;
   });
 
-  // @TODO: add missing user-agents
+  const remainingAgents = agentsList.filter(agent => !savedAgents.includes(agent));
 
-  return newLines;
+  return newLines.join("\n") + appendRemainingAgents(remainingAgents, newConfig);
 };
