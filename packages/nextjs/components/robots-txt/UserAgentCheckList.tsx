@@ -4,7 +4,7 @@ import { useRobotsContext } from "~~/context/RobotsContext";
 const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
 
 export const UserAgentCheckList = () => {
-  const { parsedRobotsTxt } = useRobotsContext();
+  const { parsedRobotsTxt, generateNewRobots } = useRobotsContext();
   const [isLoading, setIsLoading] = useState(true);
   const [userAgents, setUserAgents] = useState<string[]>([]);
   const [userAgentBlockSelection, setUserAgentBlockSelection] = useState<Record<string, boolean>>(
@@ -15,6 +15,10 @@ export const UserAgentCheckList = () => {
     if (userAgents.includes(agent)) {
       setUserAgentBlockSelection(prevState => ({ ...prevState, [agent]: !prevState?.[agent] }));
     }
+  };
+
+  const handleGenerateRobots = () => {
+    generateNewRobots(userAgentBlockSelection);
   };
 
   useEffect(() => {
@@ -56,7 +60,10 @@ export const UserAgentCheckList = () => {
           </li>
         ))}
       </ul>
-      <button className="btn btn-primary w-60 rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest">
+      <button
+        className="btn btn-primary w-60 rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
+        onClick={handleGenerateRobots}
+      >
         Generate new robots file
       </button>
     </div>
