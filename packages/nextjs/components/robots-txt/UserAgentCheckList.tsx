@@ -4,8 +4,9 @@ import { useRobotsContext } from "~~/context/RobotsContext";
 const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
 
 export const UserAgentCheckList = () => {
-  const { parsedRobotsTxt, generateNewRobots } = useRobotsContext();
+  const { parsedRobotsTxt, generateNewRobots, rewrittenRobots } = useRobotsContext();
   const [isLoading, setIsLoading] = useState(true);
+  const [showNewFile, setShowNewFile] = useState(false);
   const [userAgents, setUserAgents] = useState<string[]>([]);
   const [userAgentBlockSelection, setUserAgentBlockSelection] = useState<Record<string, boolean>>(
     recommendedAgentsToBlock.reduce((acc, agent) => ({ ...acc, [agent]: true }), {}),
@@ -18,6 +19,7 @@ export const UserAgentCheckList = () => {
   };
 
   const handleGenerateRobots = () => {
+    setIsLoading(true);
     generateNewRobots(userAgentBlockSelection);
   };
 
@@ -48,7 +50,24 @@ export const UserAgentCheckList = () => {
     }
   }, [parsedRobotsTxt, userAgents]);
 
-  return !isLoading ? (
+  useEffect(() => {
+    if (!!rewrittenRobots && isLoading && !showNewFile) {
+      setShowNewFile(true);
+      setIsLoading(false);
+    }
+  }, [isLoading, rewrittenRobots, showNewFile]);
+
+  return isLoading ? (
+    <span className="loading loading-spinner loading-sm" />
+  ) : showNewFile ? (
+    <div>
+      <pre className="overflow-auto bg-slate-600 p-4">
+        <code className="text-zinc-200" lang="language-markdown">
+          {rewrittenRobots}
+        </code>
+      </pre>
+    </div>
+  ) : (
     <div>
       <ul>
         {userAgents.map((agent, idx) => (
@@ -67,7 +86,5 @@ export const UserAgentCheckList = () => {
         Generate new robots file
       </button>
     </div>
-  ) : (
-    <span className="loading loading-spinner loading-sm" />
   );
 };
