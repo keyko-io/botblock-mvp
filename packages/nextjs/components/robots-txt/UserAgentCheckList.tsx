@@ -59,14 +59,6 @@ export const UserAgentCheckList = () => {
 
   return isLoading ? (
     <span className="loading loading-spinner loading-sm" />
-  ) : showNewFile ? (
-    <div>
-      <pre className="overflow-auto bg-slate-600 p-4">
-        <code className="text-zinc-200" lang="language-markdown">
-          {rewrittenRobots}
-        </code>
-      </pre>
-    </div>
   ) : (
     <div>
       <ul>

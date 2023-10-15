@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
+import { RobotsTxtDisplay } from "~~/components/robots-txt/RobotsTxtDisplay";
 import { UserAgentCheckList } from "~~/components/robots-txt/UserAgentCheckList";
 import { useRobotsContext } from "~~/context/RobotsContext";
 
 export const RobotsTxt = () => {
   const router = useRouter();
-  const { parsedRobotsTxt } = useRobotsContext();
+  const { parsedRobotsTxt, rewrittenRobots } = useRobotsContext();
 
   const redirectToLanding = () => router.replace("/protect/landing");
 
@@ -24,9 +25,13 @@ export const RobotsTxt = () => {
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">Analyze your robots.txt</h1>
-      <h3 className="text-xl sm:text-2xl">Select which user agents you want to block from your site</h3>
-      <UserAgentCheckList />
+      <h1 className="text-4xl sm:text-6xl">{!!rewrittenRobots ? "New robots.txt file" : "Analyze your robots.txt"}</h1>
+      <h3 className="text-xl sm:text-2xl">
+        {!!rewrittenRobots
+          ? "Copy the new file and use it on your site"
+          : "Select which user agents you want to block from your site"}
+      </h3>
+      {!!rewrittenRobots ? <RobotsTxtDisplay /> : <UserAgentCheckList />}
     </div>
   );
 };
