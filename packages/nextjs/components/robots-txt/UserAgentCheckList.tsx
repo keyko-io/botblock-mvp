@@ -7,13 +7,13 @@ export const UserAgentCheckList = () => {
   const { parsedRobotsTxt } = useRobotsContext();
   const [isLoading, setIsLoading] = useState(true);
   const [userAgents, setUserAgents] = useState<string[]>([]);
-  const [newRobots, setNewRobots] = useState<Record<string, boolean>>(
+  const [userAgentBlockSelection, setUserAgentBlockSelection] = useState<Record<string, boolean>>(
     recommendedAgentsToBlock.reduce((acc, agent) => ({ ...acc, [agent]: true }), {}),
   );
 
   const toggleAgent = (agent: string) => {
     if (userAgents.includes(agent)) {
-      setNewRobots(prevState => ({ ...prevState, [agent]: !prevState?.[agent] }));
+      setUserAgentBlockSelection(prevState => ({ ...prevState, [agent]: !prevState?.[agent] }));
     }
   };
 
@@ -23,11 +23,11 @@ export const UserAgentCheckList = () => {
       setUserAgents(
         Object.keys({
           ...parsedRobotsTxt,
-          ...newRobots,
+          ...userAgentBlockSelection,
         }),
       );
     }
-  }, [newRobots, parsedRobotsTxt, userAgents.length]);
+  }, [userAgentBlockSelection, parsedRobotsTxt, userAgents.length]);
 
   useEffect(() => {
     if (parsedRobotsTxt && userAgents) {
@@ -39,7 +39,7 @@ export const UserAgentCheckList = () => {
         }),
         {},
       );
-      setNewRobots(simplifiedObj);
+      setUserAgentBlockSelection(simplifiedObj);
       setIsLoading(false);
     }
   }, [parsedRobotsTxt, userAgents]);
@@ -49,13 +49,16 @@ export const UserAgentCheckList = () => {
       <ul>
         {userAgents.map((agent, idx) => (
           <li key={`${agent}-${idx}`} className="flex flex-row gap-4" onClick={() => toggleAgent(agent)}>
-            <input type="checkbox" value={agent} checked={newRobots[agent]} />
+            <input type="checkbox" value={agent} checked={userAgentBlockSelection[agent]} />
             <p>
               {recommendedAgentsToBlock.includes(agent) && "[Recommended]"} {agent}
             </p>
           </li>
         ))}
       </ul>
+      <button className="btn btn-primary w-60 rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest">
+        Generate new robots file
+      </button>
     </div>
   ) : (
     <span className="loading loading-spinner loading-sm" />
