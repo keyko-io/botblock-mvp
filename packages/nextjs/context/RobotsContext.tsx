@@ -1,6 +1,8 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { createCtx } from ".";
 import axios from "axios";
+import { parseRobots } from "~~/utils/robots/parseRobots";
+import { writeNewRobots } from "~~/utils/robots/writeNewRobots";
 
 // NGROK tunneling
 const EXPRESS_URL = "https://correctly-leading-chicken.ngrok-free.app";
@@ -8,6 +10,8 @@ const EXPRESS_URL = "https://correctly-leading-chicken.ngrok-free.app";
 // State variables only
 type RobotsContextState = {
   originalRobotsTxt?: string;
+  parsedRobotsTxt?: Record<string, { allow: string[]; disallow: string[]; generallyAllowed: boolean }>;
+  rewrittenRobots?: string;
 };
 
 // This interface differentiates from State
@@ -15,12 +19,20 @@ type RobotsContextState = {
 // that handle the state in some way
 interface RobotsContext extends RobotsContextState {
   getRobotsTxt: (url: string) => Promise<void>;
+  generateNewRobots: (userAgentBlockSelection: Record<string, boolean>) => void;
 }
 
 const [useContext, RobotsContextProvider] = createCtx<RobotsContext>("web3Context");
 
 export const RobotsProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<RobotsContextState>();
+
+  useEffect(() => {
+    if (!!state?.originalRobotsTxt) {
+      const parsedRobotsTxt = parseRobots(state.originalRobotsTxt);
+      setState(prevState => ({ ...prevState, parsedRobotsTxt }));
+    }
+  }, [state?.originalRobotsTxt]);
 
   const getRobotsTxt = async (url: string) => {
     try {
@@ -47,7 +59,17 @@ export const RobotsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  return <RobotsContextProvider value={{ ...state, getRobotsTxt }}>{children}</RobotsContextProvider>;
+  const generateNewRobots = (userAgentBlockSelection: Record<string, boolean>) => {
+    if (state?.originalRobotsTxt) {
+      const rewrittenRobots = writeNewRobots(state?.originalRobotsTxt, userAgentBlockSelection);
+      setState(prevState => ({ ...prevState, rewrittenRobots }));
+    }
+    return;
+  };
+
+  return (
+    <RobotsContextProvider value={{ ...state, getRobotsTxt, generateNewRobots }}>{children}</RobotsContextProvider>
+  );
 };
 
 export const useRobotsContext = useContext;
