@@ -6,6 +6,7 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 
 // State variables only
 type Web3AuthContextState = {
+  isConnected?: boolean;
   web3Auth: Web3Auth;
 };
 
@@ -14,6 +15,7 @@ type Web3AuthContextState = {
 // that handle the state in some way
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
+  disconnectWeb3Auth: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
 }
 
@@ -36,7 +38,7 @@ const INITIAL_STATE: Web3AuthContextState = {
 const [useContext, Web3AuthContextProvider] = createCtx<Web3AuthContext>("Web3AuthContext");
 
 export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
-  const [state] = useState<Web3AuthContextState>(INITIAL_STATE);
+  const [state, setState] = useState<Web3AuthContextState>(INITIAL_STATE);
 
   const initWeb3Auth = async () => {
     await state?.web3Auth.initModal();
@@ -44,10 +46,18 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   const connectWeb3Auth = async () => {
     await state.web3Auth.connect();
+    setState(prevState => ({ ...prevState, isConnected: true }));
+  };
+
+  const disconnectWeb3Auth = async () => {
+    await state.web3Auth.logout();
+    setState(prevState => ({ ...prevState, isConnected: false }));
   };
 
   return (
-    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, initWeb3Auth }}>{children}</Web3AuthContextProvider>
+    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, initWeb3Auth }}>
+      {children}
+    </Web3AuthContextProvider>
   );
 };
 
