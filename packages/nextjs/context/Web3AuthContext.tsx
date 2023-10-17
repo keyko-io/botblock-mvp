@@ -30,14 +30,12 @@ const INITIAL_STATE: Web3AuthContextState = {
     web3AuthNetwork: "sapphire_devnet", // Web3Auth Network
     chainConfig: {
       chainNamespace: "eip155",
-      chainId: "0x66EEB", // hex of 421611
-      rpcTarget: "https://rpc.ankr.com/arbitrum",
-      // Avoid using public rpcTarget in production.
-      // Use services like Infura, Quicknode etc
-      displayName: "Arbitrum Testnet",
-      blockExplorer: "https://testnet.arbiscan.io",
-      ticker: "AETH",
-      tickerName: "AETH",
+      chainId: "0x66eed",
+      rpcTarget: "https://goerli-rollup.arbitrum.io/rpc",
+      displayName: "Arbitrum Goerli",
+      blockExplorer: "https://goerli.arbiscan.io/",
+      ticker: "ETH",
+      tickerName: "Arbitrum Goerli Ether",
     },
   }),
 };
@@ -57,6 +55,15 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     if (!web3authProvider) return;
     const provider = new ethers.providers.Web3Provider(web3authProvider);
     setState(prevState => ({ ...prevState, provider, isConnected: true, username: userInfo.name }));
+
+    //just for testing
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = ethers.utils.formatEther(
+      await provider.getBalance(address), // Balance is in wei
+    );
+    console.log("ADDRESS", address);
+    console.log("BALANCE", balance);
   };
 
   const disconnectWeb3Auth = async () => {
