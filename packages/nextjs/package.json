@@ -19,6 +19,7 @@
     "@rainbow-me/rainbowkit": "1.0.8",
     "@uniswap/sdk-core": "^4.0.1",
     "@uniswap/v2-sdk": "^3.0.1",
+    "@web3auth/modal": "^7.0.4",
     "axios": "^1.5.1",
     "blo": "^1.0.1",
     "daisyui": "^3.5.1",
@@ -52,5 +53,8 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6",
     "vercel": "^28.15.1"
+  },
+  "engines": {
+    "node": ">=18.16"
   }
 }

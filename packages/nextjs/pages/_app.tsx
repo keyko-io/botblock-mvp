@@ -10,6 +10,7 @@ import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { RobotsProvider } from "~~/context/RobotsContext";
+import { Web3AuthProvider } from "~~/context/Web3AuthContext";
 import { useNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
@@ -34,25 +35,27 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
   }, [isDarkMode]);
 
   return (
-    <RobotsProvider>
-      <WagmiConfig config={wagmiConfig}>
-        <NextNProgress />
-        <RainbowKitProvider
-          chains={appChains.chains}
-          avatar={BlockieAvatar}
-          theme={isDarkTheme ? darkTheme() : lightTheme()}
-        >
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="relative flex flex-col flex-1">
-              <Component {...pageProps} />
-            </main>
-            <Footer />
-          </div>
-          <Toaster />
-        </RainbowKitProvider>
-      </WagmiConfig>
-    </RobotsProvider>
+    <Web3AuthProvider>
+      <RobotsProvider>
+        <WagmiConfig config={wagmiConfig}>
+          <NextNProgress />
+          <RainbowKitProvider
+            chains={appChains.chains}
+            avatar={BlockieAvatar}
+            theme={isDarkTheme ? darkTheme() : lightTheme()}
+          >
+            <div className="flex flex-col min-h-screen">
+              <Header />
+              <main className="relative flex flex-col flex-1">
+                <Component {...pageProps} />
+              </main>
+              <Footer />
+            </div>
+            <Toaster />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </RobotsProvider>
+    </Web3AuthProvider>
   );
 };
 

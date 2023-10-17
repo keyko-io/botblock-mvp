@@ -22,7 +22,7 @@ interface RobotsContext extends RobotsContextState {
   generateNewRobots: (userAgentBlockSelection: Record<string, boolean>) => void;
 }
 
-const [useContext, RobotsContextProvider] = createCtx<RobotsContext>("web3Context");
+const [useContext, RobotsContextProvider] = createCtx<RobotsContext>("RobotsContext");
 
 export const RobotsProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<RobotsContextState>();
