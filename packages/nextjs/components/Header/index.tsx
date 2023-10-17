@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoginButton } from "./LoginButton";
-import { Bars3Icon, BugAntIcon, LockClosedIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, CurrencyDollarIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import { FaucetButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
@@ -41,21 +41,15 @@ export const Header = () => {
         <NavLink href="/">Home</NavLink>
       </li>
       <li>
-        <NavLink href="/debug">
-          <BugAntIcon className="h-4 w-4" />
-          Debug Contracts
-        </NavLink>
-      </li>
-      <li>
         <NavLink href="/protect/landing">
           <LockClosedIcon className="h-4 w-4" />
           Protect
         </NavLink>
       </li>
       <li>
-        <NavLink href="/blockexplorer">
-          <MagnifyingGlassIcon className="h-4 w-4" />
-          Block Explorer
+        <NavLink href="/unlock/partner/landing">
+          <CurrencyDollarIcon className="h-4 w-4" />
+          Partner
         </NavLink>
       </li>
     </>
