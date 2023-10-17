@@ -20,18 +20,19 @@ interface Web3AuthContext extends Web3AuthContextState {
   initWeb3Auth: () => Promise<void>;
 }
 
+// TODO make so that the user can switch chains
 const INITIAL_STATE: Web3AuthContextState = {
   web3Auth: new Web3Auth({
     clientId: CLIENT_ID ?? "",
     web3AuthNetwork: "sapphire_devnet", // Web3Auth Network
     chainConfig: {
       chainNamespace: "eip155",
-      chainId: "0x1",
-      rpcTarget: "https://rpc.ankr.com/eth",
-      displayName: "Ethereum Devnet",
-      blockExplorer: "https://goerli.etherscan.io",
+      chainId: "0x66eed",
+      rpcTarget: "https://goerli-rollup.arbitrum.io/rpc",
+      displayName:  "Arbitrum Goerli",
+      blockExplorer: "https://goerli.arbiscan.io/",
       ticker: "ETH",
-      tickerName: "Ethereum",
+      tickerName: "Arbitrum Goerli Ether",
     },
   }),
 };
