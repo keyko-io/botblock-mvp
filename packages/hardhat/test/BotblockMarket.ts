@@ -25,9 +25,10 @@ describe("BotblockMarket", function () {
   let marketOwner: SignerWithAddress;
   let contentCreator: SignerWithAddress;
   let subscriber: SignerWithAddress;
+  let subscriber2: SignerWithAddress;
 
   before(async () => {
-    [marketOwner, contentCreator, subscriber] = await ethers.getSigners();
+    [marketOwner, contentCreator, subscriber, subscriber2] = await ethers.getSigners();
     // [marketOwner, contentCreator, subscriber] = await ethers.getSigners();
     // deploy and mint TEST tokens
     const testTokenFactory = await ethers.getContractFactory("TestToken");
@@ -35,6 +36,7 @@ describe("BotblockMarket", function () {
     await testToken.deployed();
 
     testToken.mint(subscriber.address, 1000000000);
+    testToken.mint(subscriber2.address, 1000000000);
 
     const nvm721TokenFactory = await ethers.getContractFactory("NvmNFT721");
     nvm721Token = (await nvm721TokenFactory.deploy()) as NvmNFT721;
@@ -72,10 +74,10 @@ describe("BotblockMarket", function () {
     const subscriberBbMarketConnected = botblockMarket.connect(subscriber);
     await subscriberBbMarketConnected.placeOrder(1, 1);
     const order = await botblockMarket.orders(1);
-    expect(order.plan.contentCreator).equals(contentCreator.address);
     const marketBalance = await testToken.getBalance(botblockMarket.address);
+    expect(order.plan.contentCreator).equals(contentCreator.address);
     expect(marketBalance).equals(1);
-    console.log("marketBalance", marketBalance);
+    expect(order.status).equals(0);
   });
 
   it("Order can be evaded", async function () {
@@ -83,7 +85,36 @@ describe("BotblockMarket", function () {
     await marketOwnerBbMarketConnected.evadeOrder(1);
 
     const contentCreatorTestBalance = await testToken.balanceOf(contentCreator.address);
+    const order = await botblockMarket.orders(1);
 
+    expect(order.status).equals(1);
     expect(contentCreatorTestBalance).equals(1);
+  });
+  it("Suscriber2 can place another order", async function () {
+    const marketBalanceNew = await testToken.getBalance(botblockMarket.address);
+    expect(marketBalanceNew).equals(0);
+
+    const subConnectedToken = testToken.connect(subscriber2);
+    const approveTx = await subConnectedToken.approve(botblockMarket.address, 10);
+    await approveTx.wait();
+
+    const subscriberBbMarketConnected = botblockMarket.connect(subscriber2);
+    await subscriberBbMarketConnected.placeOrder(1, 1);
+    const order = await botblockMarket.orders(2);
+    const marketBalance = await testToken.getBalance(botblockMarket.address);
+
+    expect(order.plan.contentCreator).equals(contentCreator.address);
+    expect(order.status).equals(0);
+    expect(marketBalance).equals(1);
+  });
+
+  it("second Order can be evaded", async function () {
+    const marketOwnerBbMarketConnected = botblockMarket.connect(marketOwner);
+    await marketOwnerBbMarketConnected.evadeOrder(2);
+
+    const contentCreatorTestBalance = await testToken.balanceOf(contentCreator.address);
+    const order = await botblockMarket.orders(2);
+    expect(order.status).equals(1);
+    expect(contentCreatorTestBalance).equals(2);
   });
 });
