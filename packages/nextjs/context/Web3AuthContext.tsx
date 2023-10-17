@@ -27,12 +27,14 @@ const INITIAL_STATE: Web3AuthContextState = {
     web3AuthNetwork: "sapphire_devnet", // Web3Auth Network
     chainConfig: {
       chainNamespace: "eip155",
-      chainId: "0x66eed",
-      rpcTarget: "https://goerli-rollup.arbitrum.io/rpc",
-      displayName:  "Arbitrum Goerli",
-      blockExplorer: "https://goerli.arbiscan.io/",
-      ticker: "ETH",
-      tickerName: "Arbitrum Goerli Ether",
+      chainId: "0x66EEB", // hex of 421611
+      rpcTarget: "https://rpc.ankr.com/arbitrum",
+      // Avoid using public rpcTarget in production.
+      // Use services like Infura, Quicknode etc
+      displayName: "Arbitrum Testnet",
+      blockExplorer: "https://testnet.arbiscan.io",
+      ticker: "AETH",
+      tickerName: "AETH",
     },
   }),
 };
