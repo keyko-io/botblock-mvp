@@ -1,8 +1,19 @@
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 export const Web3AuthConnectButton = () => {
-  const { initWeb3Auth } = useWeb3AuthContext();
+  const { connectWeb3Auth, initWeb3Auth } = useWeb3AuthContext();
+
+  const openConnectModal = async () => {
+    try {
+      await connectWeb3Auth();
+      toast.success("Successfully logged in");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error while trying to connect. Please try again");
+    }
+  };
 
   useEffect(() => {
     const initAuth = async () => {
@@ -18,7 +29,7 @@ export const Web3AuthConnectButton = () => {
   }, [initWeb3Auth]);
 
   return (
-    <button className="btn btn-primary btn-sm" type="button">
+    <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
       Log in
     </button>
   );

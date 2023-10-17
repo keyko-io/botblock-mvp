@@ -13,6 +13,7 @@ type Web3AuthContextState = {
 // because it holds any other option or fx
 // that handle the state in some way
 interface Web3AuthContext extends Web3AuthContextState {
+  connectWeb3Auth: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
 }
 
@@ -41,7 +42,13 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     await state?.web3Auth.initModal();
   };
 
-  return <Web3AuthContextProvider value={{ ...state, initWeb3Auth }}>{children}</Web3AuthContextProvider>;
+  const connectWeb3Auth = async () => {
+    await state.web3Auth.connect();
+  };
+
+  return (
+    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, initWeb3Auth }}>{children}</Web3AuthContextProvider>
+  );
 };
 
 export const useWeb3AuthContext = useContext;
