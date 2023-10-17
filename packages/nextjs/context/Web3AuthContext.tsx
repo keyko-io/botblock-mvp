@@ -7,6 +7,7 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 // State variables only
 type Web3AuthContextState = {
   isConnected?: boolean;
+  username?: string;
   web3Auth: Web3Auth;
 };
 
@@ -46,7 +47,8 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   const connectWeb3Auth = async () => {
     await state.web3Auth.connect();
-    setState(prevState => ({ ...prevState, isConnected: true }));
+    const userInfo = await state.web3Auth.getUserInfo();
+    setState(prevState => ({ ...prevState, isConnected: true, username: userInfo.name }));
   };
 
   const disconnectWeb3Auth = async () => {
