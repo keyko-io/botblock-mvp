@@ -34,7 +34,7 @@ const INITIAL_STATE: Web3AuthContextState = {
 
 const [useContext, Web3AuthContextProvider] = createCtx<Web3AuthContext>("Web3AuthContext");
 
-export const RobotsProvider = ({ children }: PropsWithChildren) => {
+export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   const [state] = useState<Web3AuthContextState>(INITIAL_STATE);
 
   const initWeb3Auth = async () => {
