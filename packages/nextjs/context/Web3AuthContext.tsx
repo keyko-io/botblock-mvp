@@ -1,14 +1,17 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from ".";
+import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 
 // State variables only
 type Web3AuthContextState = {
+  web3Auth: Web3Auth;
+  provider?: Web3Provider;
   isConnected?: boolean;
   username?: string;
-  web3Auth: Web3Auth;
 };
 
 // This interface differentiates from State
@@ -49,9 +52,11 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const connectWeb3Auth = async () => {
-    await state.web3Auth.connect();
+    const web3authProvider = await state.web3Auth.connect();
     const userInfo = await state.web3Auth.getUserInfo();
-    setState(prevState => ({ ...prevState, isConnected: true, username: userInfo.name }));
+    if (!web3authProvider) return;
+    const provider = new ethers.providers.Web3Provider(web3authProvider);
+    setState(prevState => ({ ...prevState, provider, isConnected: true, username: userInfo.name }));
   };
 
   const disconnectWeb3Auth = async () => {
