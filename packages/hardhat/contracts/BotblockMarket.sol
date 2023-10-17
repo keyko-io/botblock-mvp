@@ -7,106 +7,128 @@ import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "./INvmNFT721.sol";
 
-
 // Marketplace Contract
 contract BotblockMarket is Ownable {
-    using SafeMath for uint256;
-    INvmNFT721 public neverminedNft721;
+	using SafeMath for uint256;
+	INvmNFT721 public neverminedNft721;
 
-    uint256 tokenIds;
+	uint256 tokenIds;
 
-    enum OrderStatus {
-        Open,
-        Completed
-    }
+	enum OrderStatus {
+		Open,
+		Completed
+	}
 
-    struct Plan {
-        uint256 planID;
-        address contentCreator;
-        address paymentTokenAddress;
-        uint256 price;
-        uint256 expirationBlock;
-        string uri;
-    }
-    struct Order {
-        address buyer;
-        Plan plan;
-        OrderStatus status;
-    }
+	struct Plan {
+		uint256 planID;
+		address contentCreator;
+		address paymentTokenAddress;
+		uint256 price;
+		uint256 expirationBlock;
+		string uri;
+	}
+	struct Order {
+		address buyer;
+		Plan plan;
+		OrderStatus status;
+		uint256 orderId;
+	}
 
-    mapping(uint256 => Plan) public plans;
-    uint256 public planCount;
-    mapping(uint256 => Order) public orders;
-    uint256 public orderCount;
+	mapping(uint256 => Plan) public plans;
+	uint256 public planCount;
 
-    event OrderPlaced(uint256 planId, address buyer);
-    event PlanCreated(uint256 planID, address contentCreator);
-    event OrderEvaded(uint256 orderId, address buyer, uint256 tokenId);
+	mapping(uint256 => Order) public orders;
+	uint256 public orderCount;
 
-    modifier onlyMarketplaceOwner() {
-        require(
-            msg.sender == owner(),
-            "Only the marketplace owner can call this function"
-        );
-        _;
-    }
+	event OrderPlaced(uint256 orderId, address buyer);
+	event PlanCreated(uint256 planID, address contentCreator);
+	event OrderEvaded(uint256 orderId, address buyer, uint256 tokenId);
 
-    constructor(address _nftContract) Ownable(msg.sender) {
-        neverminedNft721 = INvmNFT721(_nftContract);
-    }
+	modifier onlyMarketplaceOwner() {
+		require(
+			msg.sender == owner(),
+			"Only the marketplace owner can call this function"
+		);
+		_;
+	}
 
-    function createPlan(
-        address contentCreator,
-        address paymentTokenAddress,
-        uint256 price,
-        uint256 expirationBlock,
-        string memory uri
-    ) public {
-        uint256 planId = planCount.add(1);
-        Plan memory plan = Plan(
-            planId,
-            contentCreator,
-            paymentTokenAddress,
-            price,
-            expirationBlock,
-            uri
-        );
-        planCount = planCount.add(1);
-        plans[planCount] = plan;
+	constructor(address _nftContract) {
+		neverminedNft721 = INvmNFT721(_nftContract);
+	}
 
-        emit PlanCreated(planId, contentCreator);
-    }
+	function createPlan(
+		address paymentTokenAddress,
+		uint256 price,
+		uint256 expirationBlock,
+		string memory uri
+	) public {
+		uint256 planId = planCount.add(1);
+		Plan memory plan = Plan(
+			planId,
+			msg.sender,
+			paymentTokenAddress,
+			price,
+			expirationBlock,
+			uri
+		);
+		planCount = planCount.add(1);
+		plans[planCount] = plan;
 
-    function placeOrder(uint256 planId, uint256 amount) external payable {
-        Plan memory plan = plans[planId];
-        require(amount == plan.price, "Incorrect payment amount");
-        
-        IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
-        bool paymentSuccess = paymentToken.transferFrom(msg.sender, address(this), amount);
-        require(paymentSuccess, "the buyer couldn't pay the subscription");
+		emit PlanCreated(planId, msg.sender);
+	}
 
+	function placeOrder(uint256 planId, uint256 amount) external payable {
+		Plan memory plan = plans[planId];
+		require(amount == plan.price, "Incorrect payment amount");
 
-        Order memory order = Order(msg.sender, plans[planId], OrderStatus.Open);
+		IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
+		bool paymentSuccess = paymentToken.transferFrom(
+			msg.sender,
+			address(this),
+			amount
+		);
+		require(paymentSuccess, "the buyer couldn't pay the subscription");
 
-        orderCount = orderCount.add(1);
-        orders[orderCount] = order;
+		uint256 orderId = orderCount.add(1);
 
-        emit OrderPlaced(planId, msg.sender);
-    }
+		Order memory order = Order(
+			msg.sender,
+			plans[planId],
+			OrderStatus.Open,
+			orderId
+		);
 
-    function evadeOrder(uint256 orderId) external onlyMarketplaceOwner {
-        Order memory order = orders[orderId];
-        uint256 tokenId = tokenIds.add(1);
+		orderCount = orderCount.add(1);
 
-        IERC20 paymentToken = IERC20(order.plan.paymentTokenAddress);
-        bool paymentSuccess = paymentToken.transferFrom(msg.sender, address(this), order.plan.price);
-        require(paymentSuccess, "the contract couldn't pay the content creator");
+		orders[orderCount] = order;
 
-        neverminedNft721.mint(order.buyer, tokenId, order.plan.expirationBlock);
-        neverminedNft721.setNFTMetadata(tokenId,order.plan.uri);
+		emit OrderPlaced(orderId, msg.sender);
+	}
 
-        tokenIds = tokenIds.add(1);
+	function evadeOrder(uint256 orderId) external onlyMarketplaceOwner {
+		Order memory order = orders[orderId];
+		uint256 tokenId = tokenIds.add(1);
 
-        emit OrderEvaded(orderId, order.buyer, tokenId);
-    }
+		IERC20 paymentToken = IERC20(order.plan.paymentTokenAddress);
+		require(
+			paymentToken.balanceOf(address(this)) >= order.plan.price,
+			"Insufficient balance"
+		);
+		// _approveTransfer(order.plan.price,paymentToken);
+		bool paymentSuccess = paymentToken.transfer(
+			order.plan.contentCreator,
+			order.plan.price
+		);
+		require(
+			paymentSuccess,
+			"the contract couldn't pay the content creator"
+		);
+
+		neverminedNft721.mint(order.buyer, tokenId, order.plan.expirationBlock);
+		// neverminedNft721.setNFTMetadata(tokenId, order.plan.uri);
+
+		tokenIds = tokenIds.add(1);
+
+		emit OrderEvaded(orderId, order.buyer, tokenId);
+	}
 }
