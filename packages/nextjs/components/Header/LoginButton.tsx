@@ -1,5 +1,5 @@
-import { RainbowKitCustomConnectButton } from "./components/RainbowKitCustomConnectButton";
+import { Web3AuthConnectButton } from "./components/Web3AuthConnectButton";
 
 export const LoginButton = () => {
-  return <RainbowKitCustomConnectButton />;
+  return <Web3AuthConnectButton />;
 };
