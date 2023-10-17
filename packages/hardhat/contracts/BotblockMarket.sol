@@ -57,7 +57,7 @@ contract BotblockMarket is Ownable {
 	}
 
 	function createPlan(
-		address paymentTokenAddress,
+		address paymentTokenAddress, 
 		uint256 price,
 		uint256 expirationBlock,
 		string memory uri
@@ -106,7 +106,9 @@ contract BotblockMarket is Ownable {
 	}
 
 	function evadeOrder(uint256 orderId) external onlyMarketplaceOwner {
-		Order memory order = orders[orderId];
+		Order storage order = orders[orderId];
+        require(order.status == OrderStatus.Open, "Order is already evaded");
+
 		uint256 tokenId = tokenIds.add(1);
 
 		IERC20 paymentToken = IERC20(order.plan.paymentTokenAddress);
@@ -128,6 +130,7 @@ contract BotblockMarket is Ownable {
 		// neverminedNft721.setNFTMetadata(tokenId, order.plan.uri);
 
 		tokenIds = tokenIds.add(1);
+        order.status = OrderStatus.Completed;
 
 		emit OrderEvaded(orderId, order.buyer, tokenId);
 	}
