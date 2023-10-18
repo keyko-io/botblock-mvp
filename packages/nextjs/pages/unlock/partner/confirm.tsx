@@ -11,7 +11,7 @@ const DESCRIPTION = "lorem ipsum description";
 
 // const CTA_TEXT = "Submit";
 
-const Landing = () => {
+const Confirm = () => {
   // const [url, setUrl] = useState("");
   // const [price, setPrice] = useState(1);
   // const [token, setToken] = useState("APE");
@@ -35,4 +35,4 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+export default Confirm;
