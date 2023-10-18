@@ -9,6 +9,7 @@ type Web3AuthContextState = {
   isConnected?: boolean;
   username?: string;
   web3Auth: Web3Auth;
+  email?: string;
 };
 
 // This interface differentiates from State
@@ -48,7 +49,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   const connectWeb3Auth = async () => {
     await state.web3Auth.connect();
     const userInfo = await state.web3Auth.getUserInfo();
-    setState(prevState => ({ ...prevState, isConnected: true, username: userInfo.name }));
+    setState(prevState => ({ ...prevState, isConnected: true, username: userInfo.name, email: userInfo.email }));
   };
 
   const disconnectWeb3Auth = async () => {
