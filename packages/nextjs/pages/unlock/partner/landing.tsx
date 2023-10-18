@@ -132,7 +132,7 @@ const Landing = () => {
           </div>
         </div>
       )}
-      {!!url && isValid && (
+      {!!url && isValid && isConnected && (
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
           <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
             <div className="flex rounded-full border-2 border-primary p-1">
