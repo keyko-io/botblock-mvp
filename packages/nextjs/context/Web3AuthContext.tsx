@@ -1,14 +1,17 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from ".";
+import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
+import { ethers } from "ethers";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 
 // State variables only
 type Web3AuthContextState = {
+  web3Auth: Web3Auth;
+  provider?: Web3Provider;
   isConnected?: boolean;
   username?: string;
-  web3Auth: Web3Auth;
 };
 
 // This interface differentiates from State
@@ -20,18 +23,19 @@ interface Web3AuthContext extends Web3AuthContextState {
   initWeb3Auth: () => Promise<void>;
 }
 
+// TODO make so that the user can switch chains
 const INITIAL_STATE: Web3AuthContextState = {
   web3Auth: new Web3Auth({
     clientId: CLIENT_ID ?? "",
     web3AuthNetwork: "sapphire_devnet", // Web3Auth Network
     chainConfig: {
       chainNamespace: "eip155",
-      chainId: "0x1",
-      rpcTarget: "https://rpc.ankr.com/eth",
-      displayName: "Ethereum Devnet",
-      blockExplorer: "https://goerli.etherscan.io",
+      chainId: "0x66eed",
+      rpcTarget: "https://goerli-rollup.arbitrum.io/rpc",
+      displayName: "Arbitrum Goerli",
+      blockExplorer: "https://goerli.arbiscan.io/",
       ticker: "ETH",
-      tickerName: "Ethereum",
+      tickerName: "Arbitrum Goerli Ether",
     },
   }),
 };
@@ -46,9 +50,20 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const connectWeb3Auth = async () => {
-    await state.web3Auth.connect();
+    const web3authProvider = await state.web3Auth.connect();
     const userInfo = await state.web3Auth.getUserInfo();
-    setState(prevState => ({ ...prevState, isConnected: true, username: userInfo.name }));
+    if (!web3authProvider) return;
+    const provider = new ethers.providers.Web3Provider(web3authProvider);
+    setState(prevState => ({ ...prevState, provider, isConnected: true, username: userInfo.name }));
+
+    //just for testing
+    const signer = await provider.getSigner();
+    const address = await signer.getAddress();
+    const balance = ethers.utils.formatEther(
+      await provider.getBalance(address), // Balance is in wei
+    );
+    console.log("ADDRESS", address);
+    console.log("BALANCE", balance);
   };
 
   const disconnectWeb3Auth = async () => {
