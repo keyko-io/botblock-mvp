@@ -1,4 +1,4 @@
-import CodeSnippetButton from "~~/components/CodeSnippet";
+import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const TITLE = "Next Steps";
