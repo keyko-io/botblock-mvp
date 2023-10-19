@@ -12,6 +12,7 @@ type Web3AuthContextState = {
   provider?: Web3Provider;
   isConnected?: boolean;
   username?: string;
+  email?: string;
 };
 
 // This interface differentiates from State
@@ -54,7 +55,13 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     const userInfo = await state.web3Auth.getUserInfo();
     if (!web3authProvider) return;
     const provider = new ethers.providers.Web3Provider(web3authProvider);
-    setState(prevState => ({ ...prevState, provider, isConnected: true, username: userInfo.name }));
+    setState(prevState => ({
+      ...prevState,
+      provider,
+      isConnected: true,
+      username: userInfo.name,
+      email: userInfo.email,
+    }));
 
     //just for testing
     const signer = await provider.getSigner();
