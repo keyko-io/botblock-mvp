@@ -14,6 +14,7 @@ type Web3AuthContextState = {
   web3Auth: Web3Auth;
   provider?: Web3Provider;
   isConnected?: boolean;
+  address?: string;
   username?: string;
   email?: string;
   subsContract?: BotblockMarket;
@@ -61,6 +62,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     if (!web3authProvider) return;
     const provider = new ethers.providers.Web3Provider(web3authProvider);
     const signer = provider.getSigner();
+    const address = await signer.getAddress();
     const subsContract = new ethers.Contract(SUBS_CONTRACT_ADDRESS, rawContract.abi, signer) as BotblockMarket;
     const connectedSubsContract = subsContract.connect(signer);
     setState(prevState => ({
@@ -70,6 +72,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
       username: userInfo.name,
       email: userInfo.email,
       subsContract: connectedSubsContract,
+      address,
     }));
 
     //just for testing
