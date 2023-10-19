@@ -3,8 +3,11 @@ import { createCtx } from ".";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { ethers } from "ethers";
+import { subsContract as rawContract } from "~~/public/artifacts";
+import { BotblockMarket } from "~~/types/typechain-types";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
+const SUBS_CONTRACT_ADDRESS = "0x3B210c561d965943Ec6B31F207031adE602D4409";
 
 // State variables only
 type Web3AuthContextState = {
@@ -13,6 +16,7 @@ type Web3AuthContextState = {
   isConnected?: boolean;
   username?: string;
   email?: string;
+  subsContract?: BotblockMarket;
 };
 
 // This interface differentiates from State
@@ -21,6 +25,7 @@ type Web3AuthContextState = {
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
+  getPlans: () => void;
   initWeb3Auth: () => Promise<void>;
 }
 
@@ -55,22 +60,35 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     const userInfo = await state.web3Auth.getUserInfo();
     if (!web3authProvider) return;
     const provider = new ethers.providers.Web3Provider(web3authProvider);
+    const signer = provider.getSigner();
+    const subsContract = new ethers.Contract(SUBS_CONTRACT_ADDRESS, rawContract.abi, signer) as BotblockMarket;
+    const connectedSubsContract = subsContract.connect(signer);
     setState(prevState => ({
       ...prevState,
       provider,
       isConnected: true,
       username: userInfo.name,
       email: userInfo.email,
+      subsContract: connectedSubsContract,
     }));
 
     //just for testing
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    const balance = ethers.utils.formatEther(
-      await provider.getBalance(address), // Balance is in wei
-    );
-    console.log("ADDRESS", address);
-    console.log("BALANCE", balance);
+    // const address = await signer.getAddress();
+    // const balance = ethers.utils.formatEther(
+    //   await provider.getBalance(address), // Balance is in wei
+    // );
+    // console.log("ADDRESS", address);
+    // console.log("BALANCE", balance);
+  };
+
+  const getPlans = () => {
+    if (state.subsContract) {
+      console.log(state.subsContract);
+      const planCount = state.subsContract.planCount();
+      console.log(planCount);
+      const plans = state.subsContract.plans(planCount);
+      console.log(plans);
+    }
   };
 
   const disconnectWeb3Auth = async () => {
@@ -79,7 +97,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, initWeb3Auth }}>
+    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initWeb3Auth }}>
       {children}
     </Web3AuthContextProvider>
   );
