@@ -1,5 +1,6 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from ".";
+import { Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { ethers } from "ethers";
@@ -18,6 +19,7 @@ type Web3AuthContextState = {
   username?: string;
   email?: string;
   subsContract?: BotblockMarket;
+  plan?: Plan;
 };
 
 // This interface differentiates from State
@@ -28,6 +30,7 @@ interface Web3AuthContext extends Web3AuthContextState {
   disconnectWeb3Auth: () => Promise<void>;
   getPlans: () => void;
   initWeb3Auth: () => Promise<void>;
+  setPlanData: (plan: Plan) => void;
 }
 
 // TODO make so that the user can switch chains
@@ -99,8 +102,14 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     setState(prevState => ({ ...prevState, isConnected: false }));
   };
 
+  const setPlanData = (plan: Plan) => {
+    setState(prevState => ({ ...prevState, plan }));
+  };
+
   return (
-    <Web3AuthContextProvider value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initWeb3Auth }}>
+    <Web3AuthContextProvider
+      value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initWeb3Auth, setPlanData }}
+    >
       {children}
     </Web3AuthContextProvider>
   );

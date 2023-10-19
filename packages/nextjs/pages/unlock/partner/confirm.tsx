@@ -1,6 +1,8 @@
 // import { useState } from "react";
 // import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 // import { useRouter } from "next/router";
+import Recap from "~~/components/unlock/Recap";
+import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "lorem ipsum description";
@@ -12,6 +14,8 @@ const DESCRIPTION = "lorem ipsum description";
 // const CTA_TEXT = "Submit";
 
 const Confirm = () => {
+  const { plan } = useWeb3AuthContext();
+
   // const [url, setUrl] = useState("");
   // const [price, setPrice] = useState(1);
   // const [token, setToken] = useState("APE");
@@ -30,7 +34,7 @@ const Confirm = () => {
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
-      <div className="grid grid-cols-2 gap-4">HERE THE CONFIRMATION AND PLAN CREATION</div>
+      <div className="grid grid-cols-2 gap-4">{plan && <Recap plan={plan} />}</div>
     </div>
   );
 };
