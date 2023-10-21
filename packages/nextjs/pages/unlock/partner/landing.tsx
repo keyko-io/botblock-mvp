@@ -16,9 +16,9 @@ const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
 const CTA_SUBMIT = "Submit";
 
 const Landing = () => {
-  const { isConnected, setPlanData } = useWeb3AuthContext();
+  const { isConnected, address, setPlanData } = useWeb3AuthContext();
 
-  const [url, setUrl] = useState("");
+  const [uri, setUrl] = useState("");
   const [price, setPrice] = useState(1);
   const [token, setToken] = useState("APE");
   const [duration, setDuration] = useState("1Month");
@@ -30,12 +30,11 @@ const Landing = () => {
   const handleOnSubmit = () => {
     setIsLoading(true);
     const plan: Plan = {
-      planId: 1,
-      contentCreator: "address",
+      contentCreator: address || "",
       expirationBlock: 1,
-      price: 1,
+      price,
       paymentTokenAddress: "0x179522635726710Dd7D2035a81d856de4Aa7836c", //USDC
-      uri: "https://www.ciao.io",
+      uri,
     };
     setPlanData(plan);
     router.push("/unlock/partner/confirm");
@@ -142,7 +141,7 @@ const Landing = () => {
           </div>
         </div>
       )}
-      {!!url && isValid && isConnected && (
+      {!!uri && isValid && isConnected && (
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
           <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
             <div className="flex rounded-full border-2 border-primary p-1">
