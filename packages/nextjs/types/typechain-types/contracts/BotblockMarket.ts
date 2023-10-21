@@ -53,12 +53,33 @@ export declare namespace BotblockMarket {
     expirationBlock: BigNumber;
     uri: string;
   };
+
+  export type OrderStruct = {
+    buyer: PromiseOrValue<string>;
+    plan: BotblockMarket.PlanStruct;
+    status: PromiseOrValue<BigNumberish>;
+    orderId: PromiseOrValue<BigNumberish>;
+  };
+
+  export type OrderStructOutput = [
+    string,
+    BotblockMarket.PlanStructOutput,
+    number,
+    BigNumber
+  ] & {
+    buyer: string;
+    plan: BotblockMarket.PlanStructOutput;
+    status: number;
+    orderId: BigNumber;
+  };
 }
 
 export interface BotblockMarketInterface extends utils.Interface {
   functions: {
     "createPlan(address,uint256,uint256,string)": FunctionFragment;
     "evadeOrder(uint256)": FunctionFragment;
+    "getAllOrders()": FunctionFragment;
+    "getAllPlans()": FunctionFragment;
     "neverminedNft721()": FunctionFragment;
     "orderCount()": FunctionFragment;
     "orders(uint256)": FunctionFragment;
@@ -74,6 +95,8 @@ export interface BotblockMarketInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "createPlan"
       | "evadeOrder"
+      | "getAllOrders"
+      | "getAllPlans"
       | "neverminedNft721"
       | "orderCount"
       | "orders"
@@ -97,6 +120,14 @@ export interface BotblockMarketInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "evadeOrder",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllOrders",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllPlans",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "neverminedNft721",
@@ -131,6 +162,14 @@ export interface BotblockMarketInterface extends utils.Interface {
 
   decodeFunctionResult(functionFragment: "createPlan", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "evadeOrder", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllOrders",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllPlans",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "neverminedNft721",
     data: BytesLike
@@ -249,6 +288,22 @@ export interface BotblockMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getAllOrders(
+      overrides?: CallOverrides
+    ): Promise<
+      [BotblockMarket.OrderStructOutput[]] & {
+        allOrders: BotblockMarket.OrderStructOutput[];
+      }
+    >;
+
+    getAllPlans(
+      overrides?: CallOverrides
+    ): Promise<
+      [BotblockMarket.PlanStructOutput[]] & {
+        allPlans: BotblockMarket.PlanStructOutput[];
+      }
+    >;
+
     neverminedNft721(overrides?: CallOverrides): Promise<[string]>;
 
     orderCount(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -312,6 +367,14 @@ export interface BotblockMarket extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getAllOrders(
+    overrides?: CallOverrides
+  ): Promise<BotblockMarket.OrderStructOutput[]>;
+
+  getAllPlans(
+    overrides?: CallOverrides
+  ): Promise<BotblockMarket.PlanStructOutput[]>;
+
   neverminedNft721(overrides?: CallOverrides): Promise<string>;
 
   orderCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -374,6 +437,14 @@ export interface BotblockMarket extends BaseContract {
       orderId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getAllOrders(
+      overrides?: CallOverrides
+    ): Promise<BotblockMarket.OrderStructOutput[]>;
+
+    getAllPlans(
+      overrides?: CallOverrides
+    ): Promise<BotblockMarket.PlanStructOutput[]>;
 
     neverminedNft721(overrides?: CallOverrides): Promise<string>;
 
@@ -471,6 +542,10 @@ export interface BotblockMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getAllOrders(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getAllPlans(overrides?: CallOverrides): Promise<BigNumber>;
+
     neverminedNft721(overrides?: CallOverrides): Promise<BigNumber>;
 
     orderCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -518,6 +593,10 @@ export interface BotblockMarket extends BaseContract {
       orderId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    getAllOrders(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getAllPlans(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     neverminedNft721(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
