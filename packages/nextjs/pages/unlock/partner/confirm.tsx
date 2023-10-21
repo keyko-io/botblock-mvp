@@ -9,19 +9,23 @@ const Confirm = () => {
   const { plan, subsContract } = useWeb3AuthContext();
 
   const handleCreatePlan = async () => {
-    if (plan) {
-      const pendingNotifId = notification.loading(`Transaction is pending`);
-      const tx = await subsContract?.createPlan(plan.paymentTokenAddress, plan.price, "1", plan.uri);
-      const receipt = await tx?.wait();
-      notification.remove(pendingNotifId);
+    try {
+      if (plan) {
+        const pendingNotifId = notification.loading(`Transaction is pending`);
+        const tx = await subsContract?.createPlan(plan.paymentTokenAddress, plan.price, "1", plan.uri);
+        const receipt = await tx?.wait();
+        notification.remove(pendingNotifId);
 
-      if (receipt?.status) {
-        notification.success(`Transaction with hash ${tx?.hash} completed successfully!`, {
-          icon: "🎉",
-        });
+        if (receipt?.status) {
+          notification.success(`Transaction with hash ${tx?.hash} completed successfully!`, {
+            icon: "🎉",
+          });
+        }
+      } else {
+        notification.error("you need to log in first");
       }
-    } else {
-      notification.error("you need to log in first");
+    } catch (error) {
+      console.log(error)
     }
   };
 
