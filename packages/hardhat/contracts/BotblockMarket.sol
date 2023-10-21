@@ -52,8 +52,7 @@ contract BotblockMarket is Ownable {
         _;
     }
 
-    constructor(address _nftContract)  {
-    // constructor(address _nftContract) Ownable(msg.sender) {
+    constructor(address _nftContract) {
         neverminedNft721 = INvmNFT721(_nftContract);
     }
 
@@ -78,18 +77,19 @@ contract BotblockMarket is Ownable {
         emit PlanCreated(planId, msg.sender);
     }
 
-    function placeOrder(uint256 planId, uint256 amount) external payable {
+    function placeOrder(uint256 planId, uint256 amount) public {
         Plan memory plan = plans[planId];
         require(amount == plan.price, "Incorrect payment amount");
 
-        IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
-        bool paymentSuccess = paymentToken.transferFrom(
-            msg.sender,
-            address(this),
-            amount
-        );
-        require(paymentSuccess, "the buyer couldn't pay the subscription");
-
+       IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
+       bool paymentSuccess = paymentToken.transferFrom(
+           msg.sender,
+           address(this),
+           amount
+       );
+       require(paymentSuccess, "the buyer couldn't pay the subscription");
+        //KIT: 0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b
+        //NFT721: 0x2D940ad21e20cC91F2185AFF89b84c9d9315dae1
         uint256 orderId = orderCount.add(1);
 
         Order memory order = Order(
@@ -117,7 +117,7 @@ contract BotblockMarket is Ownable {
             paymentToken.balanceOf(address(this)) >= order.plan.price,
             "Insufficient balance"
         );
-        // _approveTransfer(order.plan.price,paymentToken);
+
         bool paymentSuccess = paymentToken.transfer(
             order.plan.contentCreator,
             order.plan.price
@@ -137,7 +137,7 @@ contract BotblockMarket is Ownable {
     }
 
     function getAllPlans() public view returns (Plan[] memory allPlans) {
-		allPlans = new Plan[](planCount);
+        allPlans = new Plan[](planCount);
         for (uint256 i = 0; i < planCount; i++) {
             allPlans[i] = plans[i];
         }
@@ -145,7 +145,7 @@ contract BotblockMarket is Ownable {
     }
 
     function getAllOrders() public view returns (Order[] memory allOrders) {
-		allOrders = new Order[](orderCount);
+        allOrders = new Order[](orderCount);
         for (uint256 i = 0; i < planCount; i++) {
             allOrders[i] = orders[i];
         }
