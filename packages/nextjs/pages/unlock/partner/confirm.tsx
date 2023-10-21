@@ -1,36 +1,42 @@
-// import { useState } from "react";
-// import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
-// import { useRouter } from "next/router";
+import Recap from "~~/components/unlock/Recap";
+import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { notification } from "~~/utils/scaffold-eth";
 
 const TITLE = "Confirm data and create a new plan";
-const DESCRIPTION = "lorem ipsum description";
-// const URI_PLACEHOLDER = "Insert the URL of your site here";
-// const PRICE_PLACEHOLDER = "How much you want to charge?";
-// const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
-// const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
-
-// const CTA_TEXT = "Submit";
+const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
-  // const [url, setUrl] = useState("");
-  // const [price, setPrice] = useState(1);
-  // const [token, setToken] = useState("APE");
-  // const [duration, setDuration] = useState("1Month");
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [isValid, setIsValid] = useState(true);
+  const { plan, subsContract } = useWeb3AuthContext();
 
-  // const router = useRouter();
+  const handleCreatePlan = async () => {
+    try {
+      if (plan) {
+        const pendingNotifId = notification.loading(`Transaction is pending`);
+        const tx = await subsContract?.createPlan(plan.paymentTokenAddress, plan.price, "1", plan.uri);
+        const receipt = await tx?.wait();
+        notification.remove(pendingNotifId);
 
-  // const handleOnSubmit = () => {
-  //   setIsLoading(true);
-  //   router.push()
-  // };
+        if (receipt?.status) {
+          notification.success(`Transaction with hash ${tx?.hash} completed successfully!`, {
+            icon: "🎉",
+          });
+        }
+      } else {
+        notification.error("you need to log in first");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
-      <div className="grid grid-cols-2 gap-4">HERE THE CONFIRMATION AND PLAN CREATION</div>
+      <div className="grid grid-cols-2 gap-4">{plan && <Recap plan={plan} />}</div>
+      <button className="btn btn-primary btn-sm" onClick={handleCreatePlan} type="button">
+        Create Plan
+      </button>
     </div>
   );
 };
