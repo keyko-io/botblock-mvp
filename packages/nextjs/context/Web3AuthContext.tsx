@@ -8,7 +8,7 @@ import { subsContract as rawContract } from "~~/public/artifacts";
 import { BotblockMarket } from "~~/types/typechain-types";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
-const SUBS_CONTRACT_ADDRESS = "0xE3d58fEAB921a5A43c7ee122ba2aEFb170df4b72";
+const SUBS_CONTRACT_ADDRESS = "0xD07ee34Ad20F50861ff4A72D09677F42af6E933f";
 
 // State variables only
 type Web3AuthContextState = {
