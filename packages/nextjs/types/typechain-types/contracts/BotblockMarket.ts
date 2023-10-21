@@ -76,6 +76,7 @@ export declare namespace BotblockMarket {
 export interface BotblockMarketInterface extends utils.Interface {
   functions: {
     "createPlan(address,uint256,uint256,string)": FunctionFragment;
+    "evadeActiveOrders()": FunctionFragment;
     "evadeOrder(uint256)": FunctionFragment;
     "getAllOrders()": FunctionFragment;
     "getAllPlans()": FunctionFragment;
@@ -93,6 +94,7 @@ export interface BotblockMarketInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "createPlan"
+      | "evadeActiveOrders"
       | "evadeOrder"
       | "getAllOrders"
       | "getAllPlans"
@@ -115,6 +117,10 @@ export interface BotblockMarketInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "evadeActiveOrders",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "evadeOrder",
@@ -160,6 +166,10 @@ export interface BotblockMarketInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "createPlan", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "evadeActiveOrders",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "evadeOrder", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getAllOrders",
@@ -282,6 +292,10 @@ export interface BotblockMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    evadeActiveOrders(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     evadeOrder(
       orderId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -361,6 +375,10 @@ export interface BotblockMarket extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  evadeActiveOrders(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   evadeOrder(
     orderId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -431,6 +449,8 @@ export interface BotblockMarket extends BaseContract {
       uri: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    evadeActiveOrders(overrides?: CallOverrides): Promise<void>;
 
     evadeOrder(
       orderId: PromiseOrValue<BigNumberish>,
@@ -536,6 +556,10 @@ export interface BotblockMarket extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    evadeActiveOrders(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     evadeOrder(
       orderId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -585,6 +609,10 @@ export interface BotblockMarket extends BaseContract {
       price: PromiseOrValue<BigNumberish>,
       expirationBlock: PromiseOrValue<BigNumberish>,
       uri: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    evadeActiveOrders(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

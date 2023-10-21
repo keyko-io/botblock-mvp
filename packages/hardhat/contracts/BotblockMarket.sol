@@ -106,7 +106,7 @@ contract BotblockMarket is Ownable {
         emit OrderPlaced(orderId, msg.sender);
     }
 
-    function evadeOrder(uint256 orderId) external onlyMarketplaceOwner {
+    function evadeOrder(uint256 orderId) public {
         Order storage order = orders[orderId];
         require(order.status == OrderStatus.Open, "Order is already evaded");
 
@@ -136,6 +136,17 @@ contract BotblockMarket is Ownable {
         emit OrderEvaded(orderId, order.buyer, tokenId);
     }
 
+    function evadeActiveOrders() public {
+        Order[] memory allOrders = getAllOrders();
+            
+         for (uint256 i = 0; i < allOrders.length; i++) {
+            if(allOrders[i].status == OrderStatus.Open){
+                evadeOrder(allOrders[i].orderId);
+            }
+            
+        }
+    }
+
     function getAllPlans() public view returns (Plan[] memory allPlans) {
         allPlans = new Plan[](planCount);
         for (uint256 i = 0; i < planCount; i++) {
@@ -146,7 +157,7 @@ contract BotblockMarket is Ownable {
 
     function getAllOrders() public view returns (Order[] memory allOrders) {
         allOrders = new Order[](orderCount);
-        for (uint256 i = 0; i < planCount; i++) {
+        for (uint256 i = 0; i < orderCount; i++) {
             allOrders[i] = orders[i];
         }
         return allOrders;
