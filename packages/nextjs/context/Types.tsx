@@ -1,5 +1,5 @@
 export type Plan = {
-  planId: number | string;
+  planId?: number | string;
   contentCreator: string;
   paymentTokenAddress: string;
   price: number | string;
