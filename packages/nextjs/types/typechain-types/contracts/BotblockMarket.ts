@@ -9,7 +9,6 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
-  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -325,7 +324,7 @@ export interface BotblockMarket extends BaseContract {
     placeOrder(
       planId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     planCount(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -396,7 +395,7 @@ export interface BotblockMarket extends BaseContract {
   placeOrder(
     planId: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
-    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   planCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -560,7 +559,7 @@ export interface BotblockMarket extends BaseContract {
     placeOrder(
       planId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     planCount(overrides?: CallOverrides): Promise<BigNumber>;
@@ -612,7 +611,7 @@ export interface BotblockMarket extends BaseContract {
     placeOrder(
       planId: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
-      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     planCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
