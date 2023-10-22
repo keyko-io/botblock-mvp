@@ -7,7 +7,7 @@ import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
-  "Create a plan. Once an AI bot will suscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
+  "Create a plan. Once an AI bot will subscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
 const URI_PLACEHOLDER = "Insert the URL of your site here";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
