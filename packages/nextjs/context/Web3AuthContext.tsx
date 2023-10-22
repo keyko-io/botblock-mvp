@@ -3,10 +3,10 @@ import { createCtx } from ".";
 import { Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
-import { ethers } from "ethers";
+import { Signer, ethers } from "ethers";
 import toast from "react-hot-toast";
-import { subsContract as rawContract } from "~~/public/artifacts";
-import { BotblockMarket } from "~~/types/typechain-types";
+import { subsContract as rawContract, erc20contract as rawErc20 } from "~~/public/artifacts";
+import { BotblockMarket, ERC20 } from "~~/types/typechain-types";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 const SUBS_CONTRACT_ADDRESS = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
@@ -33,7 +33,7 @@ interface Web3AuthContext extends Web3AuthContextState {
   getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
-  purchasePlan: (planId: string | number) => Promise<void>;
+  purchasePlan: (planId: string | number, price: number, tokenAddress: string) => Promise<void>;
   setPlanData: (plan: Plan) => void;
 }
 
@@ -113,10 +113,15 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const purchasePlan = async (planId: string | number) => {
-    if (state.connectedSubsContract) {
-      await state.connectedSubsContract.placeOrder(planId, 1);
-      toast.success("Successfully purchased");
+  const purchasePlan = async (planId: string | number, price: number, tokenAddress: string) => {
+    try {
+      if (state.connectedSubsContract && state.address) {
+        await approveSpending(tokenAddress, price);
+        await state.connectedSubsContract.placeOrder(planId, price);
+        toast.success("Successfully purchased");
+      }
+    } catch (error) {
+      toast.error("The purchase could not be done. Are you sure you have enoguh tokens to make it?");
     }
   };
 
@@ -127,6 +132,22 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   const setPlanData = (plan: Plan) => {
     setState(prevState => ({ ...prevState, plan }));
+  };
+
+  const approveSpending = async (tokenAddress: string, amount: number) => {
+    try {
+      const approvalAmount = ethers.utils.parseEther(amount.toString()); // Convert amount to Wei
+      const signer = state.provider?.getSigner();
+
+      const ERC20TokenContract = new ethers.Contract(tokenAddress, rawErc20.abi, state.provider) as ERC20;
+      const connected = ERC20TokenContract.connect(signer as Signer);
+
+      // Call the approve function on your ERC-20 token contract
+      const tx = await connected.approve(SUBS_CONTRACT_ADDRESS, approvalAmount);
+      await tx.wait();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
