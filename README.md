@@ -98,3 +98,5 @@ You should not need running this side of the project for demo purposes.
 ### Functions to be called by upkeep
 
 Available on commit [34b6da](https://github.com/fabriziogianni7/botblock/commit/34b6dae6cd2a6aab87b9c856db8ed1ef87c2f3e3)
+- mumbai Upkeep: 0x2565b778779F48f12B1e1983EFb4D11Cd167430A
+- arbitrum Upkeep: 0x065Beb95Fff0CF1e841cF44363F060a01Ad4Eb00
