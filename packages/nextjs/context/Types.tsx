@@ -7,6 +7,13 @@ export type Plan = {
   uri: string;
 };
 
+export type Order = {
+  buyer: string;
+  orderId: string;
+  plan: Plan;
+  status: number;
+};
+
 export enum Token {
   DAI = "DAI",
   USDT = "USDT",
