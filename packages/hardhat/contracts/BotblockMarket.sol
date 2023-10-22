@@ -6,11 +6,12 @@ import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "./INvmNFT721.sol";
+import "./NvmNFT721.sol";
 
 // Marketplace Contract
 contract BotblockMarket is Ownable {
     using SafeMath for uint256;
-    INvmNFT721 public neverminedNft721;
+    NvmNFT721 public neverminedNft721;
 
     uint256 tokenIds;
 
@@ -43,6 +44,7 @@ contract BotblockMarket is Ownable {
     event OrderPlaced(uint256 orderId, address buyer);
     event PlanCreated(uint256 planID, address contentCreator);
     event OrderEvaded(uint256 orderId, address buyer, uint256 tokenId);
+    event NVMNFTCreated(address nftAddress);
 
     modifier onlyMarketplaceOwner() {
         require(
@@ -52,8 +54,9 @@ contract BotblockMarket is Ownable {
         _;
     }
 
-    constructor(address _nftContract) {
-        neverminedNft721 = INvmNFT721(_nftContract);
+    constructor() {
+        neverminedNft721 = new NvmNFT721(address(this));
+        emit NVMNFTCreated(address(neverminedNft721));
     }
 
     function createPlan(
@@ -81,13 +84,13 @@ contract BotblockMarket is Ownable {
         Plan memory plan = plans[planId];
         require(amount == plan.price, "Incorrect payment amount");
 
-       IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
-       bool paymentSuccess = paymentToken.transferFrom(
-           msg.sender,
-           address(this),
-           amount
-       );
-       require(paymentSuccess, "the buyer couldn't pay the subscription");
+        IERC20 paymentToken = IERC20(plan.paymentTokenAddress);
+        bool paymentSuccess = paymentToken.transferFrom(
+            msg.sender,
+            address(this),
+            amount
+        );
+        require(paymentSuccess, "the buyer couldn't pay the subscription");
         //KIT: 0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b
         //NFT721: 0x2D940ad21e20cC91F2185AFF89b84c9d9315dae1
         uint256 orderId = orderCount.add(1);
@@ -138,12 +141,11 @@ contract BotblockMarket is Ownable {
 
     function evadeActiveOrders() public {
         Order[] memory allOrders = getAllOrders();
-            
-         for (uint256 i = 0; i < allOrders.length; i++) {
-            if(allOrders[i].status == OrderStatus.Open){
+
+        for (uint256 i = 0; i < allOrders.length; i++) {
+            if (allOrders[i].status == OrderStatus.Open) {
                 evadeOrder(allOrders[i].orderId);
             }
-            
         }
     }
 
