@@ -4,6 +4,7 @@ import { Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { ethers } from "ethers";
+import toast from "react-hot-toast";
 import { subsContract as rawContract } from "~~/public/artifacts";
 import { BotblockMarket } from "~~/types/typechain-types";
 
@@ -19,6 +20,7 @@ type Web3AuthContextState = {
   username?: string;
   email?: string;
   subsContract?: BotblockMarket;
+  connectedSubsContract?: BotblockMarket;
   plan?: Plan;
 };
 
@@ -28,8 +30,10 @@ type Web3AuthContextState = {
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
-  getPlans: () => void;
+  getPlans: () => Promise<Plan[] | undefined>;
+  initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
+  purchasePlan: (planId: string | number) => Promise<void>;
   setPlanData: (plan: Plan) => void;
 }
 
@@ -59,6 +63,12 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     await state?.web3Auth.initModal();
   };
 
+  const initProvider = async () => {
+    const provider = new ethers.providers.JsonRpcProvider("https://goerli-rollup.arbitrum.io/rpc");
+    const subsContract = new ethers.Contract(SUBS_CONTRACT_ADDRESS, rawContract.abi, provider) as BotblockMarket;
+    setState(prevState => ({ ...prevState, subsContract }));
+  };
+
   const connectWeb3Auth = async () => {
     const web3authProvider = await state.web3Auth.connect();
     const userInfo = await state.web3Auth.getUserInfo();
@@ -74,7 +84,8 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
       isConnected: true,
       username: userInfo.name,
       email: userInfo.email,
-      subsContract: connectedSubsContract,
+      subsContract,
+      connectedSubsContract,
       address,
     }));
 
@@ -87,13 +98,25 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     // console.log("BALANCE", balance);
   };
 
-  const getPlans = () => {
+  const getPlans = async () => {
     if (state.subsContract) {
-      console.log(state.subsContract);
-      const planCount = state.subsContract.planCount();
-      console.log(planCount);
-      const plans = state.subsContract.plans(planCount);
-      console.log(plans);
+      const plans = await state.subsContract.getAllPlans();
+      // Map plan struct output into a usable array
+      return plans.map(plan => ({
+        contentCreator: plan.contentCreator,
+        expirationBlock: plan.expirationBlock.toString(),
+        planId: plan.planID.toString(),
+        paymentTokenAddress: plan.paymentTokenAddress,
+        price: plan.price.toString(),
+        uri: plan.uri,
+      })) as Plan[];
+    }
+  };
+
+  const purchasePlan = async (planId: string | number) => {
+    if (state.connectedSubsContract) {
+      await state.connectedSubsContract.placeOrder(planId, 1);
+      toast.success("Successfully purchased");
     }
   };
 
@@ -108,7 +131,16 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <Web3AuthContextProvider
-      value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initWeb3Auth, setPlanData }}
+      value={{
+        ...state,
+        connectWeb3Auth,
+        disconnectWeb3Auth,
+        getPlans,
+        initProvider,
+        initWeb3Auth,
+        purchasePlan,
+        setPlanData,
+      }}
     >
       {children}
     </Web3AuthContextProvider>

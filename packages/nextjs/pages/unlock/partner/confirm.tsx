@@ -6,13 +6,13 @@ const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
-  const { plan, subsContract } = useWeb3AuthContext();
+  const { plan, connectedSubsContract } = useWeb3AuthContext();
 
   const handleCreatePlan = async () => {
     try {
       if (plan) {
         const pendingNotifId = notification.loading(`Transaction is pending`);
-        const tx = await subsContract?.createPlan(plan.paymentTokenAddress, plan.price, "1", plan.uri);
+        const tx = await connectedSubsContract?.createPlan(plan.paymentTokenAddress, plan.price, "1", plan.uri);
         const receipt = await tx?.wait();
         notification.remove(pendingNotifId);
 
@@ -25,7 +25,7 @@ const Confirm = () => {
         notification.error("you need to log in first");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
