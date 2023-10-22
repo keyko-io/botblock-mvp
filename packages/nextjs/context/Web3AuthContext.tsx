@@ -19,6 +19,7 @@ type Web3AuthContextState = {
   username?: string;
   email?: string;
   subsContract?: BotblockMarket;
+  connectedSubsContract?: BotblockMarket;
   plan?: Plan;
 };
 
@@ -81,7 +82,8 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
       isConnected: true,
       username: userInfo.name,
       email: userInfo.email,
-      subsContract: connectedSubsContract,
+      subsContract,
+      connectedSubsContract,
       address,
     }));
 
