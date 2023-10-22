@@ -1,22 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Plan } from "~~/context/Types";
+import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-
-type TokenAddress =
-  | "0x6B175474E89094C44Da98b954EedeAC495271d0F"
-  | "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-  | "0x179522635726710Dd7D2035a81d856de4Aa7836c"
-  | "0x4d224452801ACEd8B2F0aebE155379bb5D594381"
-  | "0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b";
-
-const tokenAddressMap: Record<TokenAddress, string> = {
-  "0x6B175474E89094C44Da98b954EedeAC495271d0F": "DAI",
-  "0xdAC17F958D2ee523a2206206994597C13D831ec7": "USDT",
-  "0x179522635726710Dd7D2035a81d856de4Aa7836c": "USDC",
-  "0x4d224452801ACEd8B2F0aebE155379bb5D594381": "ApeCoin",
-  "0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b": "Keyko Innovation Token",
-};
 
 const Subscribe = () => {
   const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
@@ -39,10 +24,10 @@ const Subscribe = () => {
         toast.error("Please log in before submitting a purchase");
         return;
       }
-      const toastId = toast.loading("Wait some moments to complete the purhcase!")
+      const toastId = toast.loading("Wait some moments to complete the purchase!");
       // @note: should ask before confirmation
       purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress);
-      toast.dismiss(toastId)
+      toast.dismiss(toastId);
     }
   };
 
