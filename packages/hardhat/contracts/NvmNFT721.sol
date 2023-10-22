@@ -1,19 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+
 import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+
 import "./INvmNFT721.sol";
 
-contract NvmNFT721 is ERC721, INvmNFT721 {
-	constructor() ERC721("MockNvmNFT721", "MOCKNFT") {}
-    mapping(uint256 => uint256) public idToExpiration;
+contract NvmNFT721 is INvmNFT721, ERC721 {
 
-	function mint(
-		address to,
-		uint256 tokenId,
-		uint256 expirationBlock
-	) external override{
+    uint256 expirationBlock;
+	address owner;
+
+	 modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Only the marketplace owner can call this function"
+        );
+        _;
+    }
+
+
+    constructor(address _botblockMarket)  ERC721("NFT721SubscriptionUpgradeable", "NVMSub"){
+		owner = _botblockMarket;
+	}
+    function mint(address to, uint256 tokenId, uint256 _expirationBlock) external onlyOwner  {
+        expirationBlock = _expirationBlock;
         _mint(to, tokenId);
-        idToExpiration[tokenId] = expirationBlock;
     }
 }
