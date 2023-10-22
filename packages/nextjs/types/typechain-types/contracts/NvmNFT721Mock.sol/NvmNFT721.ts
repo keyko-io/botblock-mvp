@@ -25,13 +25,14 @@ import type {
   TypedListener,
   OnEvent,
   PromiseOrValue,
-} from "../common";
+} from "../../common";
 
 export interface NvmNFT721Interface extends utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "idToExpiration(uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint(address,uint256,uint256)": FunctionFragment;
     "name()": FunctionFragment;
@@ -50,6 +51,7 @@ export interface NvmNFT721Interface extends utils.Interface {
       | "approve"
       | "balanceOf"
       | "getApproved"
+      | "idToExpiration"
       | "isApprovedForAll"
       | "mint"
       | "name"
@@ -73,6 +75,10 @@ export interface NvmNFT721Interface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "idToExpiration",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -135,6 +141,10 @@ export interface NvmNFT721Interface extends utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "idToExpiration",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -257,6 +267,11 @@ export interface NvmNFT721 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    idToExpiration(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -266,7 +281,7 @@ export interface NvmNFT721 extends BaseContract {
     mint(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _expirationBlock: PromiseOrValue<BigNumberish>,
+      expirationBlock: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -334,6 +349,11 @@ export interface NvmNFT721 extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  idToExpiration(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
@@ -343,7 +363,7 @@ export interface NvmNFT721 extends BaseContract {
   mint(
     to: PromiseOrValue<string>,
     tokenId: PromiseOrValue<BigNumberish>,
-    _expirationBlock: PromiseOrValue<BigNumberish>,
+    expirationBlock: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -411,6 +431,11 @@ export interface NvmNFT721 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    idToExpiration(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -420,7 +445,7 @@ export interface NvmNFT721 extends BaseContract {
     mint(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _expirationBlock: PromiseOrValue<BigNumberish>,
+      expirationBlock: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -524,6 +549,11 @@ export interface NvmNFT721 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    idToExpiration(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -533,7 +563,7 @@ export interface NvmNFT721 extends BaseContract {
     mint(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _expirationBlock: PromiseOrValue<BigNumberish>,
+      expirationBlock: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -602,6 +632,11 @@ export interface NvmNFT721 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    idToExpiration(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -611,7 +646,7 @@ export interface NvmNFT721 extends BaseContract {
     mint(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _expirationBlock: PromiseOrValue<BigNumberish>,
+      expirationBlock: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

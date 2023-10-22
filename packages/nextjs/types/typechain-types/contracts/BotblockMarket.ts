@@ -199,17 +199,26 @@ export interface BotblockMarketInterface extends utils.Interface {
   ): Result;
 
   events: {
+    "NVMNFTCreated(address)": EventFragment;
     "OrderEvaded(uint256,address,uint256)": EventFragment;
     "OrderPlaced(uint256,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "PlanCreated(uint256,address)": EventFragment;
   };
 
+  getEvent(nameOrSignatureOrTopic: "NVMNFTCreated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OrderEvaded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OrderPlaced"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "PlanCreated"): EventFragment;
 }
+
+export interface NVMNFTCreatedEventObject {
+  nftAddress: string;
+}
+export type NVMNFTCreatedEvent = TypedEvent<[string], NVMNFTCreatedEventObject>;
+
+export type NVMNFTCreatedEventFilter = TypedEventFilter<NVMNFTCreatedEvent>;
 
 export interface OrderEvadedEventObject {
   orderId: BigNumber;
@@ -514,6 +523,9 @@ export interface BotblockMarket extends BaseContract {
   };
 
   filters: {
+    "NVMNFTCreated(address)"(nftAddress?: null): NVMNFTCreatedEventFilter;
+    NVMNFTCreated(nftAddress?: null): NVMNFTCreatedEventFilter;
+
     "OrderEvaded(uint256,address,uint256)"(
       orderId?: null,
       buyer?: null,
