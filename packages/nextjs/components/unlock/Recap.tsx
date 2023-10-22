@@ -1,5 +1,5 @@
 import React from "react";
-import { Plan } from "~~/context/Types";
+import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 
 const Recap = ({ plan }: { plan: Plan }) => {
   return (
@@ -8,10 +8,13 @@ const Recap = ({ plan }: { plan: Plan }) => {
       <ul className="list-disc pl-6">
         <li className="mb-2">{`Website ${plan.uri}`}</li>
         <li className="mb-2">{`Content Creator Address: ${plan.contentCreator}`}</li>
-        <li className="mb-2">{`Duration: 3 Months`}</li>
-        {/* <li className="mb-2">{`Duration: ${plan.expirationBlock}`}</li> */}
+        <li className="mb-2">{`Duration: ${plan.expirationBlock} Month${
+          Number(plan.expirationBlock) > 1 ? "s" : ""
+        }`}</li>
         <li className="mb-2">{`Token to receive upon subscription: ${plan.paymentTokenAddress}`}</li>
-        <li className="mb-2">{`Price: ${plan.price} USDC`}</li>
+        <li className="mb-2">{`Price: ${plan.price} ${
+          tokenAddressMap?.[plan.paymentTokenAddress as TokenAddress]
+        }`}</li>
       </ul>
     </div>
   );

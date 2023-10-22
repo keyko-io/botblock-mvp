@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
-import { Plan } from "~~/context/Types";
+import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
-  "Create a plan. Once an AI bot will suscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
+  "Create a plan. Once an AI bot will subscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
 const URI_PLACEHOLDER = "Insert the URL of your site here";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
@@ -20,7 +20,7 @@ const Landing = () => {
 
   const [uri, setUrl] = useState("");
   const [price, setPrice] = useState(1);
-  const [token, setToken] = useState("APE");
+  const [paymentTokenAddress, setPaymentTokenAddress] = useState(TokenAddress[Token.KIT]);
   const [duration, setDuration] = useState("1Month");
   const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(true);
@@ -33,7 +33,7 @@ const Landing = () => {
       contentCreator: address || "",
       expirationBlock: 1,
       price,
-      paymentTokenAddress: "0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b", //Kit
+      paymentTokenAddress,
       uri,
     };
     setPlanData(plan);
@@ -119,14 +119,14 @@ const Landing = () => {
               <select
                 id="select"
                 className="block w-full px-4 py-2 leading-5 text-gray-700 border rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
-                onChange={e => setToken(e.target.value)}
-                value={token}
+                onChange={e => setPaymentTokenAddress(e.target.value as TokenAddress)}
+                value={paymentTokenAddress}
               >
-                {/* APECoin is giving out prizes */}
-                <option value="USDC">USDC</option>
-                <option value="DAI">DAI</option>
-                <option value="USDT">USDT</option>
-                <option value="APE">APECoin</option>
+                <option value={TokenAddress[Token.USDC]}>{Token.USDC}</option>
+                <option value={TokenAddress[Token.DAI]}>{Token.DAI}</option>
+                <option value={TokenAddress[Token.USDT]}>{Token.USDT}</option>
+                <option value={TokenAddress[Token.APE]}>{Token.APE}</option>
+                <option value={TokenAddress[Token.KIT]}>{Token.KIT}</option>
               </select>
             </div>
           </div>

@@ -1,12 +1,13 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from ".";
-import { Plan } from "./Types";
+import { Order, Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { Signer, ethers } from "ethers";
 import toast from "react-hot-toast";
 import { subsContract as rawContract, erc20contract as rawErc20 } from "~~/public/artifacts";
 import { BotblockMarket, ERC20 } from "~~/types/typechain-types";
+import { parseOrderStruct, parsePlanStruct } from "~~/utils/parsers";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 const SUBS_CONTRACT_ADDRESS = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
@@ -30,6 +31,7 @@ type Web3AuthContextState = {
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
+  getOrders: () => Promise<Order[] | undefined>;
   getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
@@ -101,15 +103,16 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   const getPlans = async () => {
     if (state.subsContract) {
       const plans = await state.subsContract.getAllPlans();
-      // Map plan struct output into a usable array
-      return plans.map(plan => ({
-        contentCreator: plan.contentCreator,
-        expirationBlock: plan.expirationBlock.toString(),
-        planId: plan.planID.toString(),
-        paymentTokenAddress: plan.paymentTokenAddress,
-        price: plan.price.toString(),
-        uri: plan.uri,
-      })) as Plan[];
+      // Map plan struct output into an usable array
+      return plans.map(parsePlanStruct);
+    }
+  };
+
+  const getOrders = async () => {
+    if (state.subsContract) {
+      const orders = await state.subsContract.getAllOrders();
+      // Map order struct output into an usable array
+      return orders.map(parseOrderStruct);
     }
   };
 
@@ -121,7 +124,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
         toast.success("Successfully purchased");
       }
     } catch (error) {
-      toast.error("The purchase could not be done. Are you sure you have enoguh tokens to make it?");
+      toast.error("The purchase could not be done. Are you sure you have enough tokens to make it?");
     }
   };
 
@@ -156,6 +159,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
         ...state,
         connectWeb3Auth,
         disconnectWeb3Auth,
+        getOrders,
         getPlans,
         initProvider,
         initWeb3Auth,
