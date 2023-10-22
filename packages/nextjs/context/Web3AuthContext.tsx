@@ -29,6 +29,7 @@ interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
   getPlans: () => void;
+  initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
   setPlanData: (plan: Plan) => void;
 }
@@ -57,6 +58,12 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   const initWeb3Auth = async () => {
     await state?.web3Auth.initModal();
+  };
+
+  const initProvider = async () => {
+    const provider = new ethers.providers.JsonRpcProvider("https://goerli-rollup.arbitrum.io/rpc");
+    const subsContract = new ethers.Contract(SUBS_CONTRACT_ADDRESS, rawContract.abi, provider) as BotblockMarket;
+    setState(prevState => ({ ...prevState, subsContract }));
   };
 
   const connectWeb3Auth = async () => {
@@ -108,7 +115,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <Web3AuthContextProvider
-      value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initWeb3Auth, setPlanData }}
+      value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initProvider, initWeb3Auth, setPlanData }}
     >
       {children}
     </Web3AuthContextProvider>
