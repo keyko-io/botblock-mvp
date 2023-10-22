@@ -142,7 +142,7 @@ contract BotblockMarket is Ownable {
     function evadeActiveOrders() public {
         Order[] memory allOrders = getAllOrders();
 
-        for (uint256 i = 0; i < allOrders.length; i++) {
+        for (uint256 i = 1; i < allOrders.length; i++) {
             if (allOrders[i].status == OrderStatus.Open) {
                 evadeOrder(allOrders[i].orderId);
             }
@@ -152,7 +152,7 @@ contract BotblockMarket is Ownable {
     function getAllPlans() public view returns (Plan[] memory allPlans) {
         allPlans = new Plan[](planCount);
         for (uint256 i = 0; i < planCount; i++) {
-            allPlans[i] = plans[i];
+            allPlans[i] = plans[i+1];
         }
         return allPlans;
     }
@@ -160,7 +160,7 @@ contract BotblockMarket is Ownable {
     function getAllOrders() public view returns (Order[] memory allOrders) {
         allOrders = new Order[](orderCount);
         for (uint256 i = 0; i < orderCount; i++) {
-            allOrders[i] = orders[i];
+            allOrders[i] = orders[i+1];
         }
         return allOrders;
     }
