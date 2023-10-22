@@ -7,6 +7,7 @@ import { Signer, ethers } from "ethers";
 import toast from "react-hot-toast";
 import { subsContract as rawContract, erc20contract as rawErc20 } from "~~/public/artifacts";
 import { BotblockMarket, ERC20 } from "~~/types/typechain-types";
+import { parsePlanStruct } from "~~/utils/parsers";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 const SUBS_CONTRACT_ADDRESS = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
@@ -101,15 +102,8 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
   const getPlans = async () => {
     if (state.subsContract) {
       const plans = await state.subsContract.getAllPlans();
-      // Map plan struct output into a usable array
-      return plans.map(plan => ({
-        contentCreator: plan.contentCreator,
-        expirationBlock: plan.expirationBlock.toString(),
-        planId: plan.planID.toString(),
-        paymentTokenAddress: plan.paymentTokenAddress,
-        price: plan.price.toString(),
-        uri: plan.uri,
-      })) as Plan[];
+      // Map plan struct output into an usable array
+      return plans.map(parsePlanStruct);
     }
   };
 
