@@ -33,7 +33,7 @@ interface Web3AuthContext extends Web3AuthContextState {
   getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
-  purchasePlan: (planId: string | number, amount: number, tokenAddress: string) => Promise<void>;
+  purchasePlan: (planId: string | number, price: number, tokenAddress: string) => Promise<void>;
   setPlanData: (plan: Plan) => void;
 }
 
@@ -113,11 +113,11 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const purchasePlan = async (planId: string | number, amount: number, tokenAddress: string) => {
+  const purchasePlan = async (planId: string | number, price: number, tokenAddress: string) => {
     try {
       if (state.connectedSubsContract && state.address) {
-        await approveSpending(tokenAddress, amount);
-        await state.connectedSubsContract.placeOrder(planId, amount);
+        await approveSpending(tokenAddress, price);
+        await state.connectedSubsContract.placeOrder(planId, price);
         toast.success("Successfully purchased");
       }
     } catch (error) {
