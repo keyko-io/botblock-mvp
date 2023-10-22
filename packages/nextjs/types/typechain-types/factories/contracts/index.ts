@@ -4,5 +4,4 @@
 export { BotblockMarket__factory } from "./BotblockMarket__factory";
 export { INvmNFT721__factory } from "./INvmNFT721__factory";
 export { NvmNFT721__factory } from "./NvmNFT721__factory";
-export { NvmNFT721Mock__factory } from "./NvmNFT721Mock__factory";
 export { TestToken__factory } from "./TestToken__factory";
