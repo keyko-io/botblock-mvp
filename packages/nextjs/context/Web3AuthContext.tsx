@@ -29,7 +29,7 @@ type Web3AuthContextState = {
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
-  getPlans: () => void;
+  getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
   setPlanData: (plan: Plan) => void;
@@ -96,13 +96,18 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     // console.log("BALANCE", balance);
   };
 
-  const getPlans = () => {
+  const getPlans = async () => {
     if (state.subsContract) {
-      console.log(state.subsContract);
-      const planCount = state.subsContract.planCount();
-      console.log(planCount);
-      const plans = state.subsContract.plans(planCount);
-      console.log(plans);
+      const plans = await state.subsContract.getAllPlans();
+      // Map plan struct output into a usable array
+      return plans.map(plan => ({
+        contentCreator: plan.contentCreator,
+        expirationBlock: plan.expirationBlock.toString(),
+        planId: plan.planID.toString(),
+        paymentTokenAddress: plan.paymentTokenAddress,
+        price: plan.price.toString(),
+        uri: plan.uri,
+      })) as Plan[];
     }
   };
 
