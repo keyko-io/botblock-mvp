@@ -121,7 +121,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
         toast.success("Successfully purchased");
       }
     } catch (error) {
-      toast.error("The purchaase could not be done. Are you sure you have enoguh tokens to make it?");
+      toast.error("The purchase could not be done. Are you sure you have enoguh tokens to make it?");
     }
   };
 
