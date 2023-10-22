@@ -32,7 +32,5 @@ export type { INvmNFT721 } from "./contracts/INvmNFT721";
 export { INvmNFT721__factory } from "./factories/contracts/INvmNFT721__factory";
 export type { NvmNFT721 } from "./contracts/NvmNFT721";
 export { NvmNFT721__factory } from "./factories/contracts/NvmNFT721__factory";
-export type { NvmNFT721Mock } from "./contracts/NvmNFT721Mock";
-export { NvmNFT721Mock__factory } from "./factories/contracts/NvmNFT721Mock__factory";
 export type { TestToken } from "./contracts/TestToken";
 export { TestToken__factory } from "./factories/contracts/TestToken__factory";
