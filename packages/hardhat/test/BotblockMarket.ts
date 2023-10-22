@@ -118,13 +118,49 @@ describe("BotblockMarket", function () {
     expect(contentCreatorTestBalance).equals(2);
   });
 
-  it("Create a bunch of orders and evade them", async function () {
-    const marketOwnerBbMarketConnected = botblockMarket.connect(marketOwner);
-    await marketOwnerBbMarketConnected.evadeOrder(2);
+  it("Create a bunch of orders and evade them using evadeActiveOrders (this one is for Chainlink Upkeep)", async function () {
+    // order 1
+    const subConnectedToken1 = testToken.connect(subscriber);
+    const approveTx1 = await subConnectedToken1.approve(botblockMarket.address, 10);
+    await approveTx1.wait();
 
-    const contentCreatorTestBalance = await testToken.balanceOf(contentCreator.address);
-    const order = await botblockMarket.orders(2);
-    expect(order.status).equals(1);
-    expect(contentCreatorTestBalance).equals(2);
+    const subscriberBbMarketConnected1 = botblockMarket.connect(subscriber);
+    await subscriberBbMarketConnected1.placeOrder(1, 1);
+    const order1 = await botblockMarket.orders(3);
+    expect(order1.status).equals(0);
+
+    // order 2
+    const subConnectedToken2 = testToken.connect(subscriber2);
+    const approveTx2 = await subConnectedToken2.approve(botblockMarket.address, 10);
+    await approveTx2.wait();
+
+    const subscriberBbMarketConnected2 = botblockMarket.connect(subscriber2);
+    await subscriberBbMarketConnected2.placeOrder(1, 1);
+    const order2 = await botblockMarket.orders(4);
+    expect(order2.status).equals(0);
+    
+    await subscriberBbMarketConnected2.placeOrder(1, 1);
+    const order3 = await botblockMarket.orders(5);
+    expect(order3.status).equals(0);
+
+
+    const marketOwnerBbMarketConnected = botblockMarket.connect(marketOwner);
+    await marketOwnerBbMarketConnected.evadeActiveOrders();
+    // console.log("evadeActiveOrdersResult",evadeActiveOrdersResult)
+
+    const orderShouldBeEvaded1 = await botblockMarket.orders(3);
+    const allOrders = await botblockMarket.getAllOrders();
+    expect(orderShouldBeEvaded1.status).equals(1);
+
+    console.log("allOrders", allOrders);
+    const orderShouldBeEvaded2 = await botblockMarket.orders(4);
+    console.log("orderCount",  await botblockMarket.orderCount());
+    // console.log("orderShouldBeEvaded2", orderShouldBeEvaded2);
+    expect(orderShouldBeEvaded2.status).equals(1);
+    const orderShouldBeEvaded3 = await botblockMarket.orders(5);
+    console.log("5th order", orderShouldBeEvaded3);
+    expect(orderShouldBeEvaded3.status).equals(1);
+
+    
   });
 });
