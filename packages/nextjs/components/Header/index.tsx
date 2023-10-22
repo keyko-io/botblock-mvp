@@ -3,8 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoginButton } from "./LoginButton";
-import { BanknotesIcon, Bars3Icon, CurrencyDollarIcon, LockClosedIcon } from "@heroicons/react/24/outline";
+import {
+  BanknotesIcon,
+  Bars3Icon,
+  CurrencyDollarIcon,
+  LockClosedIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import { FaucetButton } from "~~/components/scaffold-eth";
+import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -28,6 +35,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
  * Site header
  */
 export const Header = () => {
+  const { isConnected } = useWeb3AuthContext();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
   useOutsideClick(
@@ -58,6 +66,14 @@ export const Header = () => {
           Subscribe
         </NavLink>
       </li>
+      {isConnected && (
+        <li>
+          <NavLink href="/profile">
+            <UserCircleIcon className="h-4 w-4" />
+            Profile
+          </NavLink>
+        </li>
+      )}
     </>
   );
 
