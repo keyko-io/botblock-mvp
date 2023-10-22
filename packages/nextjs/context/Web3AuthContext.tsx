@@ -1,13 +1,13 @@
 import { PropsWithChildren, useState } from "react";
 import { createCtx } from ".";
-import { Plan } from "./Types";
+import { Order, Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { Signer, ethers } from "ethers";
 import toast from "react-hot-toast";
 import { subsContract as rawContract, erc20contract as rawErc20 } from "~~/public/artifacts";
 import { BotblockMarket, ERC20 } from "~~/types/typechain-types";
-import { parsePlanStruct } from "~~/utils/parsers";
+import { parseOrderStruct, parsePlanStruct } from "~~/utils/parsers";
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_WEB3AUTH_CLIENT_ID;
 const SUBS_CONTRACT_ADDRESS = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
@@ -31,6 +31,7 @@ type Web3AuthContextState = {
 interface Web3AuthContext extends Web3AuthContextState {
   connectWeb3Auth: () => Promise<void>;
   disconnectWeb3Auth: () => Promise<void>;
+  getOrders: () => Promise<Order[] | undefined>;
   getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
@@ -107,6 +108,14 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const getOrders = async () => {
+    if (state.subsContract) {
+      const orders = await state.subsContract.getAllOrders();
+      // Map order struct output into an usable array
+      return orders.map(parseOrderStruct);
+    }
+  };
+
   const purchasePlan = async (planId: string | number, price: number, tokenAddress: string) => {
     try {
       if (state.connectedSubsContract && state.address) {
@@ -150,6 +159,7 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
         ...state,
         connectWeb3Auth,
         disconnectWeb3Auth,
+        getOrders,
         getPlans,
         initProvider,
         initWeb3Auth,
