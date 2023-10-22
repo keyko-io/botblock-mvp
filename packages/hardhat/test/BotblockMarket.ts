@@ -38,13 +38,13 @@ describe("BotblockMarket", function () {
     testToken.mint(subscriber.address, 1000000000);
     testToken.mint(subscriber2.address, 1000000000);
 
-    const nvm721TokenFactory = await ethers.getContractFactory("NvmNFT721");
-    nvm721Token = (await nvm721TokenFactory.deploy()) as NvmNFT721;
-    await nvm721Token.deployed();
-
     const botblockMarketFactory = await ethers.getContractFactory("BotblockMarket");
-    botblockMarket = (await botblockMarketFactory.deploy(nvm721Token.address)) as BotblockMarket;
+    botblockMarket = (await botblockMarketFactory.deploy()) as BotblockMarket;
     await botblockMarket.deployed();
+
+    const nvm721TokenFactory = await ethers.getContractFactory("NvmNFT721");
+    nvm721Token = (await nvm721TokenFactory.deploy(botblockMarket.address)) as NvmNFT721;
+    await nvm721Token.deployed();
   });
 
   it("Should deploy and check test tokens balance", async function () {
@@ -109,6 +109,16 @@ describe("BotblockMarket", function () {
   });
 
   it("second Order can be evaded", async function () {
+    const marketOwnerBbMarketConnected = botblockMarket.connect(marketOwner);
+    await marketOwnerBbMarketConnected.evadeOrder(2);
+
+    const contentCreatorTestBalance = await testToken.balanceOf(contentCreator.address);
+    const order = await botblockMarket.orders(2);
+    expect(order.status).equals(1);
+    expect(contentCreatorTestBalance).equals(2);
+  });
+
+  it("Create a bunch of orders and evade them", async function () {
     const marketOwnerBbMarketConnected = botblockMarket.connect(marketOwner);
     await marketOwnerBbMarketConnected.evadeOrder(2);
 
