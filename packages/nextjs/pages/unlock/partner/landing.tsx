@@ -33,7 +33,7 @@ const Landing = () => {
       contentCreator: address || "",
       expirationBlock: 1,
       price,
-      paymentTokenAddress: "0x179522635726710Dd7D2035a81d856de4Aa7836c", //USDC
+      paymentTokenAddress: "0x8337E43E0E25eeDFA47b403Bdfe3726b8C1BB59b", //Kit
       uri,
     };
     setPlanData(plan);
