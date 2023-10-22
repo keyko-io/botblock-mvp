@@ -4,6 +4,7 @@ import { Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { ethers } from "ethers";
+import toast from "react-hot-toast";
 import { subsContract as rawContract } from "~~/public/artifacts";
 import { BotblockMarket } from "~~/types/typechain-types";
 
@@ -32,6 +33,7 @@ interface Web3AuthContext extends Web3AuthContextState {
   getPlans: () => Promise<Plan[] | undefined>;
   initProvider: () => Promise<void>;
   initWeb3Auth: () => Promise<void>;
+  purchasePlan: (planId: string | number) => Promise<void>;
   setPlanData: (plan: Plan) => void;
 }
 
@@ -111,6 +113,13 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const purchasePlan = async (planId: string | number) => {
+    if (state.connectedSubsContract) {
+      await state.connectedSubsContract.placeOrder(planId, 1);
+      toast.success("Successfully purchased");
+    }
+  };
+
   const disconnectWeb3Auth = async () => {
     await state.web3Auth.logout();
     setState(prevState => ({ ...prevState, isConnected: false }));
@@ -122,7 +131,16 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <Web3AuthContextProvider
-      value={{ ...state, connectWeb3Auth, disconnectWeb3Auth, getPlans, initProvider, initWeb3Auth, setPlanData }}
+      value={{
+        ...state,
+        connectWeb3Auth,
+        disconnectWeb3Auth,
+        getPlans,
+        initProvider,
+        initWeb3Auth,
+        purchasePlan,
+        setPlanData,
+      }}
     >
       {children}
     </Web3AuthContextProvider>

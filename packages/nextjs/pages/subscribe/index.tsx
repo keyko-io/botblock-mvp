@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
@@ -16,7 +17,7 @@ const tokenAddressMap: Record<TokenAddress, string> = {
 };
 
 const Subscribe = () => {
-  const { getPlans, subsContract } = useWeb3AuthContext();
+  const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
   const [plans, setPlans] = useState<Plan[]>();
 
   const fetchPlans = useCallback(async () => {
@@ -30,8 +31,15 @@ const Subscribe = () => {
     }
   }, [fetchPlans, subsContract]);
 
-  const handleOnPurchase = (idx: number) => {
-    console.log(idx);
+  const handleOnPurchaseAttempt = (plan: Plan) => {
+    if (plan.planId) {
+      if (!isConnected) {
+        toast.error("Please log in before submitting a purchase");
+        return;
+      }
+      // @note: should ask before confirmation
+      purchasePlan(plan.planId);
+    }
   };
 
   return (
@@ -71,7 +79,7 @@ const Subscribe = () => {
                           <td className="border p-2 text-center">
                             <button
                               className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
-                              onClick={() => handleOnPurchase(index)}
+                              onClick={() => handleOnPurchaseAttempt(plan)}
                             >
                               Buy access
                             </button>
