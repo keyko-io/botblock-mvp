@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Abi, AbiFunction } from "abitype";
 import { Address, TransactionReceipt } from "viem";
 import { useContractWrite, useNetwork, useWaitForTransaction } from "wagmi";
+import { Loader } from "~~/components/Loader";
 import {
   ContractInput,
   IntegerInput,
@@ -107,7 +108,7 @@ export const WriteOnlyFunctionForm = ({ abiFunction, onChange, contractAddress }
             data-tip={`${writeDisabled && "Wallet not connected or in the wrong network"}`}
           >
             <button className="btn btn-secondary btn-sm" disabled={writeDisabled || isLoading} onClick={handleWrite}>
-              {isLoading && <span className="loading loading-spinner loading-xs"></span>}
+              {isLoading && <Loader size="xs" />}
               Send 💸
             </button>
           </div>

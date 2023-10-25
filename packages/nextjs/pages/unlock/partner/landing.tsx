@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { Loader } from "~~/components/Loader";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
@@ -151,7 +152,7 @@ const Landing = () => {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm"></span>
+                  <Loader />
                 ) : (
                   <>
                     {CTA_SUBMIT} <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Abi, AbiFunction } from "abitype";
 import { Address } from "viem";
 import { useContractRead } from "wagmi";
+import { Loader } from "~~/components/Loader";
 import {
   ContractInput,
   displayTxResult,
@@ -68,7 +69,7 @@ export const ReadOnlyFunctionForm = ({ contractAddress, abiFunction }: TReadOnly
           }}
           disabled={isFetching}
         >
-          {isFetching && <span className="loading loading-spinner loading-xs"></span>}
+          {isFetching && <Loader size="xs" />}
           Read 📡
         </button>
       </div>

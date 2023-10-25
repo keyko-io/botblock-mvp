@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Loader } from "../Loader";
 import { createWalletClient, http, parseEther } from "viem";
 import { useAccount, useNetwork } from "wagmi";
 import { hardhat } from "wagmi/chains";
@@ -58,11 +59,7 @@ export const FaucetButton = () => {
       data-tip="Grab funds from faucet"
     >
       <button className="btn btn-secondary btn-sm px-2 rounded-full" onClick={sendETH} disabled={loading}>
-        {!loading ? (
-          <BanknotesIcon className="h-4 w-4" />
-        ) : (
-          <span className="loading loading-spinner loading-xs"></span>
-        )}
+        {!loading ? <BanknotesIcon className="h-4 w-4" /> : <Loader size="xs" />}
       </button>
     </div>
   );

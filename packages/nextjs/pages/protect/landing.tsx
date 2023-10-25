@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { Loader } from "~~/components/Loader";
 import { useRobotsContext } from "~~/context/RobotsContext";
 
 const TITLE = "Title";
@@ -60,7 +61,7 @@ const Landing = () => {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <span className="loading loading-spinner loading-sm"></span>
+                  <Loader />
                 ) : (
                   <>
                     {CTA_TEXT} <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
