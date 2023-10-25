@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Loader } from "~~/components/Loader";
 import Recap from "~~/components/unlock/Recap";
 import { Plan, TokenAddress } from "~~/context/Types";
 
@@ -12,15 +14,22 @@ const samplePlan: Plan = {
 
 const SubscriptionDetails = () => {
   const router = useRouter();
+  const [plan, setPlan] = useState<Plan>();
 
   const planId = router.query.planId as string;
 
-  return (
+  useEffect(() => {
+    setPlan(samplePlan);
+  }, [router]);
+
+  return plan ? (
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">Subscribe to planId: {planId}</h1>
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
       <Recap plan={{ ...samplePlan, planId }} />
     </div>
+  ) : (
+    <Loader />
   );
 };
 
