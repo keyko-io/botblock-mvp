@@ -7,10 +7,15 @@ import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const SubscriptionDetails = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [plan, setPlan] = useState<Plan>();
   const { getPlans, subsContract } = useWeb3AuthContext();
 
   const planId = router.query.planId as string;
+
+  const redirectToSubscribeLanding = () => {
+    router.push("/subscribe");
+  };
 
   useEffect(() => {
     const setPlanIfExists = async () => {
@@ -20,6 +25,7 @@ const SubscriptionDetails = () => {
       if (foundPlan) {
         setPlan(foundPlan);
       }
+      setIsLoading(false);
     };
 
     if (subsContract && !plan && planId) {
@@ -33,8 +39,18 @@ const SubscriptionDetails = () => {
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
       <Recap plan={plan} />
     </div>
-  ) : (
+  ) : isLoading ? (
     <Loader />
+  ) : (
+    <div className="p-32 flex-grow" data-theme="exampleUi">
+      <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
+      <button
+        className="btn btn-primary w-fit rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
+        onClick={redirectToSubscribeLanding}
+      >
+        Click here to see available plans
+      </button>
+    </div>
   );
 };
 
