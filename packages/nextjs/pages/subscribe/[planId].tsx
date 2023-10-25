@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { Loader } from "~~/components/Loader";
 import Recap from "~~/components/unlock/Recap";
 import { Plan } from "~~/context/Types";
@@ -9,12 +10,25 @@ const SubscriptionDetails = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [plan, setPlan] = useState<Plan>();
-  const { getPlans, subsContract } = useWeb3AuthContext();
+  const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
 
   const planId = router.query.planId as string;
 
   const redirectToSubscribeLanding = () => {
     router.push("/subscribe");
+  };
+
+  const handleOnPurchaseAttempt = (plan: Plan) => {
+    if (plan.planId) {
+      if (!isConnected) {
+        toast.error("Please log in before submitting a purchase");
+        return;
+      }
+      const toastId = toast.loading("Wait some moments to complete the purchase!");
+      // @note: should ask before confirmation
+      purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress);
+      toast.dismiss(toastId);
+    }
   };
 
   useEffect(() => {
@@ -38,6 +52,14 @@ const SubscriptionDetails = () => {
       <h1 className="text-4xl sm:text-6xl">Subscribe to planId: {planId}</h1>
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
       <Recap plan={plan} />
+      <button
+        className="btn btn-primary btn-sm"
+        disabled={!isConnected}
+        onClick={() => handleOnPurchaseAttempt(plan)}
+        type="button"
+      >
+        {isConnected ? "Buy access" : "Log in to purchase"}
+      </button>
     </div>
   ) : isLoading ? (
     <Loader />
