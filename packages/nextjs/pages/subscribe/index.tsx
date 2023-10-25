@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const Subscribe = () => {
-  const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
+  const router = useRouter();
+  const { getPlans, subsContract } = useWeb3AuthContext();
   const [plans, setPlans] = useState<Plan[]>();
 
   const fetchPlans = useCallback(async () => {
@@ -18,16 +19,9 @@ const Subscribe = () => {
     }
   }, [fetchPlans, subsContract]);
 
-  const handleOnPurchaseAttempt = (plan: Plan) => {
+  const browseToSubscriptionDetails = (plan: Plan) => {
     if (plan.planId) {
-      if (!isConnected) {
-        toast.error("Please log in before submitting a purchase");
-        return;
-      }
-      const toastId = toast.loading("Wait some moments to complete the purchase!");
-      // @note: should ask before confirmation
-      purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress);
-      toast.dismiss(toastId);
+      router.push("/subscribe/" + plan.planId);
     }
   };
 
@@ -52,30 +46,27 @@ const Subscribe = () => {
               </thead>
               <tbody>
                 {plans &&
-                  plans.map(
-                    (plan, index) =>
-                      !!index && (
-                        <tr key={index}>
-                          <td className="border p-2 text-center">{plan.uri}</td>
-                          <td className="border p-2 text-end">{plan.contentCreator}</td>
-                          <td className="border p-2 text-center">
-                            {plan.expirationBlock} Month{plan.expirationBlock !== "1" && "s"}
-                          </td>
-                          {/* <td className="border p-2">{plan.paymentTokenAddress}</td> */}
-                          <td className="border p-2 text-end">
-                            {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
-                          </td>
-                          <td className="border p-2 text-center">
-                            <button
-                              className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
-                              onClick={() => handleOnPurchaseAttempt(plan)}
-                            >
-                              Buy access
-                            </button>
-                          </td>
-                        </tr>
-                      ),
-                  )}
+                  plans.map((plan, index) => (
+                    <tr key={index}>
+                      <td className="border p-2 text-center">{plan.uri}</td>
+                      <td className="border p-2 text-end">{plan.contentCreator}</td>
+                      <td className="border p-2 text-center">
+                        {plan.expirationBlock} Month{plan.expirationBlock !== "1" && "s"}
+                      </td>
+                      {/* <td className="border p-2">{plan.paymentTokenAddress}</td> */}
+                      <td className="border p-2 text-end">
+                        {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
+                      </td>
+                      <td className="border p-2 text-center">
+                        <button
+                          className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
+                          onClick={() => browseToSubscriptionDetails(plan)}
+                        >
+                          More details
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
