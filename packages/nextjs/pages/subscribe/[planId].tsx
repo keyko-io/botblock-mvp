@@ -50,7 +50,7 @@ const SubscriptionDetails = () => {
 
   return plan ? (
     <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">Subscribe to planId: {planId}</h1>
+      <h1 className="text-4xl sm:text-6xl">Subscribe to: {plan.uri}</h1>
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
       <PlanDetailsBox plan={plan} />
       <Button
