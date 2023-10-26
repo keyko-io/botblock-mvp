@@ -26,6 +26,36 @@ const SubscriptionDetails = () => {
         return;
       }
 
+      // Confirm the purchase attempt
+      toast(
+        t => (
+          <div className={`w-60 rounded-lg pointer-events-auto flex`}>
+            <div className="flex-1 w-0 p-4">
+              <p className="text-lg text-black font-semibold">{"Do you want to confirm this purchase?"}</p>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    toast.dismiss(t.id);
+                  }}
+                  className="bg-blue-500 text-white rounded-md py-2 px-4 m-2"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="bg-gray-300 text-gray-700 rounded-md py-2 px-4 m-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        ),
+        {
+          duration: 10000, // Adjust the duration as needed
+        },
+      );
+
       // @note: should ask before confirmation
       toast.promise(purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress), {
         loading: "Wait some moments to complete the purchase!",
