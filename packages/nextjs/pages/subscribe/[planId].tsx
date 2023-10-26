@@ -25,10 +25,13 @@ const SubscriptionDetails = () => {
         toast.error("Please log in before submitting a purchase");
         return;
       }
-      const toastId = toast.loading("Wait some moments to complete the purchase!");
+
       // @note: should ask before confirmation
-      purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress);
-      toast.dismiss(toastId);
+      toast.promise(purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress), {
+        loading: "Wait some moments to complete the purchase!",
+        success: "Successfully purchased",
+        error: "Oops! Something went wrong, please try again",
+      });
     }
   };
 
