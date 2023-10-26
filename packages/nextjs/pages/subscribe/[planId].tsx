@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
 import Recap from "~~/components/unlock/Recap";
 import { Plan } from "~~/context/Types";
@@ -52,26 +53,19 @@ const SubscriptionDetails = () => {
       <h1 className="text-4xl sm:text-6xl">Subscribe to planId: {planId}</h1>
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
       <Recap plan={plan} />
-      <button
-        className="btn btn-primary btn-sm"
+      <Button
         disabled={!isConnected}
+        title={isConnected ? "Buy access" : "Log in to purchase"}
+        isLoading={isLoading}
         onClick={() => handleOnPurchaseAttempt(plan)}
-        type="button"
-      >
-        {isConnected ? "Buy access" : "Log in to purchase"}
-      </button>
+      />
     </div>
   ) : isLoading ? (
     <Loader />
   ) : (
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
-      <button
-        className="btn btn-primary w-fit rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
-        onClick={redirectToSubscribeLanding}
-      >
-        Click here to see available plans
-      </button>
+      <Button title={"Click here to see available plans"} onClick={redirectToSubscribeLanding} />
     </div>
   );
 };

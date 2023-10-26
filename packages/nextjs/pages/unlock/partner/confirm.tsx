@@ -1,3 +1,4 @@
+import { Button } from "~~/components/Button";
 import Recap from "~~/components/unlock/Recap";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { notification } from "~~/utils/scaffold-eth";
@@ -34,9 +35,7 @@ const Confirm = () => {
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
       <div className="grid grid-cols-2 gap-4">{plan && <Recap plan={plan} />}</div>
-      <button className="btn btn-primary btn-sm" onClick={handleCreatePlan} type="button">
-        Create Plan
-      </button>
+      <Button title={"Create Plan"} onClick={handleCreatePlan} />
     </div>
   );
 };

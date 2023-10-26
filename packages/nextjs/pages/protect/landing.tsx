@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
-import { Loader } from "~~/components/Loader";
+import { Button } from "~~/components/Button";
 import { useRobotsContext } from "~~/context/RobotsContext";
 
 const TITLE = "Title";
@@ -51,27 +50,7 @@ const Landing = () => {
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
         />
       </div>
-      {!!url && (
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
-          <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
-            <div className="flex rounded-full border-2 border-primary p-1">
-              <button
-                className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
-                onClick={handleOnSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    {CTA_TEXT} <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {!!url && <Button onClick={handleOnSubmit} isLoading={isLoading} title={CTA_TEXT} showArrowIcon />}
     </div>
   );
 };
