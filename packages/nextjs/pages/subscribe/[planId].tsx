@@ -48,24 +48,28 @@ const SubscriptionDetails = () => {
     }
   }, [plan, planId, getPlans, subsContract]);
 
-  return plan ? (
+  return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">Subscribe to: {plan.uri}</h1>
-      <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
-      <PlanDetailsBox plan={plan} />
-      <Button
-        disabled={!isConnected}
-        title={isConnected ? "Buy access" : "Log in to purchase"}
-        isLoading={isLoading}
-        onClick={() => handleOnPurchaseAttempt(plan)}
-      />
-    </div>
-  ) : isLoading ? (
-    <Loader />
-  ) : (
-    <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
-      <Button title={"Click here to see available plans"} onClick={redirectToSubscribeLanding} />
+      {plan ? (
+        <>
+          <h1 className="text-4xl sm:text-6xl">Subscribe to: {plan.uri}</h1>
+          <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
+          <PlanDetailsBox plan={plan} />
+          <Button
+            disabled={!isConnected}
+            title={isConnected ? "Buy access" : "Log in to purchase"}
+            isLoading={isLoading}
+            onClick={() => handleOnPurchaseAttempt(plan)}
+          />
+        </>
+      ) : isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
+          <Button title={"Click here to see available plans"} onClick={redirectToSubscribeLanding} />
+        </>
+      )}
     </div>
   );
 };
