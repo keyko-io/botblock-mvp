@@ -1,10 +1,15 @@
 import React from "react";
+import TextBox from "./TextBox";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 
-const Recap = ({ plan }: { plan: Plan }) => {
+interface PlanDetailsBoxProps {
+  plan: Plan;
+  title?: string;
+}
+
+const PlanDetailsBox = ({ plan, title }: PlanDetailsBoxProps) => {
   return (
-    <div className="bg-white rounded-md shadow-md p-4 mb-4">
-      <h2 className="text-2xl font-bold mb-4">Recap</h2>
+    <TextBox title={title}>
       <ul className="list-disc pl-6">
         <li className="mb-2">{`Website ${plan.uri}`}</li>
         <li className="mb-2">{`Content Creator Address: ${plan.contentCreator}`}</li>
@@ -16,8 +21,8 @@ const Recap = ({ plan }: { plan: Plan }) => {
           tokenAddressMap?.[plan.paymentTokenAddress as TokenAddress]
         }`}</li>
       </ul>
-    </div>
+    </TextBox>
   );
 };
 
-export default Recap;
+export default PlanDetailsBox;

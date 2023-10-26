@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
-import Recap from "~~/components/unlock/Recap";
+import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
@@ -52,7 +52,7 @@ const SubscriptionDetails = () => {
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">Subscribe to planId: {planId}</h1>
       <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
-      <Recap plan={plan} />
+      <PlanDetailsBox plan={plan} />
       <Button
         disabled={!isConnected}
         title={isConnected ? "Buy access" : "Log in to purchase"}
