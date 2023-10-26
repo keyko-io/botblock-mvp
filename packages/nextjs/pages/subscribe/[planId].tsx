@@ -19,8 +19,8 @@ const SubscriptionDetails = () => {
     router.push("/subscribe");
   };
 
-  const handleOnPurchaseAttempt = (plan: Plan) => {
-    if (plan.planId) {
+  const handleOnPurchaseAttempt = () => {
+    if (plan && plan.planId) {
       if (!isConnected) {
         toast.error("Please log in before submitting a purchase");
         return;
@@ -36,6 +36,11 @@ const SubscriptionDetails = () => {
                 <button
                   onClick={() => {
                     toast.dismiss(t.id);
+                    toast.promise(purchasePlan(plan.planId ?? "", Number(plan.price), plan.paymentTokenAddress), {
+                      loading: "Wait some moments to complete the purchase!",
+                      success: "Successfully purchased",
+                      error: "Oops! Something went wrong, please try again",
+                    });
                   }}
                   className="bg-blue-500 text-white rounded-md py-2 px-4 m-2"
                 >
@@ -55,13 +60,6 @@ const SubscriptionDetails = () => {
           duration: 10000, // Adjust the duration as needed
         },
       );
-
-      // @note: should ask before confirmation
-      toast.promise(purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress), {
-        loading: "Wait some moments to complete the purchase!",
-        success: "Successfully purchased",
-        error: "Oops! Something went wrong, please try again",
-      });
     }
   };
 
@@ -92,7 +90,7 @@ const SubscriptionDetails = () => {
             disabled={!isConnected}
             title={isConnected ? "Buy access" : "Log in to purchase"}
             isLoading={isLoading}
-            onClick={() => handleOnPurchaseAttempt(plan)}
+            onClick={handleOnPurchaseAttempt}
           />
         </>
       ) : isLoading ? (
