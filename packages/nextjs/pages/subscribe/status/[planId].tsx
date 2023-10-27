@@ -3,9 +3,14 @@ import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
 import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
 import { Loader } from "~~/components/Loader";
-import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+
+const statusMessages = [
+  "Success! Site is up and ready for crawling",
+  "Waiting... Payment has been submitted and it is awaiting site's robots.txt update to credit. N days left until returning funds to purchaser wallet",
+  "Expired: Please renew your subscription to keep scrapping the site",
+];
 
 const StatusPage = () => {
   const { address, getOrders, getPlans, isConnected, subsContract } = useWeb3AuthContext();
@@ -59,8 +64,7 @@ const StatusPage = () => {
       {order ? (
         <>
           <h1 className="text-4xl sm:text-6xl">Status page for {order.plan.uri}</h1>
-          <h3 className="text-xl sm:text-2xl">Details of your purchase</h3>
-          <PlanDetailsBox plan={order.plan} />
+          <h3 className="text-xl sm:text-2xl">{statusMessages[order.status]}</h3>
         </>
       ) : !isConnected ? (
         <>
