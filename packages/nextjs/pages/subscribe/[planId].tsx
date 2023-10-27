@@ -49,7 +49,7 @@ const SubscriptionDetails = () => {
                           <button
                             onClick={() => {
                               toast.dismiss(t.id);
-                              browseToStatusPage("");
+                              browseToStatusPage(`${plan.planId}`);
                             }}
                             className="border border-transparent rounded-none rounded-r-lg flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
                           >
