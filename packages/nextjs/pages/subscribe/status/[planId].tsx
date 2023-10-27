@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
+import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
 import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const StatusPage = () => {
-  const { address, getOrders, getPlans, subsContract } = useWeb3AuthContext();
+  const { address, getOrders, getPlans, isConnected, subsContract } = useWeb3AuthContext();
   const [plan, setPlan] = useState<Plan>();
   const [order, setOrder] = useState<Order>();
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +47,6 @@ const StatusPage = () => {
       if (foundPlan) {
         setPlan(foundPlan);
       }
-      setIsLoading(false);
     };
 
     if (subsContract && !plan && planId) {
@@ -61,6 +61,11 @@ const StatusPage = () => {
           <h1 className="text-4xl sm:text-6xl">Status page for {order.plan.uri}</h1>
           <h3 className="text-xl sm:text-2xl">Details of your purchase</h3>
           <PlanDetailsBox plan={order.plan} />
+        </>
+      ) : !isConnected ? (
+        <>
+          <h1 className="text-4xl sm:text-6xl mb-16">Please log in to access the status page</h1>
+          <Web3AuthConnectButton />
         </>
       ) : isLoading ? (
         <Loader />
