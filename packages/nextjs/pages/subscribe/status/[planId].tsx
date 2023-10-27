@@ -19,6 +19,10 @@ const StatusPage = () => {
     router.push("/subscribe");
   };
 
+  const browseToSubscriptionDetails = () => {
+    router.push(`/subscribe/${plan?.planId}`);
+  };
+
   useEffect(() => {
     const checkUserOrdersForMatch = async () => {
       const orders = await getOrders();
@@ -60,6 +64,13 @@ const StatusPage = () => {
         </>
       ) : isLoading ? (
         <Loader />
+      ) : plan ? (
+        <>
+          <h1 className="text-4xl sm:text-6xl mb-16">
+            Looks like you are looking for <i>{plan.uri}</i> subscription plan
+          </h1>
+          <Button title={"Click here to see more details about it"} onClick={browseToSubscriptionDetails} />
+        </>
       ) : (
         <>
           <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
