@@ -19,6 +19,10 @@ const SubscriptionDetails = () => {
     router.push("/subscribe");
   };
 
+  const browseToStatusPage = (orderId: string) => {
+    router.push(`/subscribe/status/${orderId}`);
+  };
+
   const handleOnPurchaseAttempt = () => {
     if (plan && plan.planId) {
       if (!isConnected) {
@@ -38,7 +42,21 @@ const SubscriptionDetails = () => {
                     toast.dismiss(t.id);
                     toast.promise(purchasePlan(plan.planId ?? "", Number(plan.price), plan.paymentTokenAddress), {
                       loading: "Wait some moments to complete the purchase!",
-                      success: "Successfully purchased",
+                      success: (
+                        <div className="flex gap-4 flex-row">
+                          <p className="font-medium">Successfully purchased</p>
+                          <div className="flex border-l border-gray-200" />
+                          <button
+                            onClick={() => {
+                              toast.dismiss(t.id);
+                              browseToStatusPage("");
+                            }}
+                            className="border border-transparent rounded-none rounded-r-lg flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+                          >
+                            See status
+                          </button>
+                        </div>
+                      ),
                       error: "Oops! Something went wrong, please try again",
                     });
                   }}
