@@ -19,16 +19,65 @@ const SubscriptionDetails = () => {
     router.push("/subscribe");
   };
 
-  const handleOnPurchaseAttempt = (plan: Plan) => {
-    if (plan.planId) {
+  const browseToStatusPage = (orderId: string) => {
+    router.push(`/subscribe/status/${orderId}`);
+  };
+
+  const handleOnPurchaseAttempt = () => {
+    if (plan && plan.planId) {
       if (!isConnected) {
         toast.error("Please log in before submitting a purchase");
         return;
       }
-      const toastId = toast.loading("Wait some moments to complete the purchase!");
-      // @note: should ask before confirmation
-      purchasePlan(plan.planId, Number(plan.price), plan.paymentTokenAddress);
-      toast.dismiss(toastId);
+
+      // Confirm the purchase attempt
+      toast(
+        t => (
+          <div className={`w-60 rounded-lg pointer-events-auto flex`}>
+            <div className="flex-1 w-0 p-4">
+              <p className="text-lg text-black font-semibold">{"Do you want to confirm this purchase?"}</p>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    toast.dismiss(t.id);
+                    toast.promise(purchasePlan(plan.planId ?? "", Number(plan.price), plan.paymentTokenAddress), {
+                      loading: "Wait some moments to complete the purchase!",
+                      success: (
+                        <div className="flex gap-4 flex-row">
+                          <p className="font-medium">Successfully purchased</p>
+                          <div className="flex border-l border-gray-200" />
+                          <button
+                            onClick={() => {
+                              toast.dismiss(t.id);
+                              browseToStatusPage(`${plan.planId}`);
+                            }}
+                            className="border border-transparent rounded-none rounded-r-lg flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
+                          >
+                            See status
+                          </button>
+                        </div>
+                      ),
+                      error: "Oops! Something went wrong, please try again",
+                    });
+                  }}
+                  className="bg-blue-500 text-white rounded-md py-2 px-4 m-2"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="bg-gray-300 text-gray-700 rounded-md py-2 px-4 m-2"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        ),
+        {
+          duration: 10000, // Adjust the duration as needed
+        },
+      );
     }
   };
 
@@ -59,7 +108,7 @@ const SubscriptionDetails = () => {
             disabled={!isConnected}
             title={isConnected ? "Buy access" : "Log in to purchase"}
             isLoading={isLoading}
-            onClick={() => handleOnPurchaseAttempt(plan)}
+            onClick={handleOnPurchaseAttempt}
           />
         </>
       ) : isLoading ? (

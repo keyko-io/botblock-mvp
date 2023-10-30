@@ -4,7 +4,6 @@ import { Order, Plan } from "./Types";
 import { Web3Provider } from "@ethersproject/providers";
 import { Web3Auth } from "@web3auth/modal";
 import { Signer, ethers } from "ethers";
-import toast from "react-hot-toast";
 import { subsContract as rawContract, erc20contract as rawErc20 } from "~~/public/artifacts";
 import { BotblockMarket, ERC20 } from "~~/types/typechain-types";
 import { parseOrderStruct, parsePlanStruct } from "~~/utils/parsers";
@@ -121,10 +120,9 @@ export const Web3AuthProvider = ({ children }: PropsWithChildren) => {
       if (state.connectedSubsContract && state.address) {
         await approveSpending(tokenAddress, price);
         await state.connectedSubsContract.placeOrder(planId, price);
-        toast.success("Successfully purchased");
       }
     } catch (error) {
-      toast.error("The purchase could not be done. Are you sure you have enough tokens to make it?");
+      throw error;
     }
   };
 
