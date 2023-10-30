@@ -4,8 +4,7 @@ import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 const TITLE = "Next Steps";
 const STEP_ONE = "Check your email with the instructions to update the robots.txt";
 const STEP_TWO = "Botblock will automatically check the update on your robots.txt and send you the subscription money";
-const STEP_THREE =
-  "Place the widget on your site to guide AI devs to Botblock for subscription purchases";
+const STEP_THREE = "Place the widget on your site to guide AI devs to Botblock for subscription purchases";
 
 const NextSteps = () => {
   const { email } = useWeb3AuthContext();
