@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Loader } from "../Loader";
 import { Address as AddressType, createWalletClient, http, parseEther } from "viem";
 import { useNetwork } from "wagmi";
 import { hardhat } from "wagmi/chains";
@@ -114,11 +115,7 @@ export const Faucet = () => {
               />
               <EtherInput placeholder="Amount to send" value={sendValue} onChange={value => setSendValue(value)} />
               <button className="h-10 btn btn-primary btn-sm px-2 rounded-full" onClick={sendETH} disabled={loading}>
-                {!loading ? (
-                  <BanknotesIcon className="h-6 w-6" />
-                ) : (
-                  <span className="loading loading-spinner loading-sm"></span>
-                )}
+                {!loading ? <BanknotesIcon className="h-6 w-6" /> : <Loader />}
                 <span>Send</span>
               </button>
             </div>

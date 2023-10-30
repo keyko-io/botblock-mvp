@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
+import { Loader } from "../Loader";
 import { CopyIcon } from "./assets/CopyIcon";
 import { DiamondIcon } from "./assets/DiamondIcon";
 import { HareIcon } from "./assets/HareIcon";
@@ -31,8 +32,8 @@ export const ContractInteraction = () => {
     try {
       const response = await fetch(`${url}/robots.txt`);
       const file = await response.text();
-      console.log(file)
-      const blist = []
+      console.log(file);
+      const blist = [];
       if (file.includes("User-agent: GPTBot")) {
         blist.push("GPTBot");
       }
@@ -47,7 +48,6 @@ export const ContractInteraction = () => {
       }
 
       setBotList(blist);
-
     } catch (error: any) {
       console.error(`Error fetching robots.txt: ${error.message}`);
     }
@@ -102,7 +102,7 @@ export const ContractInteraction = () => {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <Loader />
                   ) : (
                     <>
                       Send <ArrowSmallRightIcon className="w-3 h-3 mt-0.5" />
@@ -116,10 +116,9 @@ export const ContractInteraction = () => {
           <div className="mt-4 flex gap-2 items-start">
             <span className="text-sm leading-tight">Your websit is protected from:</span>
             <div className="badge badge-warning">
-              {
-                botList.map((item,_) => <p key={_}>{item}, </p>)
-              }
-
+              {botList.map((item, _) => (
+                <p key={_}>{item}, </p>
+              ))}
             </div>
           </div>
         </div>

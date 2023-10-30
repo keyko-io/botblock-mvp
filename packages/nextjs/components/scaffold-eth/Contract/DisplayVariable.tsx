@@ -3,6 +3,7 @@ import { Abi, AbiFunction } from "abitype";
 import { Address } from "viem";
 import { useContractRead } from "wagmi";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import { Loader } from "~~/components/Loader";
 import { displayTxResult } from "~~/components/scaffold-eth";
 import { useAnimationConfig } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
@@ -38,11 +39,7 @@ export const DisplayVariable = ({ contractAddress, abiFunction, refreshDisplayVa
       <div className="flex items-center gap-2">
         <h3 className="font-medium text-lg mb-0 break-all">{abiFunction.name}</h3>
         <button className="btn btn-ghost btn-xs" onClick={async () => await refetch()}>
-          {isFetching ? (
-            <span className="loading loading-spinner loading-xs"></span>
-          ) : (
-            <ArrowPathIcon className="h-3 w-3 cursor-pointer" aria-hidden="true" />
-          )}
+          {isFetching ? <Loader size="xs" /> : <ArrowPathIcon className="h-3 w-3 cursor-pointer" aria-hidden="true" />}
         </button>
       </div>
       <div className="text-gray-500 font-medium flex flex-col items-start">

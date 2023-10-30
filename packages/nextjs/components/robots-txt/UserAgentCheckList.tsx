@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Loader } from "../Loader";
 import { useRobotsContext } from "~~/context/RobotsContext";
 
 const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
@@ -58,7 +59,7 @@ export const UserAgentCheckList = () => {
   }, [isLoading, rewrittenRobots, showNewFile]);
 
   return isLoading ? (
-    <span className="loading loading-spinner loading-sm" />
+    <Loader />
   ) : (
     <div>
       <ul>
