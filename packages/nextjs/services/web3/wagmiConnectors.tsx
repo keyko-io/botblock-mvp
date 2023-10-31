@@ -1,3 +1,4 @@
+import { rainbowWeb3AuthConnector } from "./rainbowWeb3AuthConnector";
 import { connectorsForWallets } from "@rainbow-me/rainbowkit";
 import {
   braveWallet,
@@ -20,7 +21,8 @@ const configuredNetwork = getTargetNetwork();
 const { onlyLocalBurnerWallet } = scaffoldConfig;
 
 // We always want to have mainnet enabled (ENS resolution, ETH price, etc). But only once.
-const enabledChains = configuredNetwork.id === 1 ? [configuredNetwork] : [configuredNetwork, chains.mainnet];
+const enabledChains = [chains.arbitrumGoerli];
+// const enabledChains = configuredNetwork.id === 1 ? [configuredNetwork] : [configuredNetwork, chains.mainnet];
 
 /**
  * Chains for the app
@@ -57,6 +59,7 @@ const wallets = [
     ? [burnerWalletConfig({ chains: [appChains.chains[0]] })]
     : []),
   safeWallet({ ...walletsOptions, debug: false, allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/] }),
+  rainbowWeb3AuthConnector({ chains: [chains.arbitrumGoerli] }),
 ];
 
 /**
