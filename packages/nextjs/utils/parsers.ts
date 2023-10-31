@@ -4,7 +4,7 @@ import { BotblockMarket } from "~~/types/typechain-types";
 export const parsePlanStruct = (plan: BotblockMarket.PlanStructOutput): Plan => ({
   contentCreator: plan.contentCreator,
   expirationBlock: plan.expirationBlock.toString(),
-  planId: plan.planID.toString(),
+  planID: plan.planID.toString(),
   paymentTokenAddress: plan.paymentTokenAddress,
   price: plan.price.toString(),
   uri: plan.uri,

@@ -11,7 +11,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import { useOutsideClick } from "~~/scaffoldHooks/scaffold-eth";
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const router = useRouter();

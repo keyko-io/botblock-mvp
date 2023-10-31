@@ -2,7 +2,7 @@ import { StaticJsonRpcProvider } from "@ethersproject/providers";
 import { HttpTransport, PrivateKeyAccount, WalletClient, createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { Chain, Connector } from "wagmi";
-import { loadBurnerSK } from "~~/hooks/scaffold-eth";
+import { loadBurnerSK } from "~~/scaffoldHooks/scaffold-eth";
 import { BurnerConnectorError, BurnerConnectorErrorList } from "~~/services/web3/wagmi-burner/BurnerConnectorErrors";
 import { BurnerConnectorData, BurnerConnectorOptions } from "~~/services/web3/wagmi-burner/BurnerConnectorTypes";
 import { getTargetNetwork } from "~~/utils/scaffold-eth";

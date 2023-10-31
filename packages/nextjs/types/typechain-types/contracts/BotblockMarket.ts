@@ -345,7 +345,7 @@ export interface BotblockMarket extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     placeOrder(
-      planId: PromiseOrValue<BigNumberish>,
+      planID: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -420,7 +420,7 @@ export interface BotblockMarket extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>;
 
   placeOrder(
-    planId: PromiseOrValue<BigNumberish>,
+    planID: PromiseOrValue<BigNumberish>,
     amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -493,7 +493,7 @@ export interface BotblockMarket extends BaseContract {
     owner(overrides?: CallOverrides): Promise<string>;
 
     placeOrder(
-      planId: PromiseOrValue<BigNumberish>,
+      planID: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -593,7 +593,7 @@ export interface BotblockMarket extends BaseContract {
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     placeOrder(
-      planId: PromiseOrValue<BigNumberish>,
+      planID: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -649,7 +649,7 @@ export interface BotblockMarket extends BaseContract {
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     placeOrder(
-      planId: PromiseOrValue<BigNumberish>,
+      planID: PromiseOrValue<BigNumberish>,
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;

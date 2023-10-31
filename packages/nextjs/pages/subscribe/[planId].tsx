@@ -13,7 +13,7 @@ const SubscriptionDetails = () => {
   const [plan, setPlan] = useState<Plan>();
   const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
 
-  const planId = router.query.planId as string;
+  const planID = router.query.planID as string;
 
   const redirectToSubscribeLanding = () => {
     router.push("/subscribe");
@@ -24,7 +24,7 @@ const SubscriptionDetails = () => {
   };
 
   const handleOnPurchaseAttempt = () => {
-    if (plan && plan.planId) {
+    if (plan && plan.planID) {
       if (!isConnected) {
         toast.error("Please log in before submitting a purchase");
         return;
@@ -40,7 +40,7 @@ const SubscriptionDetails = () => {
                 <button
                   onClick={() => {
                     toast.dismiss(t.id);
-                    toast.promise(purchasePlan(plan.planId ?? "", Number(plan.price), plan.paymentTokenAddress), {
+                    toast.promise(purchasePlan(plan.planID ?? "", Number(plan.price), plan.paymentTokenAddress), {
                       loading: "Wait some moments to complete the purchase!",
                       success: (
                         <div className="flex gap-4 flex-row">
@@ -49,7 +49,7 @@ const SubscriptionDetails = () => {
                           <button
                             onClick={() => {
                               toast.dismiss(t.id);
-                              browseToStatusPage(`${plan.planId}`);
+                              browseToStatusPage(`${plan.planID}`);
                             }}
                             className="border border-transparent rounded-none rounded-r-lg flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none"
                           >
@@ -84,7 +84,7 @@ const SubscriptionDetails = () => {
   useEffect(() => {
     const setPlanIfExists = async () => {
       const plans = await getPlans();
-      const foundPlan = plans?.find(plan => plan.planId === planId);
+      const foundPlan = plans?.find(plan => plan.planID === planID);
 
       if (foundPlan) {
         setPlan(foundPlan);
@@ -92,10 +92,10 @@ const SubscriptionDetails = () => {
       setIsLoading(false);
     };
 
-    if (subsContract && !plan && planId) {
+    if (subsContract && !plan && planID) {
       setPlanIfExists();
     }
-  }, [plan, planId, getPlans, subsContract]);
+  }, [plan, planID, getPlans, subsContract]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">

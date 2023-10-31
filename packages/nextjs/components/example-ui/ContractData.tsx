@@ -7,7 +7,7 @@ import {
   useScaffoldContractRead,
   useScaffoldEventHistory,
   useScaffoldEventSubscriber,
-} from "~~/hooks/scaffold-eth";
+} from "~~/scaffoldHooks/scaffold-eth";
 
 const MARQUEE_PERIOD_IN_SEC = 5;
 

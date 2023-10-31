@@ -1,6 +1,6 @@
 import type { ExtractAbiFunctionNames } from "abitype";
 import { useContractRead } from "wagmi";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo } from "~~/hooks/Botblock";
 import { getTargetNetwork } from "~~/utils/scaffold-eth";
 import {
   AbiFunctionReturnType,

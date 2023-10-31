@@ -5,7 +5,7 @@ import { useContractRead } from "wagmi";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import { Loader } from "~~/components/Loader";
 import { displayTxResult } from "~~/components/scaffold-eth";
-import { useAnimationConfig } from "~~/hooks/scaffold-eth";
+import { useAnimationConfig } from "~~/scaffoldHooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
 type DisplayVariableProps = {

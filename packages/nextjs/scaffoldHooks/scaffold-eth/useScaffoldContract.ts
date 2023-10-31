@@ -1,7 +1,7 @@
 import { Account, Address, Transport, getContract } from "viem";
 import { Chain, PublicClient, usePublicClient } from "wagmi";
 import { GetWalletClientResult } from "wagmi/actions";
-import { useDeployedContractInfo } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo } from "~~/hooks/Botblock";
 import { Contract, ContractName } from "~~/utils/scaffold-eth/contract";
 
 /**
