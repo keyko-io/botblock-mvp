@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
 import { Button } from "~~/components/Button";
 import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
@@ -16,7 +17,8 @@ const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
 const CTA_SUBMIT = "Submit";
 
 const Landing = () => {
-  const { isConnected, address, setPlanData } = useWeb3AuthContext();
+  const { setPlanData } = useWeb3AuthContext();
+  const { address, isConnected } = useAccount();
 
   const [uri, setUrl] = useState("");
   const [price, setPrice] = useState(1);
