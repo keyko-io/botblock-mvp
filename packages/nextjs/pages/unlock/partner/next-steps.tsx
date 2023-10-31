@@ -1,3 +1,4 @@
+import { BotBlockWidget } from "~~/components/BotBlockWidget/BotBlockWidget";
 import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
@@ -5,6 +6,7 @@ const TITLE = "Next Steps";
 const STEP_ONE = "Check your email with the instructions to update the robots.txt";
 const STEP_TWO = "Botblock will automatically check the update on your robots.txt and send you the subscription money";
 const STEP_THREE = "Place the widget on your site to guide AI devs to Botblock for subscription purchases";
+const WIDGET_EXPLANATION = "If used as it is shared, it will look and work as the one shown below";
 
 const NextSteps = () => {
   const { email } = useWeb3AuthContext();
@@ -33,7 +35,15 @@ const NextSteps = () => {
       <br />
 
       <div className="col-span-2 md:col-span-1 flex items-center justify-center">
-        <CodeSnippetButton />
+        <CodeSnippetButton planId="8" />
+      </div>
+
+      <br />
+      <div className="flex items-center">
+        <h3 className="text-md sm:text-xl pl-3">{WIDGET_EXPLANATION}</h3>
+      </div>
+      <div className="flex justify-center py-8">
+        <BotBlockWidget planId="8" />
       </div>
     </div>
   );
