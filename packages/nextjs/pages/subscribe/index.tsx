@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useContractRead } from "wagmi";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
-import * as BotBlockMarketArtifact from "~~/public/artifacts/BotblockMarket.json";
+import { useBBContractReads } from "~~/hooks/Botblock";
+import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 
 const Subscribe = () => {
   const router = useRouter();
   const [plans, setPlans] = useState<Plan[]>();
-
-  const BotBlockContractAddress = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
-
-  const { data } = useContractRead({
-    address: BotBlockContractAddress,
-    abi: BotBlockMarketArtifact.abi,
-    functionName: "getAllPlans",
-  });
+  const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    setPlans(data as Plan[]);
-  }, [data]);
+    setPlans(allPlans as Plan[]);
+  }, [allPlans]);
 
   const browseToSubscriptionDetails = (plan: Plan) => {
     if (plan.planID) {

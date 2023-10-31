@@ -13,8 +13,10 @@ export enum ContractNames {
 
 export enum BBFunctions {
   CREATE_PLAN = "createPlan",
+  GET_ALL_PLANS = "getAllPlans",
+  GET_ALL_ORDERS = "getAllOrders",
 }
 export type UseBBContractWrite = {
   contractName: "Botblock";
-  functionName: string;
+  functionName?: string;
 };
