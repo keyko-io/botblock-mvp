@@ -1,22 +1,68 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { ethers } from "ethers";
 import toast from "react-hot-toast";
+import { useAccount } from "wagmi";
 import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { useBBContractReads } from "~~/hooks/Botblock";
-import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
+// import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useBBContractReads, useBBMulticall } from "~~/hooks/Botblock";
+import { BBFunctions, ContractNames, ERC20Functions, UseBBContractWrite } from "~~/hooks/Botblock/hooksUtils";
 
 const SubscriptionDetails = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPlanLoading, setIsPlanLoading] = useState(true);
   const [plan, setPlan] = useState<Plan>();
-  const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
+  // const { purchasePlan } = useWeb3AuthContext();
+  const { isConnected, address } = useAccount();
   const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
+  const { makeCall } = useBBMulticall();
+  // const { data, isMulticallLoading, isMulticallError, makeCall } = useBBMulticall();
+  // const { isLoading, write } = useBBContractWrite({
+  //   contractName: ContractNames.BOTBLOCK,
+  //   functionName: BBFunctions.PLACE_ORDER,
+  // });
+  const approvalAmount = ethers.utils.parseEther("1");
+  // const approveAndWrite = useCallback(
+  //   useBBMulticall([
+  //     {
+  //       contractName: ContractNames.KIT,
+  //       functionName: ERC20Functions.APPROVE,
+  //       args: [plan?.planID ?? "", Number(plan?.price)],
+  //     },
+  //     {
+  //       contractName: ContractNames.BOTBLOCK,
+  //       functionName: BBFunctions.PLACE_ORDER,
+  //       args: [approvalAmount],
+  //     },
+  //   ]),
+  //   [plan],
+  // );
 
-
+  const handleApproveAndSendTx = async () => {
+    console.log("approvalAmount",approvalAmount)
+    console.log("plan?.planID,Number(plan?.price)",plan?.planID,Number(plan?.price))
+    const arr: UseBBContractWrite[] = [
+      {
+        contractName: ContractNames.KIT,
+        functionName: ERC20Functions.APPROVE,
+        args: [address, approvalAmount],
+      },
+      {
+        contractName: ContractNames.BOTBLOCK,
+        functionName: BBFunctions.PLACE_ORDER,
+        args: [plan?.planID ?? "", Number(plan?.price)],
+      },
+    ];
+    debugger
+    try {
+      await makeCall(arr);
+    } catch (error) {
+      console.log("ERROR IN MCALL", error)
+    }
+  };
 
   const planID = router.query.planID as string;
 
@@ -45,7 +91,7 @@ const SubscriptionDetails = () => {
                 <button
                   onClick={() => {
                     toast.dismiss(t.id);
-                    toast.promise(purchasePlan(plan.planID ?? "", Number(plan.price), plan.paymentTokenAddress), {
+                    toast.promise(handleApproveAndSendTx(), {
                       loading: "Wait some moments to complete the purchase!",
                       success: (
                         <div className="flex gap-4 flex-row">
@@ -94,14 +140,13 @@ const SubscriptionDetails = () => {
       if (foundPlan) {
         setPlan(foundPlan);
       }
-      setIsLoading(false);
+      setIsPlanLoading(false);
     };
 
     if (!plan && planID) {
-      debugger
       setPlanIfExists();
     }
-  }, [plan, planID, getPlans, subsContract]);
+  }, [plan, planID]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
@@ -113,11 +158,11 @@ const SubscriptionDetails = () => {
           <Button
             disabled={!isConnected}
             title={isConnected ? "Buy access" : "Log in to purchase"}
-            isLoading={isLoading}
+            isLoading={isPlanLoading}
             onClick={handleOnPurchaseAttempt}
           />
         </>
-      ) : isLoading ? (
+      ) : isPlanLoading ? (
         <Loader />
       ) : (
         <>
