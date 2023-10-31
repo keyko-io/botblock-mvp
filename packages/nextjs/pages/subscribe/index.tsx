@@ -1,27 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useContractRead } from "wagmi";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import * as BotBlockMarketArtifact from "~~/public/artifacts/BotblockMarket.json";
 
 const Subscribe = () => {
   const router = useRouter();
-  const { getPlans, subsContract } = useWeb3AuthContext();
   const [plans, setPlans] = useState<Plan[]>();
 
-  const fetchPlans = useCallback(async () => {
-    const p = await getPlans();
-    setPlans(p);
-  }, [getPlans]);
+  const BotBlockContractAddress = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
+
+  const { data } = useContractRead({
+    address: BotBlockContractAddress,
+    abi: BotBlockMarketArtifact.abi,
+    functionName: "getAllPlans",
+  });
 
   useEffect(() => {
-    if (subsContract) {
-      fetchPlans();
-    }
-  }, [fetchPlans, subsContract]);
+    setPlans(data as Plan[]);
+  }, [data]);
 
   const browseToSubscriptionDetails = (plan: Plan) => {
-    if (plan.planId) {
-      router.push("/subscribe/" + plan.planId);
+    if (plan.planID) {
+      router.push("/subscribe/" + plan.planID);
     }
   };
 
