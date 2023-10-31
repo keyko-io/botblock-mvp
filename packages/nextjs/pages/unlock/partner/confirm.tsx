@@ -1,29 +1,19 @@
-import { useContractWrite } from "wagmi";
 import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import * as BotBlockMarketArtifact from "~~/public/artifacts/BotblockMarket.json";
-import { notification } from "~~/utils/scaffold-eth";
+import { useBBContractWrite } from "~~/hooks/Botblock";
+import { BBFunctions, ContractNames } from "~~/hooks/Botblock/hooksUtils";
+
 
 const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
   const { plan } = useWeb3AuthContext();
-  const BotBlockContractAddress = "0xabe0D51F2f537c14CE782B26Fb3A59EB4A563316";
-  const { isLoading, write } = useContractWrite({
-    address: BotBlockContractAddress,
-    abi: BotBlockMarketArtifact.abi as any[],
-    functionName: "createPlan",
-    onError(error) {
-      notification.error(`Transaction failed: ${error}`);
-    },
-    onSuccess(data) {
-      notification.success(`Transaction with hash ${data?.hash} completed successfully!`, {
-        icon: "🎉",
-      });
-    },
+  const { isLoading, write } = useBBContractWrite({
+    contractName: ContractNames.BOTBLOCK,
+    functionName: BBFunctions.CREATE_PLAN,
   });
 
   const handleCreatePlan = async () => {
