@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ContractsAndAbis, UseBBContractWrite } from "./hooksUtils";
-import { useContractWrite } from "wagmi";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import { notification } from "~~/utils/scaffold-eth";
 
 /**
@@ -12,10 +12,14 @@ export function useBBContractWrite({ contractName, functionName }: UseBBContract
   // address?: string
   const [writeHook, setWriteHook] = useState<any>({});
 
-  const hook = useContractWrite({
+  const { config } = usePrepareContractWrite({
     address: ContractsAndAbis[contractName].address,
     abi: ContractsAndAbis[contractName].abi as any[],
     functionName,
+  })
+
+  const hook = useContractWrite({
+    ...config,
     onError(error) {
       notification.error(`Transaction failed: ${error}`);
     },
@@ -28,7 +32,7 @@ export function useBBContractWrite({ contractName, functionName }: UseBBContract
 
   useEffect(() => {
     setWriteHook(hook);
-  }, [hook]);
+  }, []);
 
   return { ...writeHook };
 
