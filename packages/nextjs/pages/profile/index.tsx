@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
 import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useBBContractReads } from "~~/hooks/Botblock";
+import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();
   const [userPlans, setUserPlans] = useState<Plan[]>();
-  const { address, getOrders, getPlans, isConnected, subsContract, username } = useWeb3AuthContext();
+  const { username } = useWeb3AuthContext();
+  const { address, isConnected } = useAccount();
+  const { allPlans, allOrders } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
     const fetchPlans = async () => {
-      const plans = await getPlans();
-      setUserPlans(plans?.filter(plan => plan.contentCreator === address));
+      setUserPlans(allPlans?.filter(plan => plan.contentCreator === address));
     };
 
-    if (subsContract && address) {
-      fetchPlans();
-    }
-  }, [address, getPlans, subsContract]);
+
+    fetchPlans();
+
+  }, [isConnected]);
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const orders = await getOrders();
-      setUserOrders(orders?.filter(order => order.buyer === address));
+      setUserOrders(allOrders?.filter(order => order.buyer === address));
     };
+    fetchOrders();
 
-    if (subsContract && address) {
-      fetchOrders();
-    }
-  }, [address, getOrders, subsContract]);
+  }, [isConnected]);
 
   if (!isConnected) {
     return (
