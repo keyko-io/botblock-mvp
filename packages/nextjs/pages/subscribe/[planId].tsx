@@ -6,12 +6,17 @@ import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useBBContractReads } from "~~/hooks/Botblock";
+import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 
 const SubscriptionDetails = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [plan, setPlan] = useState<Plan>();
   const { getPlans, isConnected, purchasePlan, subsContract } = useWeb3AuthContext();
+  const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
+
+
 
   const planID = router.query.planID as string;
 
@@ -83,8 +88,8 @@ const SubscriptionDetails = () => {
 
   useEffect(() => {
     const setPlanIfExists = async () => {
-      const plans = await getPlans();
-      const foundPlan = plans?.find(plan => plan.planID === planID);
+      // const plans = await getPlans();
+      const foundPlan = allPlans?.find(plan => String(plan.planID) === planID);
 
       if (foundPlan) {
         setPlan(foundPlan);
@@ -92,7 +97,8 @@ const SubscriptionDetails = () => {
       setIsLoading(false);
     };
 
-    if (subsContract && !plan && planID) {
+    if (!plan && planID) {
+      debugger
       setPlanIfExists();
     }
   }, [plan, planID, getPlans, subsContract]);
