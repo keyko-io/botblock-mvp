@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { BotBlockWidget } from "~~/components/BotBlockWidget/BotBlockWidget";
 import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
+import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
 const TITLE = "Next Steps";
@@ -9,7 +11,18 @@ const STEP_THREE = "Place the widget on your site to guide AI devs to Botblock f
 const WIDGET_EXPLANATION = "If used as it is shared, it will look and work as the one shown below";
 
 const NextSteps = () => {
-  const { email } = useWeb3AuthContext();
+  const { address, email, getPlans } = useWeb3AuthContext();
+  const [latestPlanCreated, setLatestPlanCreated] = useState<Plan>();
+
+  useEffect(() => {
+    const getLatestPlanIdOfUser = async () => {
+      const plans = await getPlans();
+      setLatestPlanCreated(plans?.findLast(plan => plan.contentCreator === address));
+    };
+
+    getLatestPlanIdOfUser();
+  }, [address, getPlans]);
+
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
@@ -35,7 +48,7 @@ const NextSteps = () => {
       <br />
 
       <div className="col-span-2 md:col-span-1 flex items-center justify-center">
-        <CodeSnippetButton planId="8" />
+        <CodeSnippetButton planId={latestPlanCreated?.planId as string} />
       </div>
 
       <br />
@@ -43,7 +56,7 @@ const NextSteps = () => {
         <h3 className="text-md sm:text-xl pl-3">{WIDGET_EXPLANATION}</h3>
       </div>
       <div className="flex justify-center py-8">
-        <BotBlockWidget planId="8" />
+        <BotBlockWidget planId={latestPlanCreated?.planId as string} />
       </div>
     </div>
   );
