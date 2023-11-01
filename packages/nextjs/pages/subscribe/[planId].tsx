@@ -19,44 +19,22 @@ const SubscriptionDetails = () => {
   const { isConnected, address } = useAccount();
   const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
   const { makeCall } = useBBMulticall();
-  // const { data, isMulticallLoading, isMulticallError, makeCall } = useBBMulticall();
-  // const { isLoading, write } = useBBContractWrite({
-  //   contractName: ContractNames.BOTBLOCK,
-  //   functionName: BBFunctions.PLACE_ORDER,
-  // });
-  const approvalAmount = ethers.utils.parseEther("1");
-  // const approveAndWrite = useCallback(
-  //   useBBMulticall([
-  //     {
-  //       contractName: ContractNames.KIT,
-  //       functionName: ERC20Functions.APPROVE,
-  //       args: [plan?.planID ?? "", Number(plan?.price)],
-  //     },
-  //     {
-  //       contractName: ContractNames.BOTBLOCK,
-  //       functionName: BBFunctions.PLACE_ORDER,
-  //       args: [approvalAmount],
-  //     },
-  //   ]),
-  //   [plan],
-  // );
-
+  //TODO manage errors and stuff with isMulticallError..
   const handleApproveAndSendTx = async () => {
-    console.log("approvalAmount",approvalAmount)
-    console.log("plan?.planID,Number(plan?.price)",plan?.planID,Number(plan?.price))
+  const approvalAmount = ethers.utils.parseEther("100");
+
     const arr: UseBBContractWrite[] = [
       {
         contractName: ContractNames.KIT,
         functionName: ERC20Functions.APPROVE,
         args: [address, approvalAmount],
-      },
+      },//THAT IS WORKING
       {
         contractName: ContractNames.BOTBLOCK,
         functionName: BBFunctions.PLACE_ORDER,
-        args: [plan?.planID ?? "", Number(plan?.price)],
-      },
+        args: [Number(plan?.planID), 1],
+      },//THAT ONE IS GIVING ERRORS
     ];
-    debugger
     try {
       await makeCall(arr);
     } catch (error) {
