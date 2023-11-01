@@ -29,7 +29,6 @@ export function useBBMulticall() {
       const result = await multicall({
         contracts: contractsArray as any,
       });
-      debugger
       setData(result);
       setIsMulticallLoading(false);
     } catch (error) {
