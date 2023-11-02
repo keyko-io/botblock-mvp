@@ -7,7 +7,6 @@ import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
-// import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useBBContractReads, useBBMulticall } from "~~/hooks/Botblock";
 import { BBFunctions, ContractNames, ERC20Functions, UseBBContractWrite } from "~~/hooks/Botblock/hooksUtils";
 
@@ -15,7 +14,6 @@ const SubscriptionDetails = () => {
   const router = useRouter();
   const [isPlanLoading, setIsPlanLoading] = useState(true);
   const [plan, setPlan] = useState<Plan>();
-  // const { purchasePlan } = useWeb3AuthContext();
   const { isConnected, address } = useAccount();
   const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
   const { makeCall } = useBBMulticall();
