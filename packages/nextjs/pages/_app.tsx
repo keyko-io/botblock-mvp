@@ -9,6 +9,7 @@ import { WagmiConfig } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
+import { NvmProvider } from "~~/context/NvmContext";
 import { RobotsProvider } from "~~/context/RobotsContext";
 import { Web3AuthProvider } from "~~/context/Web3AuthContext";
 import { useNativeCurrencyPrice } from "~~/scaffoldHooks/scaffold-eth";
@@ -44,14 +45,16 @@ const ScaffoldEthApp = ({ Component, pageProps }: AppProps) => {
             avatar={BlockieAvatar}
             theme={isDarkTheme ? darkTheme() : lightTheme()}
           >
-            <div className="flex flex-col min-h-screen">
-              <Header />
-              <main className="relative flex flex-col flex-1">
-                <Component {...pageProps} />
-              </main>
-              <Footer />
-            </div>
-            <Toaster />
+            <NvmProvider>
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="relative flex flex-col flex-1">
+                  <Component {...pageProps} />
+                </main>
+                <Footer />
+              </div>
+              <Toaster />
+            </NvmProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </RobotsProvider>
