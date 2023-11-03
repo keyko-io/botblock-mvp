@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
 import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
@@ -10,6 +11,7 @@ const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
+  const router = useRouter();
   const { plan } = useWeb3AuthContext();
   const { isLoading, write } = useBBContractWrite({
     contractName: ContractNames.BOTBLOCK,
@@ -21,6 +23,7 @@ const Confirm = () => {
       write({
         args: [plan?.paymentTokenAddress, plan?.price, "1", plan?.uri],
       });
+      router.push("/unlock/partner/next-steps");
     } catch (error) {
       console.error;
     }
