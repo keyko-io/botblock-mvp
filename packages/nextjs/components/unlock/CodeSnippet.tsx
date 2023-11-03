@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { ClipboardIcon } from "@heroicons/react/24/solid";
 
-const CodeSnippetButton = () => {
+const CodeSnippetButton = ({ planId }: { planId: string }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const linkUrl = "https://www.botblock.com";
+  const linkUrl = `https://botblock-3805ec.spheron.app/subscribe/${planId}`;
   const buttonText = "Go to Botblock to authorize crawler";
-  const codeToCopy = `<button onclick="window.location.href='${linkUrl}'">${buttonText}</button>`;
+  const codeToCopy = `<button
+  style={{
+    borderWidth: 1,
+    borderColor: "#000",
+    borderRadius: 8,
+    padding: 4,
+  }}
+  onclick="window.location.href='${linkUrl}'"
+>
+${buttonText}
+</button>`;
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(codeToCopy);
@@ -28,7 +38,7 @@ const CodeSnippetButton = () => {
         </div>
       )}
       <pre
-        className="bg-gray-800 p-4 rounded-md text-white overflow-x-auto"
+        className="bg-gray-800 p-4 rounded-md text-white overflow-x-auto flex-wrap"
         onClick={handleCopyClick}
         style={{ cursor: "pointer" }}
       >

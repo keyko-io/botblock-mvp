@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
@@ -7,6 +8,7 @@ const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
+  const router = useRouter();
   const { plan, connectedSubsContract } = useWeb3AuthContext();
 
   const handleCreatePlan = async () => {
@@ -21,6 +23,7 @@ const Confirm = () => {
           notification.success(`Transaction with hash ${tx?.hash} completed successfully!`, {
             icon: "🎉",
           });
+          router.push("/unlock/partner/next-steps");
         }
       } else {
         notification.error("you need to log in first");
@@ -35,7 +38,9 @@ const Confirm = () => {
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
       <div className="grid grid-cols-2 gap-4">{plan && <PlanDetailsBox title={"Recap"} plan={plan} />}</div>
-      <Button title={"Create Plan"} onClick={handleCreatePlan} />
+      <div className="flex flex-row">
+        <Button title={"Create Plan"} onClick={handleCreatePlan} />
+      </div>
     </div>
   );
 };
