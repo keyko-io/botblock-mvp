@@ -8,6 +8,8 @@ import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 // State variables only
 type NvmContextState = {
   provider: any;
+  payload: JWTPayload;
+  publisher: Account;
 };
 
 // This interface differentiates from State
@@ -23,8 +25,6 @@ const [useContext, NvmContextProvider] = createCtx<NvmContext>("NvmContext");
 export const NvmProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<NvmContextState>(INITIAL_STATE);
   const [nevermined, setNvm] = useState<Nevermined>();
-  const [publisher, setPublisher] = useState<Account>();
-  const [payload, setPayload] = useState<JWTPayload>();
 
   const { data: signer } = useWalletClient();
   const connector = wagmiConfig.connector;
@@ -82,15 +82,13 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     try {
       if (!nevermined) return;
 
-      const publisher = await nevermined.accounts.getAccount(address as string);
-      setPublisher(publisher);
+      const publisher = nevermined.accounts.getAccount(address as string);
 
       const clientAssertion = await nevermined.utils.jwt.generateClientAssertion(publisher);
       const loginResult = await nevermined.services.marketplace.login(clientAssertion);
       localStorage.setItem("marketplaceAuthToken", loginResult);
       const payload = decodeJwt(loginResult);
-      setPayload(payload);
-      console.log("payload", payload);
+      setState({ ...state, payload, publisher });
     } catch (error) {
       console.error;
     }
