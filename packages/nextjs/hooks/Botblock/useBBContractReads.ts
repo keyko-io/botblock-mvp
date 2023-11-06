@@ -8,7 +8,7 @@ import { useContractReads } from "wagmi";
 
 export function useBBContractReads({ contractName }: UseBBContractWrite) {
   const contract = ContractsAndAbis[contractName] as any;
-  const hook = useContractReads({
+  const response = useContractReads({
     contracts: [
       {
         ...contract,
@@ -22,7 +22,7 @@ export function useBBContractReads({ contractName }: UseBBContractWrite) {
   });
 
   return {
-    allPlans: hook.data && hook.data[0].result,
-    allOrders: hook.data && hook.data[1].result,
+    allPlans: response.data && response.data[0].result,
+    allOrders: response.data && response.data[1].result,
   };
 }
