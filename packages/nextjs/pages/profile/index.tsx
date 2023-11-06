@@ -14,22 +14,16 @@ const Profile = () => {
   const { allPlans, allOrders } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    const fetchPlans = async () => {
+    if (allPlans) {
       setUserPlans(allPlans?.filter(plan => plan.contentCreator === address));
-    };
-
-
-    fetchPlans();
-
-  }, [isConnected]);
+    }
+  }, [isConnected, allPlans]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
+    if (allOrders) {
       setUserOrders(allOrders?.filter(order => order.buyer === address));
-    };
-    fetchOrders();
-
-  }, [isConnected]);
+    }
+  }, [isConnected, allOrders]);
 
   if (!isConnected) {
     return (
