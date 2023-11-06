@@ -16,7 +16,7 @@ export function useBBContractWrite({ contractName, functionName }: UseBBContract
     address: ContractsAndAbis[contractName].address,
     abi: ContractsAndAbis[contractName].abi as any[],
     functionName,
-  })
+  });
 
   const hook = useContractWrite({
     ...config,
@@ -31,9 +31,8 @@ export function useBBContractWrite({ contractName, functionName }: UseBBContract
   });
 
   useEffect(() => {
-    setWriteHook(hook);
+    if (!Object.keys(writeHook).length) setWriteHook(hook);
   }, []);
 
   return { ...writeHook };
-
 }
