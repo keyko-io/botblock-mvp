@@ -68,12 +68,14 @@ export const styles: Record<TextType, CSSProperties> = {
     fontSize: "15px",
     lineHeight: "100%",
     letterSpacing: "0px",
+    margin: 0,
   },
   "btn-sm": {
     fontFamily: exoFont.style.fontFamily,
     fontSize: "12px",
     lineHeight: "100%",
     letterSpacing: "0px",
+    margin: 0,
   },
   markdown: {
     fontFamily: courierPrimeFont.style.fontFamily,
