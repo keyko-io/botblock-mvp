@@ -8,9 +8,9 @@ import { multicall } from "@wagmi/core";
  */
 
 export function useBBMulticall() {
-  const [data, setData] = useState<any>({});
-  const [isMulticallLoading, setIsMulticallLoading] = useState<boolean>(false);
-  const [isMulticallError, setIsMulticallError] = useState<boolean>(false);
+  const [data, setData] = useState({});
+  const [isMulticallLoading, setIsMulticallLoading] = useState(false);
+  const [isMulticallError, setIsMulticallError] = useState(false);
 
   const buildArray = (contracts: UseBBContractWrite[]) =>
     contracts.map(({ contractName, functionName, args }: UseBBContractWrite) => {
