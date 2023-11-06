@@ -110,7 +110,6 @@ const SubscriptionDetails = () => {
 
   useEffect(() => {
     const setPlanIfExists = async () => {
-      // const plans = await getPlans();
       const foundPlan = allPlans?.find(plan => String(plan.planID) === planID);
 
       if (foundPlan) {
