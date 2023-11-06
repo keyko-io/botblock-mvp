@@ -1,4 +1,4 @@
-export type TextType =
+export type Typography =
   | "h1"
   | "h2"
   | "h3"

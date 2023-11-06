@@ -1,8 +1,8 @@
 import { CSSProperties } from "react";
-import { TextType } from "./Text.types";
+import { Typography } from "./Text.types";
 import { courierPrimeFont, exoFont } from "~~/public/assets/fonts";
 
-export const styles: Record<TextType, CSSProperties> = {
+export const typographyStyles: Record<Typography, CSSProperties> = {
   h1: {
     fontFamily: exoFont.style.fontFamily,
     fontSize: "42px",
