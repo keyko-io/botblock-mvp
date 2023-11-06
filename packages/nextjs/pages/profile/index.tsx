@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
@@ -35,7 +35,7 @@ const Profile = () => {
     return (
       <div className="p-32 flex-grow" data-theme="exampleUi">
         <h1 className="text-2xl sm:text-3xl my-8">Please log in to access this area</h1>
-        <Web3AuthConnectButton />
+        <RainbowKitCustomConnectButton />
       </div>
     );
   }

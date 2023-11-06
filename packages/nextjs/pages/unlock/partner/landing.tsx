@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { Button } from "~~/components/Button";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
@@ -138,7 +138,7 @@ const Landing = () => {
         <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
           <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
             <div className="flex rounded-full border-2 border-primary p-1">
-              <Web3AuthConnectButton></Web3AuthConnectButton>
+              <RainbowKitCustomConnectButton />
             </div>
           </div>
         </div>

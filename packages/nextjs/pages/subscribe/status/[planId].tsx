@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Loader } from "~~/components/Loader";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
@@ -69,7 +69,7 @@ const StatusPage = () => {
       ) : !isConnected ? (
         <>
           <h1 className="text-4xl sm:text-6xl mb-16">Please log in to access the status page</h1>
-          <Web3AuthConnectButton />
+          <RainbowKitCustomConnectButton />
         </>
       ) : isLoading ? (
         <Loader />
