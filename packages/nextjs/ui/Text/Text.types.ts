@@ -1,3 +1,5 @@
+export type TextColors = "themed" | "dark" | "light";
+
 export type Typography =
   | "h1"
   | "h2"

@@ -1,6 +1,16 @@
 import { CSSProperties } from "react";
-import { Typography } from "./Text.types";
+import { TextColors, Typography } from "./Text.types";
 import { courierPrimeFont, exoFont } from "~~/public/assets/fonts";
+
+export const textColorStyles: Record<TextColors, CSSProperties> = {
+  themed: {}, // Use default configuration that is controlled by the theme
+  dark: {
+    color: "#000000",
+  },
+  light: {
+    color: "#FFFFFF",
+  },
+};
 
 export const typographyStyles: Record<Typography, CSSProperties> = {
   h1: {
