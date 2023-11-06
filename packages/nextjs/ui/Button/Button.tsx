@@ -1,6 +1,7 @@
 import { ComponentType, Fragment, PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 import { Text } from "../Text/Text";
+import { baseButtonStyle } from "./Button.styles";
 import { ButtonIcons } from "./Button.types";
 
 const ArrowIcon = dynamic(() => import("~~/public/assets/icons/arrow.svg"));
@@ -22,8 +23,7 @@ interface ButtonProps extends PropsWithChildren {
 export const Button = ({ children, icon, onClick, size = "sm" }: ButtonProps) => {
   const MappedIcon = !!icon ? iconMap[icon] : Fragment;
   return (
-    // TODO: fix styling
-    <button className="w-fit" onClick={onClick} style={{ borderWidth: "1px", borderColor: "white", padding: "10px" }}>
+    <button onClick={onClick} style={baseButtonStyle}>
       <Text type={`btn-${size}`}>{children}</Text>
       <MappedIcon />
     </button>
