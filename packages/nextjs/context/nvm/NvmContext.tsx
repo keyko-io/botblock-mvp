@@ -1,9 +1,10 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import { createCtx } from ".";
-import { Account, Nevermined, NeverminedOptions } from "@nevermined-io/sdk";
+import { createCtx } from "..";
+import { Account, AssetAttributes, AssetPrice, Nevermined, NeverminedOptions } from "@nevermined-io/sdk";
 import { JWTPayload, decodeJwt } from "jose";
 import { useAccount, useWalletClient } from "wagmi";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
+import { getMetadata } from "./utils";
 
 // State variables only
 type NvmContextState = {
@@ -15,7 +16,9 @@ type NvmContextState = {
 // This interface differentiates from State
 // because it holds any other option or fx
 // that handle the state in some way
-type NvmContext = NvmContextState;
+interface NvmContext extends NvmContextState {
+  publishAsset: () => Promise<void>;
+}
 
 // TODO make so that the user can switch chains
 const INITIAL_STATE: NvmContextState = {};
@@ -25,6 +28,7 @@ const [useContext, NvmContextProvider] = createCtx<NvmContext>("NvmContext");
 export const NvmProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<NvmContextState>(INITIAL_STATE);
   const [nevermined, setNvm] = useState<Nevermined>();
+  const [config, setNvmConfig] = useState<NeverminedOptions>();
 
   const { data: signer } = useWalletClient();
   const connector = wagmiConfig.connector;
@@ -32,21 +36,35 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
 
   // at connector update, get the provider, initialize nvm and login
   useEffect(() => {
-    getProvider();
-    initSdk();
-    login();
+    const startNvm = async () => {
+      try {
+        await getProvider();
+        await initSdk();
+        await login();
+        await publishAsset();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    startNvm();
+    // getProvider()
+    // initSdk();
+    // login();
+    // publishAsset(); //That is just for testing. this function should be used in the Confirm component
   }, [wagmiConfig.connector]);
 
   const getProvider = async () => {
     try {
-      const p = await connector?.getProvider();
-      setState({ ...state, provider: p });
+      const provider = await connector?.getProvider();
+      setState(prevState => ({ ...prevState, provider }));
     } catch (error) {
       console.error;
     }
   };
 
   const initSdk = async () => {
+    debugger
     if (!signer || !state.provider) return;
     const config: NeverminedOptions = {
       // The web3 endpoint of the blockchain network to connect to, could be an Infura endpoint, Quicknode, or any other web3 provider
@@ -88,9 +106,44 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       const loginResult = await nevermined.services.marketplace.login(clientAssertion);
       localStorage.setItem("marketplaceAuthToken", loginResult);
       const payload = decodeJwt(loginResult);
-      setState({ ...state, payload, publisher });
+      debugger
+      setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
       console.error;
+    }
+  };
+
+  /**
+   * 
+   * @info That is currently pushing a mock asset
+   * @todo Publish asset inserted by user (pass in all the props)
+   */
+  const publishAsset = async () => {
+    try {
+      debugger
+      const { publisher, payload } = state;
+      const assetPrice = new AssetPrice(publisher.getId(), 0n);
+
+      const metadata = getMetadata();
+      metadata.main.name = `${metadata.main.name} - ${Math.random()}`;
+      metadata.userId = payload?.sub;
+
+      const assetAttributes = AssetAttributes.getInstance({
+        metadata,
+        services: [
+          {
+            serviceType: "access",
+            price: assetPrice,
+          },
+        ],
+        providers: config?.neverminedNodeAddress ? [config?.neverminedNodeAddress] : undefined,
+      });
+      const steps = [];
+      const ddo = await nevermined?.assets.create(assetAttributes, publisher).next(step => steps.push(step));
+      console.log("ddo", ddo);
+    } catch (error) {
+      console.error;
+      return;
     }
   };
 
@@ -98,7 +151,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     <NvmContextProvider
       value={{
         ...state,
-        // initNvm,
+        publishAsset,
       }}
     >
       {children}
