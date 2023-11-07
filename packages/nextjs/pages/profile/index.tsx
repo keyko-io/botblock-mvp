@@ -1,40 +1,35 @@
 import { useEffect, useState } from "react";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useBBContractReads } from "~~/hooks/Botblock";
+import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();
   const [userPlans, setUserPlans] = useState<Plan[]>();
-  const { address, getOrders, getPlans, isConnected, subsContract, username } = useWeb3AuthContext();
+  const { username } = useWeb3AuthContext();
+  const { address, isConnected } = useAccount();
+  const { allPlans, allOrders } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    const fetchPlans = async () => {
-      const plans = await getPlans();
-      setUserPlans(plans?.filter(plan => plan.contentCreator === address));
-    };
-
-    if (subsContract && address) {
-      fetchPlans();
+    if (allPlans) {
+      setUserPlans(allPlans?.filter(plan => plan.contentCreator === address));
     }
-  }, [address, getPlans, subsContract]);
+  }, [isConnected, allPlans]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const orders = await getOrders();
-      setUserOrders(orders?.filter(order => order.buyer === address));
-    };
-
-    if (subsContract && address) {
-      fetchOrders();
+    if (allOrders) {
+      setUserOrders(allOrders?.filter(order => order.buyer === address));
     }
-  }, [address, getOrders, subsContract]);
+  }, [isConnected, allOrders]);
 
   if (!isConnected) {
     return (
       <div className="p-32 flex-grow" data-theme="exampleUi">
         <h1 className="text-2xl sm:text-3xl my-8">Please log in to access this area</h1>
-        <Web3AuthConnectButton />
+        <RainbowKitCustomConnectButton />
       </div>
     );
   }

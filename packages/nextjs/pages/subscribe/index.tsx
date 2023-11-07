@@ -1,27 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useBBContractReads } from "~~/hooks/Botblock";
+import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 
 const Subscribe = () => {
   const router = useRouter();
-  const { getPlans, subsContract } = useWeb3AuthContext();
   const [plans, setPlans] = useState<Plan[]>();
-
-  const fetchPlans = useCallback(async () => {
-    const p = await getPlans();
-    setPlans(p);
-  }, [getPlans]);
+  const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    if (subsContract) {
-      fetchPlans();
-    }
-  }, [fetchPlans, subsContract]);
+    setPlans(allPlans as Plan[]);
+  }, [allPlans]);
 
   const browseToSubscriptionDetails = (plan: Plan) => {
-    if (plan.planId) {
-      router.push("/subscribe/" + plan.planId);
+    if (plan.planID) {
+      router.push("/subscribe/" + plan.planID);
     }
   };
 

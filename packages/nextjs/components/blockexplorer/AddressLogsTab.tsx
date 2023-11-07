@@ -1,5 +1,5 @@
 import { Address } from "viem";
-import { useContractLogs } from "~~/hooks/scaffold-eth";
+import { useContractLogs } from "~~/scaffoldHooks/scaffold-eth";
 import { replacer } from "~~/utils/scaffold-eth/common";
 
 export const AddressLogsTab = ({ address }: { address: Address }) => {

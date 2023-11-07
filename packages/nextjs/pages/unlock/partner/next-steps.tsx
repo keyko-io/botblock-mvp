@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BotBlockWidget } from "~~/components/BotBlockWidget/BotBlockWidget";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
@@ -34,7 +34,7 @@ const NextSteps = () => {
           : "There are no plans created under this account"}
       </h1>
       {!isConnected ? (
-        <Web3AuthConnectButton />
+        <RainbowKitCustomConnectButton />
       ) : latestPlanCreated ? (
         <>
           <div className="flex flex-col">
@@ -58,7 +58,7 @@ const NextSteps = () => {
           <br />
 
           <div className="col-span-2 md:col-span-1 flex items-center justify-center">
-            <CodeSnippetButton planId={latestPlanCreated?.planId as string} />
+            <CodeSnippetButton planId={latestPlanCreated?.planID as string} />
           </div>
 
           <br />
@@ -66,7 +66,7 @@ const NextSteps = () => {
             <h3 className="text-md sm:text-xl pl-3">{WIDGET_EXPLANATION}</h3>
           </div>
           <div className="flex justify-center py-8">
-            <BotBlockWidget planId={latestPlanCreated?.planId as string} />
+            <BotBlockWidget planId={latestPlanCreated?.planID as string} />
           </div>
         </>
       ) : (

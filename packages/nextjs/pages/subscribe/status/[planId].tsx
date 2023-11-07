@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
-import { Web3AuthConnectButton } from "~~/components/Header/components/Web3AuthConnectButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Loader } from "~~/components/Loader";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
@@ -19,20 +19,20 @@ const StatusPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const planId = router.query.planId as string;
+  const planID = router.query.planID as string;
 
   const redirectToSubscribeLanding = () => {
     router.push("/subscribe");
   };
 
   const browseToSubscriptionDetails = () => {
-    router.push(`/subscribe/${plan?.planId}`);
+    router.push(`/subscribe/${plan?.planID}`);
   };
 
   useEffect(() => {
     const checkUserOrdersForMatch = async () => {
       const orders = await getOrders();
-      const foundOrder = orders?.find(order => order.buyer === address && order.plan.planId === planId);
+      const foundOrder = orders?.find(order => order.buyer === address && order.plan.planID === planID);
       if (foundOrder) {
         setOrder(foundOrder);
       }
@@ -42,22 +42,22 @@ const StatusPage = () => {
     if (subsContract && address) {
       checkUserOrdersForMatch();
     }
-  }, [address, getOrders, planId, subsContract]);
+  }, [address, getOrders, planID, subsContract]);
 
   useEffect(() => {
     const setPlanIfExists = async () => {
       const plans = await getPlans();
-      const foundPlan = plans?.find(plan => plan.planId === planId);
+      const foundPlan = plans?.find(plan => plan.planID === planID);
 
       if (foundPlan) {
         setPlan(foundPlan);
       }
     };
 
-    if (subsContract && !plan && planId) {
+    if (subsContract && !plan && planID) {
       setPlanIfExists();
     }
-  }, [plan, planId, getPlans, subsContract]);
+  }, [plan, planID, getPlans, subsContract]);
 
   return (
     <div className="p-32 flex-grow" data-theme="exampleUi">
@@ -69,7 +69,7 @@ const StatusPage = () => {
       ) : !isConnected ? (
         <>
           <h1 className="text-4xl sm:text-6xl mb-16">Please log in to access the status page</h1>
-          <Web3AuthConnectButton />
+          <RainbowKitCustomConnectButton />
         </>
       ) : isLoading ? (
         <Loader />

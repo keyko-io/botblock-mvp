@@ -1,4 +1,4 @@
-import { useAccountBalance } from "~~/hooks/scaffold-eth";
+import { useAccountBalance } from "~~/scaffoldHooks/scaffold-eth";
 import { getTargetNetwork } from "~~/utils/scaffold-eth";
 
 type TBalanceProps = {

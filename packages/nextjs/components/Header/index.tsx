@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { LoginButton } from "./LoginButton";
+import { RainbowKitCustomConnectButton } from "./components/RainbowKitCustomConnectButton";
 import {
   BanknotesIcon,
   Bars3Icon,
@@ -10,9 +10,8 @@ import {
   LockClosedIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { FaucetButton } from "~~/components/scaffold-eth";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import { useOutsideClick } from "~~/scaffoldHooks/scaffold-eth";
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const router = useRouter();
@@ -114,8 +113,7 @@ export const Header = () => {
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
       <div className="navbar-end flex-grow mr-4">
-        <LoginButton />
-        <FaucetButton />
+        <RainbowKitCustomConnectButton />
       </div>
     </div>
   );
