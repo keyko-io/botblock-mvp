@@ -80,7 +80,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       const payload = decodeJwt(loginResult);
       setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
-      console.error;
+      console.error(error);
     }
   }, [address, nevermined]);
 
