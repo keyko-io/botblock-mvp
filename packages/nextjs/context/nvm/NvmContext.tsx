@@ -159,4 +159,4 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const useWeb3AuthContext = useContext;
+export const useNvmContext = useContext;
