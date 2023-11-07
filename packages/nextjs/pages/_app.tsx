@@ -12,7 +12,6 @@ import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { NvmProvider } from "~~/context/NvmContext";
 import { RobotsProvider } from "~~/context/RobotsContext";
 import { Web3AuthProvider } from "~~/context/Web3AuthContext";
-import { NvmProvider } from "~~/context/nvm/NvmContext";
 import { useNativeCurrencyPrice } from "~~/scaffoldHooks/scaffold-eth";
 import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";

@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { createCtx } from ".";
 import { Account, Nevermined, NeverminedOptions } from "@nevermined-io/sdk";
 import { JWTPayload, decodeJwt } from "jose";
@@ -10,14 +10,16 @@ type NvmContextState = {
   provider: any;
   payload: JWTPayload;
   publisher: Account;
+  config: NeverminedOptions;
 };
 
 // This interface differentiates from State
 // because it holds any other option or fx
 // that handle the state in some way
-type NvmContext = NvmContextState;
+interface NvmContext extends NvmContextState {
+  login: () => Promise<void>;
+}
 
-// TODO make so that the user can switch chains
 const INITIAL_STATE: NvmContextState = {};
 
 const [useContext, NvmContextProvider] = createCtx<NvmContext>("NvmContext");
@@ -31,44 +33,32 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   const { address } = useAccount();
 
   // at connector update, get the provider, initialize nvm and login
-  useEffect(() => {
-    getProvider();
-    initSdk();
-    login();
-  }, [wagmiConfig.connector]);
 
-  const getProvider = async () => {
+  const getProvider = useCallback(async () => {
     try {
-      const p = await connector?.getProvider();
-      setState({ ...state, provider: p });
+      const provider = await connector?.getProvider();
+      setState(prevState => ({ ...prevState, provider }));
     } catch (error) {
       console.error;
     }
-  };
+  }, [connector]);
 
-  const initSdk = async () => {
+  const initSdk = useCallback(async () => {
     if (!signer || !state.provider) return;
     const config: NeverminedOptions = {
-      // The web3 endpoint of the blockchain network to connect to, could be an Infura endpoint, Quicknode, or any other web3 provider
       web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
       web3Provider: state.provider,
-      // web3Provider: provider,
-      // The url of the marketplace api if you connect to one. It could be your own service if you run a Marketplace API
       marketplaceUri: "https://marketplace-api.goerli.nevermined.app",
-      // The url to a Nevermined node. It could be your own if you run a Nevermined Node
       neverminedNodeUri: "https://node.goerli.nevermined.app",
-      // The public address of the above Node
       neverminedNodeAddress: "0x5838B5512cF9f12FE9f2beccB20eb47211F9B0bc",
-      // The url to access the nevermined subgraphs required to query for on-chain events
       graphHttpUri: "https://api.thegraph.com/subgraphs/name/nevermined-io/public",
-      // Folder where are copied the ABIs of the Nevermined Smart Contracts
       artifactsFolder: "http://localhost:3000/artifacts",
       marketplaceAuthToken:
         localStorage.getItem("marketplaceAuthToken") != null
           ? (localStorage.getItem("marketplaceAuthToken") as string)
           : "",
     };
-    setNvmConfig(config);
+    setState(prevState => ({ ...prevState, config }));
     try {
       const sdk: Nevermined = await Nevermined.getInstance(config);
       setNvm(sdk);
@@ -76,9 +66,9 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [signer, state.provider]);
 
-  const login = async () => {
+  const login = useCallback(async () => {
     try {
       if (!nevermined) return;
 
@@ -88,17 +78,23 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       const loginResult = await nevermined.services.marketplace.login(clientAssertion);
       localStorage.setItem("marketplaceAuthToken", loginResult);
       const payload = decodeJwt(loginResult);
-      setState({ ...state, payload, publisher });
+      setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
       console.error;
     }
-  };
+  }, [address, nevermined]);
+
+  useEffect(() => {
+    if (!signer) return;
+    const initNevermined = async () => await Promise.all([getProvider(), initSdk()]);
+    initNevermined();
+  }, [getProvider, initSdk, signer]);
 
   return (
     <NvmContextProvider
       value={{
         ...state,
-        // initNvm,
+        login,
       }}
     >
       {children}
