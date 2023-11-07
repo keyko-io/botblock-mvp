@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { ButtonColors } from "./Button.types";
+import WhiteGrungeImage from "~~/public/assets/images/white-grunge.png";
 import { palette } from "~~/styles/colors";
 
 export const baseButtonStyle: CSSProperties = {
@@ -23,4 +24,9 @@ export const colorButtonStyle: Record<ButtonColors, CSSProperties> = {
   ternary: {
     backgroundColor: "#FFFFFF",
   },
+};
+
+export const grungeButtonStyle: CSSProperties = {
+  backgroundImage: `url("${WhiteGrungeImage.src}")`,
+  backgroundSize: "cover",
 };
