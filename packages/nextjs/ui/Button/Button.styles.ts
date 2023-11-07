@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import { ButtonColors } from "./Button.types";
 import WhiteGrungeImage from "~~/public/assets/images/white-grunge.png";
-import { palette } from "~~/styles/colors";
+import { coreColors, palette } from "~~/styles/colors";
 
 export const baseButtonStyle: CSSProperties = {
   padding: "10px 20px",
@@ -29,4 +29,8 @@ export const colorButtonStyle: Record<ButtonColors, CSSProperties> = {
 export const grungeButtonStyle: CSSProperties = {
   backgroundImage: `url("${WhiteGrungeImage.src}")`,
   backgroundSize: "cover",
+};
+
+export const blackBorderButtonStyle: CSSProperties = {
+  border: `1px solid ${coreColors.black}`,
 };

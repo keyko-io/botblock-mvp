@@ -1,7 +1,7 @@
 import { ComponentType, Fragment, PropsWithChildren, SVGProps } from "react";
 import dynamic from "next/dynamic";
 import { Text } from "../Text/Text";
-import { baseButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
+import { baseButtonStyle, blackBorderButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
 import { coreColors } from "~~/styles/colors";
 
@@ -28,7 +28,12 @@ export const Button = ({ color = "primary", children, icon, onClick, size = "sm"
   return (
     <button
       onClick={onClick}
-      style={{ ...baseButtonStyle, ...colorButtonStyle[color], ...(size === "lg" ? grungeButtonStyle : {}) }}
+      style={{
+        ...baseButtonStyle,
+        ...colorButtonStyle[color],
+        ...(size === "lg" ? grungeButtonStyle : {}),
+        ...(color === "ternary" ? blackBorderButtonStyle : {}),
+      }}
     >
       <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
         {children}
