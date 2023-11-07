@@ -1,14 +1,16 @@
-import { ComponentType, Fragment, PropsWithChildren } from "react";
+import { ComponentType, Fragment, PropsWithChildren, SVGProps } from "react";
 import dynamic from "next/dynamic";
 import { Text } from "../Text/Text";
 import { baseButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
+import { coreColors } from "~~/styles/colors";
 
 const ArrowIcon = dynamic(() => import("~~/public/assets/icons/arrow.svg"));
 const RemoveIcon = dynamic(() => import("~~/public/assets/icons/remove.svg"));
 const PlusIcon = dynamic(() => import("~~/public/assets/icons/plus.svg"));
 
-const iconMap: Record<ButtonIcons, ComponentType> = {
+// Cast SVGProps to any to avoid type errors when using them
+const iconMap: Record<ButtonIcons, ComponentType<SVGProps<any>>> = {
   "arrow-right": ArrowIcon,
   close: RemoveIcon,
   plus: PlusIcon,
@@ -31,7 +33,7 @@ export const Button = ({ color = "primary", children, icon, onClick, size = "sm"
       <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
         {children}
       </Text>
-      <MappedIcon />
+      <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.while} />
     </button>
   );
 };
