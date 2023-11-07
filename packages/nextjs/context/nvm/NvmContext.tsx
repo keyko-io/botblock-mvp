@@ -142,7 +142,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       const ddo = await nevermined?.assets.create(assetAttributes, publisher).next(step => steps.push(step));
       console.log("ddo", ddo);
     } catch (error) {
-      console.error;
+      console.error(error);
       return;
     }
   };
