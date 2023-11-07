@@ -1,7 +1,7 @@
 import { ComponentType, Fragment, PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 import { Text } from "../Text/Text";
-import { baseButtonStyle } from "./Button.styles";
+import { baseButtonStyle, colorButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
 
 const ArrowIcon = dynamic(() => import("~~/public/assets/icons/arrow.svg"));
@@ -24,7 +24,7 @@ interface ButtonProps extends PropsWithChildren {
 export const Button = ({ color = "primary", children, icon, onClick, size = "sm" }: ButtonProps) => {
   const MappedIcon = !!icon ? iconMap[icon] : Fragment;
   return (
-    <button onClick={onClick} style={baseButtonStyle}>
+    <button onClick={onClick} style={{ ...baseButtonStyle, ...colorButtonStyle[color] }}>
       <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
         {children}
       </Text>
