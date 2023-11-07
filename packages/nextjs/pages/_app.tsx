@@ -9,6 +9,7 @@ import { WagmiConfig } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
+import { NvmProvider } from "~~/context/NvmContext";
 import { RobotsProvider } from "~~/context/RobotsContext";
 import { Web3AuthProvider } from "~~/context/Web3AuthContext";
 import { NvmProvider } from "~~/context/nvm/NvmContext";
