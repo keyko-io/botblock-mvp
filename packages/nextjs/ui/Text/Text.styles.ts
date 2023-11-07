@@ -1,8 +1,18 @@
 import { CSSProperties } from "react";
-import { TextType } from "./Text.types";
+import { TextColors, Typography } from "./Text.types";
 import { courierPrimeFont, exoFont } from "~~/public/assets/fonts";
 
-export const styles: Record<TextType, CSSProperties> = {
+export const textColorStyles: Record<TextColors, CSSProperties> = {
+  themed: {}, // Use default configuration that is controlled by the theme
+  dark: {
+    color: "#000000",
+  },
+  light: {
+    color: "#FFFFFF",
+  },
+};
+
+export const typographyStyles: Record<Typography, CSSProperties> = {
   h1: {
     fontFamily: exoFont.style.fontFamily,
     fontSize: "42px",
@@ -68,12 +78,14 @@ export const styles: Record<TextType, CSSProperties> = {
     fontSize: "15px",
     lineHeight: "100%",
     letterSpacing: "0px",
+    margin: 0,
   },
   "btn-sm": {
     fontFamily: exoFont.style.fontFamily,
     fontSize: "12px",
     lineHeight: "100%",
     letterSpacing: "0px",
+    margin: 0,
   },
   markdown: {
     fontFamily: courierPrimeFont.style.fontFamily,
