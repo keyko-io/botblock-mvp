@@ -109,7 +109,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       debugger
       setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
-      console.error;
+      console.error(error);
     }
   };
 
