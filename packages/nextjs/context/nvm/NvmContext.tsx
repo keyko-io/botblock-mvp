@@ -44,7 +44,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   }, [connector]);
 
   const initSdk = useCallback(async () => {
-    if (!signer || !state.provider) return;
+    if (!state.provider) return;
     const config: NeverminedOptions = {
       web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
       web3Provider: state.provider,
@@ -66,7 +66,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       console.log(error);
     }
-  }, [signer, state.provider]);
+  }, [state.provider]);
 
   const login = useCallback(async () => {
     try {
