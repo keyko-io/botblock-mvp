@@ -85,9 +85,10 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   }, [address, nevermined]);
 
   useEffect(() => {
-    if (!signer) return;
     const initNevermined = async () => await Promise.all([getProvider(), initSdk()]);
-    initNevermined();
+    if (signer) {
+      initNevermined();
+    }
   }, [getProvider, initSdk, signer]);
 
   return (
