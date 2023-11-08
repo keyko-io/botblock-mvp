@@ -2,6 +2,12 @@ import { CSSProperties } from "react";
 import { TextColors, Typography } from "./Text.types";
 import { courierPrimeFont, exoFont } from "~~/public/assets/fonts";
 
+export const baseTextStyles: CSSProperties = {
+  margin: 0,
+  padding: 0,
+  textAlign: "left",
+};
+
 export const textColorStyles: Record<TextColors, CSSProperties> = {
   themed: {}, // Use default configuration that is controlled by the theme
   dark: {

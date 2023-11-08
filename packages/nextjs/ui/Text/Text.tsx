@@ -14,5 +14,7 @@ export const Text = ({
   color = "themed",
   type = "p-lg",
 }: PropsWithChildren<TextProps>) => {
-  return <Element style={{ ...textColorStyles[color], ...typographyStyles[type] }}>{children}</Element>;
+  return (
+    <Element style={{ ...baseTextStyles, ...textColorStyles[color], ...typographyStyles[type] }}>{children}</Element>
+  );
 };
