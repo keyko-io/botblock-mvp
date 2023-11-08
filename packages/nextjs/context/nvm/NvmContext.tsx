@@ -17,7 +17,7 @@ type NvmContextState = {
 // because it holds any other option or fx
 // that handle the state in some way
 interface NvmContext extends NvmContextState {
-  login: () => Promise<void>;
+  loginNevermined: () => Promise<void>;
 }
 
 const INITIAL_STATE: NvmContextState = {};
@@ -68,16 +68,19 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     }
   }, [state.provider]);
 
-  const login = useCallback(async () => {
+  const loginNevermined = useCallback(async () => {
     try {
       if (!nevermined) return;
 
       const publisher = nevermined.accounts.getAccount(address as string);
 
-      const clientAssertion = await nevermined.utils.jwt.generateClientAssertion(publisher);
+      const clientAssertion = await nevermined.utils.jwt.generateClientAssertion(
+        publisher,
+        "Please, sign this message to login into Botblock!",
+      );
       const loginResult = await nevermined.services.marketplace.login(clientAssertion);
       localStorage.setItem("marketplaceAuthToken", loginResult);
-      const payload = decodeJwt(loginResult);
+      const payload = decodeJwt(loginResult); // address, iss, exp
       setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
       console.log(error);
@@ -89,11 +92,18 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     initNevermined();
   }, [getProvider, initSdk]);
 
+  useEffect(() => {
+    if (!state.payload) {
+      loginNevermined();
+    }
+
+  }, [loginNevermined, state.payload]);
+
   return (
     <NvmContextProvider
       value={{
         ...state,
-        login,
+        loginNevermined,
       }}
     >
       {children}
