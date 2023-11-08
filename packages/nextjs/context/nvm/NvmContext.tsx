@@ -26,7 +26,7 @@ type NvmContextState = {
 // because it holds any other option or fx
 // that handle the state in some way
 interface NvmContext extends NvmContextState {
-  loginNevermined: () => Promise<void>;
+  loginNevermined: (address: string, nevermined: Nevermined) => Promise<void>;
   publishAsset: (uri: string, price: number | string) => Promise<string | undefined>;
 }
 
@@ -36,7 +36,7 @@ const [useContext, NvmContextProvider] = createCtx<NvmContext>("NvmContext");
 
 export const NvmProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<NvmContextState>(INITIAL_STATE);
-  const [nevermined, setNvm] = useState<Nevermined>();
+  const [nevermined, setNevermined] = useState<Nevermined>();
 
   const { data: signer } = useWalletClient();
   const connector = wagmiConfig.connector;
@@ -44,20 +44,19 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
 
   // at connector update, get the provider, initialize nvm and login
 
-  const getProvider = useCallback(async () => {
-    try {
-      const provider = await connector?.getProvider();
-      setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
-    } catch (error) {
-      console.log(error);
-    }
-  }, [connector]);
+  // const getProvider = useCallback(async () => {
+  //   try {
+  //     const provider = await connector?.getProvider();
+  //     setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [connector]);
 
-  const initSdk = useCallback(async () => {
-    if (!state.provider) return;
+  const initSdk = async (web3Provider: any) => {
     const config: NeverminedOptions = {
       web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
-      web3Provider: state.provider,
+      web3Provider,
       marketplaceUri: "https://marketplace-api.goerli.nevermined.app",
       neverminedNodeUri: "https://node.goerli.nevermined.app",
       neverminedNodeAddress: "0x5838B5512cF9f12FE9f2beccB20eb47211F9B0bc",
@@ -70,15 +69,15 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     };
     try {
       const sdk: Nevermined = await Nevermined.getInstance(config);
-      setNvm(sdk);
+      setNevermined(sdk);
       console.log(await sdk.utils.versions.get());
       setState(prevState => ({ ...prevState, config, isNvmLoading: false }));
     } catch (error) {
       console.log(error);
     }
-  }, [state.provider]);
+  };
 
-  const loginNevermined = useCallback(async () => {
+  const loginNevermined = async (address: string, nevermined: Nevermined) => {
     try {
       if (!nevermined) return;
 
@@ -95,7 +94,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       console.log(error);
     }
-  }, [address, nevermined]);
+  };
 
   const publishAsset = async (uri: string, price: number | string) => {
     try {
@@ -129,15 +128,28 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    const initNevermined = async () => await Promise.all([getProvider(), initSdk()]);
-    initNevermined();
-  }, [getProvider, initSdk]);
+    const getProvider = async () => {
+      try {
+        const provider = await connector?.getProvider();
+        setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProvider();
+  }, [connector]);
 
   useEffect(() => {
-    if (!state.payload) {
-      loginNevermined();
+    if (state.provider) {
+      initSdk(state.provider);
     }
-  }, [loginNevermined, state.payload]);
+  }, [state.provider]);
+
+  useEffect(() => {
+    if (!state.payload && address && nevermined) {
+      loginNevermined(address, nevermined);
+    }
+  }, [address, nevermined, state.payload]);
 
   return (
     <NvmContextProvider
