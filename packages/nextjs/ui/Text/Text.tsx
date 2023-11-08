@@ -1,11 +1,12 @@
-import { PropsWithChildren } from "react";
-import { textColorStyles, typographyStyles } from "./Text.styles";
+import { CSSProperties, PropsWithChildren } from "react";
+import { baseTextStyles, textColorStyles, typographyStyles } from "./Text.styles";
 import { Typography } from "./Text.types";
 
 interface TextProps {
   as?: "p" | "span" | "pre";
   color?: "themed" | "light" | "dark";
   type?: Typography;
+  style?: CSSProperties;
 }
 
 export const Text = ({
@@ -13,8 +14,11 @@ export const Text = ({
   children,
   color = "themed",
   type = "p-lg",
+  style,
 }: PropsWithChildren<TextProps>) => {
   return (
-    <Element style={{ ...baseTextStyles, ...textColorStyles[color], ...typographyStyles[type] }}>{children}</Element>
+    <Element style={{ ...baseTextStyles, ...textColorStyles[color], ...typographyStyles[type], ...style }}>
+      {children}
+    </Element>
   );
 };
