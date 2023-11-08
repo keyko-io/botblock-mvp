@@ -1,6 +1,14 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { createCtx } from "..";
-import { Account, Nevermined, NeverminedOptions } from "@nevermined-io/sdk";
+import { getMetadata } from "./utils";
+import {
+  Account,
+  AssetAttributes,
+  AssetPrice,
+  CreateProgressStep,
+  Nevermined,
+  NeverminedOptions,
+} from "@nevermined-io/sdk";
 import { JWTPayload, decodeJwt } from "jose";
 import { useAccount, useWalletClient } from "wagmi";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
@@ -11,6 +19,7 @@ type NvmContextState = {
   payload: JWTPayload;
   publisher: Account;
   config: NeverminedOptions;
+  isNvmLoading: boolean;
 };
 
 // This interface differentiates from State
@@ -18,6 +27,7 @@ type NvmContextState = {
 // that handle the state in some way
 interface NvmContext extends NvmContextState {
   loginNevermined: () => Promise<void>;
+  publishAsset: (uri: string, price: number | string) => Promise<string | undefined>;
 }
 
 const INITIAL_STATE: NvmContextState = {};
@@ -37,7 +47,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   const getProvider = useCallback(async () => {
     try {
       const provider = await connector?.getProvider();
-      setState(prevState => ({ ...prevState, provider }));
+      setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
     } catch (error) {
       console.log(error);
     }
@@ -58,11 +68,11 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
           ? (localStorage.getItem("marketplaceAuthToken") as string)
           : "",
     };
-    setState(prevState => ({ ...prevState, config }));
     try {
       const sdk: Nevermined = await Nevermined.getInstance(config);
       setNvm(sdk);
       console.log(await sdk.utils.versions.get());
+      setState(prevState => ({ ...prevState, config, isNvmLoading: false }));
     } catch (error) {
       console.log(error);
     }
@@ -87,6 +97,37 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     }
   }, [address, nevermined]);
 
+  const publishAsset = async (uri: string, price: number | string) => {
+    try {
+      if (!state.publisher || !state.payload) {
+        console.log("Publisher or user payload not initialized");
+        return;
+      }
+      const assetPrice = new AssetPrice(state.publisher.getId(), BigInt(price));
+      const metadata = getMetadata(undefined, uri);
+      metadata.main.name = uri;
+      metadata.userId = state.payload?.sub;
+      metadata.main.author = state.publisher.getId();
+
+      const assetAttributes = AssetAttributes.getInstance({
+        metadata,
+        services: [
+          {
+            serviceType: "access",
+            price: assetPrice,
+          },
+        ],
+        providers: state.config?.neverminedNodeAddress ? [state.config?.neverminedNodeAddress] : undefined,
+      });
+      const steps: CreateProgressStep[] = [];
+      const ddo = await nevermined?.assets.create(assetAttributes, state.publisher).next(step => steps.push(step));
+      console.log("ddo", ddo, steps);
+      return ddo?.id;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const initNevermined = async () => await Promise.all([getProvider(), initSdk()]);
     initNevermined();
@@ -96,7 +137,6 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     if (!state.payload) {
       loginNevermined();
     }
-
   }, [loginNevermined, state.payload]);
 
   return (
@@ -104,6 +144,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       value={{
         ...state,
         loginNevermined,
+        publishAsset,
       }}
     >
       {children}
