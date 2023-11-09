@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { createCtx } from "..";
 import { getMetadata } from "./utils";
 import {
@@ -38,7 +38,6 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   const [state, setState] = useState<NvmContextState>(INITIAL_STATE);
   const [nevermined, setNevermined] = useState<Nevermined>();
 
-  const { data: signer } = useWalletClient();
   const connector = wagmiConfig.connector;
   const { address } = useAccount();
 
