@@ -10,7 +10,7 @@ import {
   NeverminedOptions,
 } from "@nevermined-io/sdk";
 import { JWTPayload, decodeJwt } from "jose";
-import { useAccount, useWalletClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 // State variables only
