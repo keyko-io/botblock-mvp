@@ -12,7 +12,7 @@ const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the p
 const Confirm = () => {
   const router = useRouter();
   const { plan } = useWeb3AuthContext();
-  const { publishAsset, payload, isNvmLoading } = useNvmContext();
+  const { publishAsset, payload } = useNvmContext();
 
   /**
    * @dev handlePublishPlan uses nvm
@@ -31,8 +31,11 @@ const Confirm = () => {
       <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
       <div className="grid grid-cols-2 gap-4">{plan && <PlanDetailsBox title={"Recap"} plan={plan} />}</div>
-      {!payload && <p>Please connect the wallet to publish the asset</p>}
-      {isNvmLoading ? <Loader /> : <Button title={"Publish using NVM"} onClick={handlePublishPlan} />}
+      {payload ? (
+        <Button title={"Publish using NVM"} onClick={handlePublishPlan} />
+      ) : (
+        <p>Please connect the wallet to publish the asset</p>
+      )}
     </div>
   );
 };

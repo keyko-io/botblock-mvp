@@ -19,7 +19,6 @@ type NvmContextState = {
   payload: JWTPayload;
   publisher: Account;
   config: NeverminedOptions;
-  isNvmLoading: boolean;
 };
 
 // This interface differentiates from State
@@ -59,7 +58,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       const sdk: Nevermined = await Nevermined.getInstance(config);
       setNevermined(sdk);
       console.log(await sdk.utils.versions.get());
-      setState(prevState => ({ ...prevState, config, isNvmLoading: false }));
+      setState(prevState => ({ ...prevState, config }));
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +119,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     const getProvider = async () => {
       try {
         const provider = await connector?.getProvider();
-        setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
+        setState(prevState => ({ ...prevState, provider }));
       } catch (error) {
         console.log(error);
       }
