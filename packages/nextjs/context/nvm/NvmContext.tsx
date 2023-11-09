@@ -41,17 +41,6 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
   const connector = wagmiConfig.connector;
   const { address } = useAccount();
 
-  // at connector update, get the provider, initialize nvm and login
-
-  // const getProvider = useCallback(async () => {
-  //   try {
-  //     const provider = await connector?.getProvider();
-  //     setState(prevState => ({ ...prevState, provider, isNvmLoading: true }));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [connector]);
-
   const initSdk = async (web3Provider: any) => {
     const config: NeverminedOptions = {
       web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
@@ -126,6 +115,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  // at connector update, get the provider, initialize nvm and login
   useEffect(() => {
     const getProvider = async () => {
       try {
