@@ -22,7 +22,8 @@ const Confirm = () => {
       const planId = await publishAsset(plan?.uri as string, plan?.price as string);
       notification.success(`Plan successfully published with id: ${planId}`);
     } catch (error) {
-      console.error;
+      console.log(error);
+      notification.error("Ups, something went wrong. Please, try again later.");
     }
   };
 
