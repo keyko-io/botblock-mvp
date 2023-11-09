@@ -3,23 +3,12 @@ import { MetaData } from "@nevermined-io/sdk";
 const metadata: Partial<MetaData> = {
   main: {
     name: "TEST asset",
-    type: "dataset",
-    dateCreated: "2012-10-10T17:00:00Z",
-    datePublished: "2012-10-10T17:00:00Z",
+    type: "other",
+    dateCreated: new Date() as unknown as string,
+    datePublished: new Date() as unknown as string,
     author: "Met Office",
     license: "CC-BY",
-    files: [
-      {
-        index: 0,
-        contentType: "application/json",
-        url: "https://storage.googleapis.com/nvm-static-assets/files/ci/ddo-example.json",
-      },
-      {
-        index: 1,
-        contentType: "text/plain",
-        url: "https://storage.googleapis.com/nvm-static-assets/files/ci/README.md",
-      },
-    ],
+    files: [],
   },
   additionalInformation: {
     description: "Weather information of UK including temperature and humidity",
@@ -54,5 +43,5 @@ const generateMetadata = (name: string, nonce: string | number = Math.random()):
   },
 });
 
-export const getMetadata = (nonce: string | number = Math.random(), name = "TestAsset"): MetaData =>
+export const getMetadata = (nonce: string | number = Math.random(), name: string): MetaData =>
   generateMetadata(name, nonce) as MetaData;
