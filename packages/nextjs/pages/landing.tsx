@@ -1,7 +1,11 @@
+import { SVGProps } from "react";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
 import BlackGrungeImage from "~~/public/assets/images/black-grunge.png";
 import { palette } from "~~/styles/colors";
 import { Button, Text } from "~~/ui";
+
+const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
 const Header = () => {
   return (
@@ -35,6 +39,7 @@ const ProtectSection = () => {
   return (
     <div className="flex flex-col mb-12">
       <div className="mx-12 flex flex-row justify-start items-center">
+        <ScribbleIcon color={palette.turquoise[100]} />
         <Text type="h2">Protect your site from bots</Text>
       </div>
       <div className="flex flex-col justify-center items-center bg-white p-12">
@@ -49,6 +54,7 @@ const SubscriptionOverviewSection = () => {
   return (
     <div className="mx-12 flex flex-col mb-12">
       <div className="flex flex-row justify-start items-center">
+        <ScribbleIcon color={palette.turquoise[100]} />
         <Text type="h2">Available Subscriptions</Text>
       </div>
       <div className="flex flex-col justify-center items-center py-12">
