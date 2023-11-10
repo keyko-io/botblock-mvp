@@ -43,5 +43,5 @@ export const webColors = {
 
 export const coreColors = {
   black: "#000000",
-  while: "#FFFFFF",
+  white: "#FFFFFF",
 };
