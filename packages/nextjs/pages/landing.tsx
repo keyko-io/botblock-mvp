@@ -7,23 +7,12 @@ import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import BotBlockIcon from "~~/public/assets/icons/botblock.svg";
 import Background from "~~/public/assets/images/background.png";
-import { coreColors, palette } from "~~/styles/colors";
+import { palette } from "~~/styles/colors";
 import { Button, Input, Text } from "~~/ui";
+import { LargeLogo } from "~~/ui/LargeLogo";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
-
-const LargeLogo = ({ isLight = false }) => {
-  return (
-    <div className="flex flex-row items-center gap-2">
-      <BotBlockIcon height={16} width={16} color={isLight ? coreColors.white : coreColors.black} />
-      <Text color={isLight ? "light" : "dark"} type="h3">
-        BotBlock | by Keyko powered by NVM
-      </Text>
-    </div>
-  );
-};
 
 const Header = () => {
   return (
