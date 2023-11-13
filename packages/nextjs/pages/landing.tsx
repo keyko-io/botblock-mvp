@@ -1,9 +1,11 @@
-import { SVGProps } from "react";
+import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { useRobotsContext } from "~~/context/RobotsContext";
 import BlackGrungeImage from "~~/public/assets/images/black-grunge.png";
 import { palette } from "~~/styles/colors";
-import { Button, Text } from "~~/ui";
+import { Button, Input, Text } from "~~/ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -36,15 +38,53 @@ const Title = () => {
 };
 
 const ProtectSection = () => {
+  const [url, setUrl] = useState("");
+  const [submittedUrl, setSubmittedUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { getRobotsTxt } = useRobotsContext();
+  const router = useRouter();
+
+  const handleOnSubmit = () => {
+    setIsLoading(true);
+    setSubmittedUrl(url);
+  };
+
+  useEffect(() => {
+    const executeSubmission = async () => {
+      try {
+        new URL(url);
+        await getRobotsTxt(submittedUrl);
+        router.push("/protect/robots-txt");
+      } catch (error: any) {
+        if (error.message && error.message.includes("URL")) {
+          toast.error("Please enter a valid URL");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isLoading && submittedUrl) {
+      executeSubmission();
+    }
+  }, [getRobotsTxt, isLoading, router, submittedUrl, url]);
+
   return (
     <div className="flex flex-col mb-12">
       <div className="mx-12 flex flex-row justify-start items-center">
         <ScribbleIcon color={palette.turquoise[100]} />
         <Text type="h2">Protect your site from bots</Text>
       </div>
-      <div className="flex flex-col justify-center items-center bg-white p-12">
+      <div className="flex flex-col justify-center items-center bg-white p-12 gap-4">
         <Text>{`Enter your site's URL`}</Text>
-        <Text>here comes the input box</Text>
+        <Input
+          label="URL"
+          value={url}
+          disabled={isLoading}
+          placeholder="https://www.example.com"
+          onChange={e => setUrl(e.currentTarget.value)}
+          onKeyDown={e => e.key === "Enter" && handleOnSubmit()}
+        />
       </div>
     </div>
   );

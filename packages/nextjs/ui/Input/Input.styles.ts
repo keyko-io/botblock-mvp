@@ -17,5 +17,6 @@ export const labelStyle: CSSProperties = {
 
 export const inputStyle: CSSProperties = {
   backgroundColor: "transparent",
+  minWidth: "320px",
   outline: "none",
 };
