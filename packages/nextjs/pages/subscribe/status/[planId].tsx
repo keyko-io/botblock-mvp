@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
-import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Loader } from "~~/components/Loader";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 const statusMessages = [
   "Success! Site is up and ready for crawling",

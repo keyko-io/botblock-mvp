@@ -7,7 +7,6 @@ import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "react-hot-toast";
 import { useDarkMode } from "usehooks-ts";
 import { WagmiConfig } from "wagmi";
-import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { RobotsProvider } from "~~/context/RobotsContext";
 import { Web3AuthProvider } from "~~/context/Web3AuthContext";
@@ -17,7 +16,7 @@ import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import { appChains } from "~~/services/web3/wagmiConnectors";
 import "~~/styles/globals.css";
-import { Footer } from "~~/ui/Footer";
+import { Footer, Header } from "~~/ui";
 
 const ScaffoldEthApp = ({ Component, pageProps, router }: AppProps) => {
   const price = useNativeCurrencyPrice();

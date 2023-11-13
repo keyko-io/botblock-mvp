@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { BotBlockWidget } from "~~/components/BotBlockWidget/BotBlockWidget";
-import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 const TITLE = "Next Steps";
 const STEP_ONE = "Check your email with the instructions to update the robots.txt";
