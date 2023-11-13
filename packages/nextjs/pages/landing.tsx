@@ -108,6 +108,9 @@ const SubscriptionOverviewSection = () => {
       router.push("/subscribe/" + plan.planID);
     }
   };
+  const browseToSubscriptionLanding = () => {
+    router.push("/subscribe");
+  };
   // TODO: tweak this UI
   return (
     <div className="mx-12 flex flex-col mb-12">
@@ -154,6 +157,9 @@ const SubscriptionOverviewSection = () => {
             </div>
           </div>
         </div>
+        <Button size="lg" onClick={browseToSubscriptionLanding}>
+          For the full list of subscriptions
+        </Button>
       </div>
     </div>
   );
