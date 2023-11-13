@@ -1,6 +1,6 @@
-import { ProfileButton } from "../Header/components/ProfileButton";
-import { Web3AuthConnectButton } from "../Header/components/Web3AuthConnectButton";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { ProfileButton } from "~~/ui/Header/components/ProfileButton";
+import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 export const getTimestampOneMonthFromNow = (): number => {
   const currentDate = new Date();
@@ -10,5 +10,5 @@ export const getTimestampOneMonthFromNow = (): number => {
 
 export const LoginButton = () => {
   const { isConnected } = useWeb3AuthContext();
-  return isConnected ? <ProfileButton /> : <Web3AuthConnectButton />;
+  return isConnected ? <ProfileButton /> : <RainbowKitCustomConnectButton />;
 };

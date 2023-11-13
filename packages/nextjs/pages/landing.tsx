@@ -9,7 +9,7 @@ import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import Background from "~~/public/assets/images/background.png";
 import { palette } from "~~/styles/colors";
-import { Button, Input, Text } from "~~/ui";
+import { Button, Footer, Input, Text } from "~~/ui";
 import { LargeLogo } from "~~/ui/LargeLogo";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
@@ -192,40 +192,6 @@ const Body = () => {
       <Title />
       <ProtectSection />
       <SubscriptionOverviewSection />
-    </div>
-  );
-};
-
-const Footer = () => {
-  const router = useRouter();
-
-  const browseToProtect = () => router.push("/protect");
-  const browseToPartner = () => router.push("/unlock/partner");
-  const browseToSubscribe = () => router.push("/subscribe");
-
-  return (
-    <div className="flex flex-col px-12" style={{ flex: 1, backgroundColor: palette.slate[100] }}>
-      <div className="flex flex-row items-start my-36" style={{ flex: 3, minHeight: "110px" }}>
-        <div className="flex" style={{ flex: 1 }}>
-          <LargeLogo isLight />
-        </div>
-        <div className="flex flex-col justify-start items-start" style={{ flex: 1 }}>
-          <Text type="h3" color="light">
-            Sections
-          </Text>
-          <div className="flex flex-col mt-8 gap-4">
-            <Text as="button" onClick={browseToProtect} type="btn-sm" color="light">
-              Protect
-            </Text>
-            <Text as="button" onClick={browseToPartner} type="btn-sm" color="light">
-              Partner
-            </Text>
-            <Text as="button" onClick={browseToSubscribe} type="btn-sm" color="light">
-              Subscribe
-            </Text>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
