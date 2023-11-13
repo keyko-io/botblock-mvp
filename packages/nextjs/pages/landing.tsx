@@ -7,7 +7,7 @@ import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import BlackGrungeImage from "~~/public/assets/images/black-grunge.png";
+import Background from "~~/public/assets/images/background.png";
 import { palette } from "~~/styles/colors";
 import { Button, Input, Text } from "~~/ui";
 
@@ -180,7 +180,7 @@ const Body = () => {
   return (
     <div
       className="flex flex-col"
-      style={{ flex: 3, backgroundImage: `url("${BlackGrungeImage.src}")`, backgroundSize: "cover" }}
+      style={{ flex: 3, backgroundImage: `url("${Background.src}")`, backgroundSize: "cover" }}
     >
       <Header />
       <Title />
