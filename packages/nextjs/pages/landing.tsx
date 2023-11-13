@@ -1,6 +1,7 @@
 import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import toast from "react-hot-toast";
 import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
@@ -16,9 +17,19 @@ const Header = () => {
   return (
     <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
       <Text type="p-lg">BotBlock | by Keyko powered by NVM</Text>
-      <Button onClick={() => toast.success("Log In button pressed")} color="ternary" icon="plus" size="sm">
-        Log In
-      </Button>
+      <ConnectButton.Custom>
+        {({ account, chain, openConnectModal, mounted }) => {
+          const connected = mounted && account && chain;
+          return connected ? (
+            // TODO: tweak this UI
+            <Text>Connected</Text>
+          ) : (
+            <Button onClick={openConnectModal} color="ternary" icon="plus" size="sm">
+              Log In
+            </Button>
+          );
+        }}
+      </ConnectButton.Custom>
     </div>
   );
 };
