@@ -102,15 +102,20 @@ const ProtectSection = () => {
         <Text type="h2">Protect your site from bots</Text>
       </div>
       <div className="flex flex-col justify-center items-center bg-white p-12 gap-4">
-        <Text>{`Enter your site's URL`}</Text>
-        <Input
-          label="URL"
-          value={url}
-          disabled={isLoading}
-          placeholder="https://www.example.com"
-          onChange={e => setUrl(e.currentTarget.value)}
-          onKeyDown={e => e.key === "Enter" && handleOnSubmit()}
-        />
+        <Text>{`Enter your site's URL to scan your robots.txt file`}</Text>
+        <div className="flex flex-row gap-8">
+          <Input
+            label="URL"
+            value={url}
+            disabled={isLoading}
+            placeholder="https://www.example.com"
+            onChange={e => setUrl(e.currentTarget.value)}
+            onKeyDown={e => e.key === "Enter" && handleOnSubmit()}
+          />
+          <Button size="lg" onClick={handleOnSubmit}>
+            Scan
+          </Button>
+        </div>
       </div>
     </div>
   );
