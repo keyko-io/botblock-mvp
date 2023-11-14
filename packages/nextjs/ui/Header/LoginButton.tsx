@@ -1,8 +1,21 @@
-import { ProfileButton } from "./components/ProfileButton";
-import { Web3AuthConnectButton } from "./components/Web3AuthConnectButton";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { Button } from "../Button/Button";
+import { Text } from "../Text/Text";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const LoginButton = () => {
-  const { isConnected } = useWeb3AuthContext();
-  return isConnected ? <ProfileButton /> : <Web3AuthConnectButton />;
+  return (
+    <ConnectButton.Custom>
+      {({ account, chain, openConnectModal, mounted }) => {
+        const connected = mounted && account && chain;
+        return connected ? (
+          // TODO: tweak this UI
+          <Text>Connected</Text>
+        ) : (
+          <Button onClick={openConnectModal} color="ternary" icon="plus" size="sm">
+            Log In
+          </Button>
+        );
+      }}
+    </ConnectButton.Custom>
+  );
 };

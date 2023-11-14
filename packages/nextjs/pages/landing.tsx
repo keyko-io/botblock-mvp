@@ -1,7 +1,6 @@
 import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import toast from "react-hot-toast";
 import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
@@ -9,8 +8,8 @@ import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import Background from "~~/public/assets/images/background.png";
 import { palette } from "~~/styles/colors";
-import { Button, Footer, Input, Text } from "~~/ui";
-import { LargeLogo } from "~~/ui/LargeLogo";
+import { Button, Footer, Input, LargeLogo, Text } from "~~/ui";
+import { LoginButton } from "~~/ui/Header/LoginButton";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -18,19 +17,7 @@ const Header = () => {
   return (
     <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
       <LargeLogo />
-      <ConnectButton.Custom>
-        {({ account, chain, openConnectModal, mounted }) => {
-          const connected = mounted && account && chain;
-          return connected ? (
-            // TODO: tweak this UI
-            <Text>Connected</Text>
-          ) : (
-            <Button onClick={openConnectModal} color="ternary" icon="plus" size="sm">
-              Log In
-            </Button>
-          );
-        }}
-      </ConnectButton.Custom>
+      <LoginButton />
     </div>
   );
 };
@@ -209,8 +196,8 @@ const Landing = () => {
         }}
       />
       <div className="flex flex-col" style={{ height: "100%" }}>
-      <Body />
-      <Footer />
+        <Body />
+        <Footer />
       </div>
     </>
   );
