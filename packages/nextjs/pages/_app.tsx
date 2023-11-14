@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import Landing from "./landing";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Toaster } from "react-hot-toast";
-import { Providers } from "~~/layout/Providers";
+import { Layout } from "~~/layout/Layout";
 import "~~/styles/globals.css";
 import { Footer, Header } from "~~/ui";
 
@@ -10,7 +10,7 @@ const App = ({ Component, pageProps, router }: AppProps) => {
   const isLanding = router.pathname === "/";
 
   return (
-    <Providers>
+    <Layout>
       {isLanding ? (
         <Landing />
       ) : (
@@ -18,12 +18,12 @@ const App = ({ Component, pageProps, router }: AppProps) => {
           <Header />
           <main className="relative flex flex-col flex-1">
             <Component {...pageProps} />
+            <Toaster />
           </main>
           <Footer />
         </div>
       )}
-      <Toaster />
-    </Providers>
+    </Layout>
   );
 };
 
