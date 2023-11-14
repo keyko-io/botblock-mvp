@@ -29,7 +29,7 @@ interface NvmContext extends NvmContextState {
   publishAsset: (uri: string, price: number | string) => Promise<string | undefined>;
 }
 
-const INITIAL_STATE: NvmContextState = {};
+const INITIAL_STATE = {} as NvmContextState;
 
 const [useContext, NvmContextProvider] = createCtx<NvmContext>("NvmContext");
 
