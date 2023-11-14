@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "react-hot-toast";
 import { WagmiConfig } from "wagmi";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
@@ -14,7 +13,6 @@ export const Providers = ({ children }: PropsWithChildren) => (
   <Web3AuthProvider>
     <RobotsProvider>
       <WagmiConfig config={wagmiConfig}>
-        <NextNProgress />
         <RainbowKitProvider chains={appChains.chains} avatar={BlockieAvatar}>
           <NvmProvider>
             {children}
