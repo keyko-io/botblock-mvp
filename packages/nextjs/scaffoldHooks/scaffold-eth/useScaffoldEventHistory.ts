@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Abi, AbiEvent, ExtractAbiEventNames } from "abitype";
 import { Hash } from "viem";
 import { usePublicClient } from "wagmi";
-import { useDeployedContractInfo } from "~~/hooks/Botblock";
+import { useDeployedContractInfo } from "~~/scaffoldHooks/scaffold-eth";
 import { replacer } from "~~/utils/scaffold-eth/common";
 import {
   ContractAbi,

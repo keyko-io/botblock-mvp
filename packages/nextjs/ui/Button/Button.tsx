@@ -38,7 +38,7 @@ export const Button = ({ color = "primary", children, icon, onClick, size = "sm"
       <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
         {children}
       </Text>
-      <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.while} />
+      <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />
     </button>
   );
 };

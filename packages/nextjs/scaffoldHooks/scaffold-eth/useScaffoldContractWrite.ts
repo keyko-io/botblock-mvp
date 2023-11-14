@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Abi, ExtractAbiFunctionNames } from "abitype";
 import { useContractWrite, useNetwork } from "wagmi";
 import { getParsedError } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo, useTransactor } from "~~/hooks/Botblock";
+import { useDeployedContractInfo, useTransactor } from "~~/scaffoldHooks/scaffold-eth";
 import { getTargetNetwork, notification } from "~~/utils/scaffold-eth";
 import { ContractAbi, ContractName, UseScaffoldWriteConfig } from "~~/utils/scaffold-eth/contract";
 

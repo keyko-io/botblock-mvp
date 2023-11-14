@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
-import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useNvmContext } from "~~/context/nvm/NvmContext";
@@ -10,7 +8,6 @@ const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
 
 const Confirm = () => {
-  const router = useRouter();
   const { plan } = useWeb3AuthContext();
   const { publishAsset, payload } = useNvmContext();
 
