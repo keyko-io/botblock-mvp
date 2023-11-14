@@ -19,24 +19,24 @@ const SubscriptionDetails = () => {
   const { makeCall } = useBBMulticall();
   //TODO manage errors and stuff with isMulticallError..
   const handleApproveAndSendTx = async () => {
-  const approvalAmount = ethers.utils.parseEther("100");
+    const approvalAmount = ethers.utils.parseEther("100");
 
     const arr: UseBBContractWrite[] = [
       {
         contractName: ContractNames.KIT,
         functionName: ERC20Functions.APPROVE,
         args: [address, approvalAmount],
-      },//THAT IS WORKING
+      }, //THAT IS WORKING
       {
         contractName: ContractNames.BOTBLOCK,
         functionName: BBFunctions.PLACE_ORDER,
         args: [Number(plan?.planID), 1],
-      },//THAT ONE IS GIVING ERRORS
+      }, //THAT ONE IS GIVING ERRORS
     ];
     try {
       await makeCall(arr);
     } catch (error) {
-      console.log("ERROR IN MCALL", error)
+      console.log("ERROR IN MCALL", error);
     }
   };
 
