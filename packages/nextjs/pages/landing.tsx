@@ -184,10 +184,7 @@ const SubscriptionOverviewSection = () => {
 
 const Body = () => {
   return (
-    <div
-      className="flex flex-col"
-      style={{ flex: 3, backgroundImage: `url("${Background.src}")`, backgroundSize: "cover" }}
-    >
+    <div className="flex flex-col">
       <Header />
       <Title />
       <ProtectSection />
@@ -198,10 +195,24 @@ const Body = () => {
 
 const Landing = () => {
   return (
-    <div className="flex flex-col" style={{ flex: 4, height: "100%" }}>
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${Background.src})`,
+          backgroundSize: "cover",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+      />
+      <div className="flex flex-col" style={{ height: "100%" }}>
       <Body />
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 
