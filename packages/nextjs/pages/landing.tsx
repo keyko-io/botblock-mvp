@@ -241,7 +241,7 @@ const Footer = () => {
   );
 };
 
-export const Landing = () => {
+const Landing = () => {
   return (
     <div className="flex flex-col" style={{ flex: 4, height: "100%" }}>
       <Body />
@@ -249,3 +249,5 @@ export const Landing = () => {
     </div>
   );
 };
+
+export default Landing;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { AppProps } from "next/app";
-import { Landing } from "./landing";
+import Landing from "./landing";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
 import NextNProgress from "nextjs-progressbar";
