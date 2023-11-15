@@ -37,9 +37,13 @@ export const Button = ({ color = "primary", children, disabled = false, icon, on
         ...(color === "ternary" ? blackBorderButtonStyle : {}),
       }}
     >
-      <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
-        {children}
-      </Text>
+      {typeof children === "string" ? (
+        <Text color={color === "ternary" ? "dark" : "light"} type={`btn-${size}`}>
+          {children}
+        </Text>
+      ) : (
+        children
+      )}
       <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />
     </button>
   );
