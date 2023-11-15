@@ -9,7 +9,7 @@ export const baseButtonStyle: CSSProperties = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  gap: "20px",
+  gap: "8px",
   width: "fit-content",
   borderRadius: "20px",
 };
