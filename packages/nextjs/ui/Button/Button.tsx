@@ -18,16 +18,18 @@ const iconMap: Record<ButtonIcons, ComponentType<SVGProps<any>>> = {
 
 interface ButtonProps extends PropsWithChildren {
   color?: ButtonColors;
+  disabled?: boolean;
   icon?: ButtonIcons;
   onClick: () => void;
   size?: "sm" | "lg";
 }
 
-export const Button = ({ color = "primary", children, icon, onClick, size = "sm" }: ButtonProps) => {
+export const Button = ({ color = "primary", children, disabled = false, icon, onClick, size = "sm" }: ButtonProps) => {
   const MappedIcon = !!icon ? iconMap[icon] : Fragment;
   return (
     <button
       onClick={onClick}
+      disabled={disabled}
       style={{
         ...baseButtonStyle,
         ...colorButtonStyle[color],
