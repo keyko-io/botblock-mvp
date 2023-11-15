@@ -1,19 +1,8 @@
-import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
+import React, { PropsWithChildren } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { RainbowKitCustomConnectButton } from "./components/RainbowKitCustomConnectButton";
-import {
-  BanknotesIcon,
-  Bars3Icon,
-  CurrencyDollarIcon,
-  LockClosedIcon,
-  UserCircleIcon,
-} from "@heroicons/react/24/outline";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { useOutsideClick } from "~~/scaffoldHooks/scaffold-eth";
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
+const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
   const router = useRouter();
   const isActive = router.pathname === href;
 
@@ -22,7 +11,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
       href={href}
       passHref
       className={`${
-        isActive ? "bg-secondary shadow-md" : ""
+        isActive ? "bg-secondary text-white shadow-md" : ""
       } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
     >
       {children}
@@ -43,37 +32,17 @@ export const Header = () => {
   );
 
   const navLinks = (
-    <>
+    <ul className="flex flex-row ml-32">
       <li>
-        <NavLink href="/">Home</NavLink>
+        <NavLink href="/protect/landing">Protect</NavLink>
       </li>
       <li>
-        <NavLink href="/protect/landing">
-          <LockClosedIcon className="h-4 w-4" />
-          Protect
-        </NavLink>
+        <NavLink href="/unlock/partner/landing">Partner</NavLink>
       </li>
       <li>
-        <NavLink href="/unlock/partner/landing">
-          <CurrencyDollarIcon className="h-4 w-4" />
-          Partner
-        </NavLink>
+        <NavLink href="/subscribe">Subscribe</NavLink>
       </li>
-      <li>
-        <NavLink href="/subscribe">
-          <BanknotesIcon className="h-4 w-4" />
-          Subscribe
-        </NavLink>
-      </li>
-      {isConnected && (
-        <li>
-          <NavLink href="/profile">
-            <UserCircleIcon className="h-4 w-4" />
-            Profile
-          </NavLink>
-        </li>
-      )}
-    </>
+    </ul>
   );
 
   return (
