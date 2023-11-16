@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { LargeLogo } from "../LargeLogo";
 import { LoginButton } from "./LoginButton";
+import { palette } from "~~/styles/colors";
 
 const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
   const router = useRouter();
@@ -12,9 +13,8 @@ const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
     <Link
       href={href}
       passHref
-      className={`${
-        isActive ? "bg-secondary text-white shadow-md" : ""
-      } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+      className={`hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+      style={{ backgroundColor: isActive ? palette.purple[50] : "transparent", color: "#F6F6F6" }}
     >
       {children}
     </Link>
@@ -42,7 +42,7 @@ export const Header = () => {
   return (
     <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
       <div className="flex flex-row">
-        <LargeLogo />
+        <LargeLogo isLight />
         <div className="w-8" />
         {navLinks}
       </div>
