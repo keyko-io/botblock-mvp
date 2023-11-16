@@ -13,7 +13,7 @@ interface TextProps {
 export const Text = ({
   as = "p",
   children,
-  color = "themed",
+  color = "light",
   type = "p-lg",
   style,
   ...rest
