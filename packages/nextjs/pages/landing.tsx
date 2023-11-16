@@ -1,47 +1,23 @@
 import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import toast from "react-hot-toast";
 import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import BotBlockIcon from "~~/public/assets/icons/botblock.svg";
 import Background from "~~/public/assets/images/background.png";
-import { coreColors, palette } from "~~/styles/colors";
-import { Button, Input, Text } from "~~/ui";
+import { palette } from "~~/styles/colors";
+import { Button, Footer, Input, LargeLogo, Text } from "~~/ui";
+import { LoginButton } from "~~/ui/Header/LoginButton";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
-
-const LargeLogo = ({ isLight = false }) => {
-  return (
-    <div className="flex flex-row items-center gap-2">
-      <BotBlockIcon height={16} width={16} color={isLight ? coreColors.white : coreColors.black} />
-      <Text color={isLight ? "light" : "dark"} type="h3">
-        BotBlock | by Keyko powered by NVM
-      </Text>
-    </div>
-  );
-};
 
 const Header = () => {
   return (
     <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
       <LargeLogo />
-      <ConnectButton.Custom>
-        {({ account, chain, openConnectModal, mounted }) => {
-          const connected = mounted && account && chain;
-          return connected ? (
-            // TODO: tweak this UI
-            <Text>Connected</Text>
-          ) : (
-            <Button onClick={openConnectModal} color="ternary" icon="plus" size="sm">
-              Log In
-            </Button>
-          );
-        }}
-      </ConnectButton.Custom>
+      <LoginButton />
     </div>
   );
 };
@@ -195,10 +171,7 @@ const SubscriptionOverviewSection = () => {
 
 const Body = () => {
   return (
-    <div
-      className="flex flex-col"
-      style={{ flex: 3, backgroundImage: `url("${Background.src}")`, backgroundSize: "cover" }}
-    >
+    <div className="flex flex-col">
       <Header />
       <Title />
       <ProtectSection />
@@ -207,46 +180,26 @@ const Body = () => {
   );
 };
 
-const Footer = () => {
-  const router = useRouter();
-
-  const browseToProtect = () => router.push("/protect");
-  const browseToPartner = () => router.push("/unlock/partner");
-  const browseToSubscribe = () => router.push("/subscribe");
-
-  return (
-    <div className="flex flex-col px-12" style={{ flex: 1, backgroundColor: palette.slate[100] }}>
-      <div className="flex flex-row items-start my-36" style={{ flex: 3, minHeight: "110px" }}>
-        <div className="flex" style={{ flex: 1 }}>
-          <LargeLogo isLight />
-        </div>
-        <div className="flex flex-col justify-start items-start" style={{ flex: 1 }}>
-          <Text type="h3" color="light">
-            Sections
-          </Text>
-          <div className="flex flex-col mt-8 gap-4">
-            <Text as="button" onClick={browseToProtect} type="btn-sm" color="light">
-              Protect
-            </Text>
-            <Text as="button" onClick={browseToPartner} type="btn-sm" color="light">
-              Partner
-            </Text>
-            <Text as="button" onClick={browseToSubscribe} type="btn-sm" color="light">
-              Subscribe
-            </Text>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const Landing = () => {
   return (
-    <div className="flex flex-col" style={{ flex: 4, height: "100%" }}>
-      <Body />
-      <Footer />
-    </div>
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${Background.src})`,
+          backgroundSize: "cover",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1,
+        }}
+      />
+      <div className="flex flex-col" style={{ height: "100%" }}>
+        <Body />
+        <Footer />
+      </div>
+    </>
   );
 };
 

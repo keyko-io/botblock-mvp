@@ -45,7 +45,7 @@ const Landing = () => {
         <input
           type="text"
           placeholder={INPUT_PLACEHOLDER}
-          className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+          className="input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
           onChange={e => setUrl(e.target.value)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
         />
