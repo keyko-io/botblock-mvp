@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import Landing from "./landing";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Toaster } from "react-hot-toast";
 import { Layout } from "~~/layout/Layout";
@@ -24,22 +23,20 @@ const BackgroundImage = () => (
   />
 );
 
-const App = ({ Component, pageProps, router }: AppProps) => {
-  const isLanding = router.pathname === "/";
-
-  return (
-    <Layout>
-      <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <BackgroundImage />
-        <Header />
-        <main className="relative flex flex-col flex-1">
-          <div style={{ flex: 1 }}>{isLanding ? <Landing /> : <Component {...pageProps} />}</div>
-          <Toaster />
-        </main>
-        <Footer />
-      </div>
-    </Layout>
-  );
-};
+const App = ({ Component, pageProps }: AppProps) => (
+  <Layout>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <BackgroundImage />
+      <Header />
+      <main className="relative flex flex-col flex-1">
+        <div style={{ flex: 1 }}>
+          <Component {...pageProps} />
+        </div>
+        <Toaster />
+      </main>
+      <Footer />
+    </div>
+  </Layout>
+);
 
 export default App;
