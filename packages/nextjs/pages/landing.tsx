@@ -6,10 +6,8 @@ import { useRobotsContext } from "~~/context/RobotsContext";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import Background from "~~/public/assets/images/background.png";
 import { palette } from "~~/styles/colors";
 import { Button, Footer, Input, LargeLogo, Text } from "~~/ui";
-import { LoginButton } from "~~/ui/Header/LoginButton";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -183,22 +181,8 @@ const Body = () => {
 const Landing = () => {
   return (
     <>
-      <div
-        style={{
-          backgroundImage: `url(${Background.src})`,
-          backgroundSize: "cover",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: -1,
-        }}
-      />
-      <div className="flex flex-col" style={{ height: "100%" }}>
-        <Body />
-        <Footer />
-      </div>
+      <Body />
+      <Footer />
     </>
   );
 };
