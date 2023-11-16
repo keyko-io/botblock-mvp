@@ -29,5 +29,5 @@ export enum ERC20Functions {
 export type UseBBContractWrite = {
   contractName: "Botblock" | "KIT";
   functionName?: string;
-  args?: any[]
+  args?: any[];
 };

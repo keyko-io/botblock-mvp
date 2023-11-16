@@ -1,8 +1,8 @@
+import toast from "react-hot-toast";
 import { Button } from "~~/components/Button";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useNvmContext } from "~~/context/nvm/NvmContext";
-import { notification } from "~~/utils/scaffold-eth";
 
 const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
@@ -17,10 +17,10 @@ const Confirm = () => {
   const handlePublishPlan = async () => {
     try {
       const planId = await publishAsset(plan?.uri as string, plan?.price as string);
-      notification.success(`Plan successfully published with id: ${planId}`);
+      toast.success(`Plan successfully published with id: ${planId}`);
     } catch (error) {
       console.log(error);
-      notification.error("Ups, something went wrong. Please, try again later.");
+      toast.error("Ups, something went wrong. Please, try again later.");
     }
   };
 

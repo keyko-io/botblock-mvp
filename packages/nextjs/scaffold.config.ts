@@ -5,13 +5,12 @@ export type ScaffoldConfig = {
   pollingInterval: number;
   alchemyApiKey: string;
   walletConnectProjectId: string;
-  onlyLocalBurnerWallet: boolean;
   walletAutoConnect: boolean;
 };
 
 const scaffoldConfig = {
   // The network where your DApp lives in
-  targetNetwork: chains.arbitrumGoerli,
+  targetNetwork: chains.arbitrumGoerli, // Not used
 
   // The interval at which your front-end polls the RPC servers for new data
   // it has no effect on the local network
@@ -28,9 +27,6 @@ const scaffoldConfig = {
   // It's recommended to store it in an env variable:
   // .env.local for local testing, and in the Vercel/system env config for live apps.
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "3a8170812b534d0ff9d794f19a901d64",
-
-  // Only show the Burner Wallet when running on hardhat network
-  onlyLocalBurnerWallet: true,
 
   /**
    * Auto connect:

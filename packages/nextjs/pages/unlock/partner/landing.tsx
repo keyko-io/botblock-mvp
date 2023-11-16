@@ -64,8 +64,8 @@ const Landing = () => {
             placeholder={URI_PLACEHOLDER}
             className={
               isValid
-                ? "input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-                : "input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
+                ? "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+                : "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
             }
             onChange={e => handleSetUrl(e.target.value)}
             onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
@@ -78,7 +78,7 @@ const Landing = () => {
           type="number"
           min="1"
           placeholder={PRICE_PLACEHOLDER}
-          className="input font-bai-jamjuree w-full px-5 bg-[url('/assets/gradient-bg.png')] bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+          className="input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
           onChange={e => setPrice(Number(e.target.value))}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           value={price}
