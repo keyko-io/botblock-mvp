@@ -7,18 +7,9 @@ import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
-import { Button, Footer, Input, LargeLogo, Text } from "~~/ui";
+import { Button, Input, Text } from "~~/ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
-
-const Header = () => {
-  return (
-    <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
-      <LargeLogo />
-      <LoginButton />
-    </div>
-  );
-};
 
 const Title = () => {
   return (
@@ -167,23 +158,13 @@ const SubscriptionOverviewSection = () => {
   );
 };
 
-const Body = () => {
+const Landing = () => {
   return (
     <div className="flex flex-col">
-      <Header />
       <Title />
       <ProtectSection />
       <SubscriptionOverviewSection />
     </div>
-  );
-};
-
-const Landing = () => {
-  return (
-    <>
-      <Body />
-      <Footer />
-    </>
   );
 };
 

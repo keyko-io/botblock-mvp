@@ -29,19 +29,15 @@ const App = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <Layout>
-      {isLanding ? (
-        <Landing />
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-          <BackgroundImage />
-          <Header />
-          <main className="relative flex flex-col flex-1">
-            <Component {...pageProps} />
-            <Toaster />
-          </main>
-          <Footer />
-        </div>
-      )}
+      <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <BackgroundImage />
+        <Header />
+        <main className="relative flex flex-col flex-1">
+          <div style={{ flex: 1 }}>{isLanding ? <Landing /> : <Component {...pageProps} />}</div>
+          <Toaster />
+        </main>
+        <Footer />
+      </div>
     </Layout>
   );
 };
