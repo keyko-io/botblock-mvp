@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { LargeLogo } from "../../ui/LargeLogo";
+import { LargeLogo } from "../LargeLogo";
 import { LoginButton } from "./LoginButton";
 import { palette } from "~~/styles/colors";
 

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
-import { LargeLogo } from "../ui/LargeLogo";
+import { LargeLogo } from "./LargeLogo";
 import { Text } from "~~/ui";
 
 const TextButton = ({ children, onClick }: PropsWithChildren<{ onClick: () => void }>) => {
