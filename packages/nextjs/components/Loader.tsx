@@ -1,5 +1,7 @@
-type Size = "xs" | "sm" | "md" | "lg";
+import dynamic from "next/dynamic";
 
-export const Loader = ({ size = "sm" }: { size?: Size }) => {
-  return <span className={`loading loading-spinner loading-${size}`}></span>;
+const Spinner = dynamic(() => import("~~/public/assets/icons/spinner.svg"));
+
+export const Loader = () => {
+  return <Spinner />;
 };
