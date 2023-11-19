@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button } from "~~/components/Button";
-import { Loader } from "~~/components/Loader";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { Loader } from "~~/ui";
 import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 const statusMessages = [

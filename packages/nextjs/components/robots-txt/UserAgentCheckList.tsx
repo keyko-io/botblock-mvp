@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Loader } from "../Loader";
 import { useRobotsContext } from "~~/context/RobotsContext";
+import { Loader } from "~~/ui";
 
 const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
 

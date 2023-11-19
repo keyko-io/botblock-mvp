@@ -1,9 +1,9 @@
 import { ComponentType, PropsWithChildren, SVGProps } from "react";
 import dynamic from "next/dynamic";
+import { Loader } from "../Loader";
 import { Text } from "../Text/Text";
 import { baseButtonStyle, blackBorderButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
-import { Loader } from "~~/components/Loader";
 import { coreColors } from "~~/styles/colors";
 
 const ArrowIcon = dynamic(() => import("~~/public/assets/icons/arrow.svg"));

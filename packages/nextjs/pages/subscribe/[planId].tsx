@@ -4,11 +4,11 @@ import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { Button } from "~~/components/Button";
-import { Loader } from "~~/components/Loader";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
 import { useBBContractReads, useBBMulticall } from "~~/hooks/Botblock";
 import { BBFunctions, ContractNames, ERC20Functions, UseBBContractWrite } from "~~/hooks/Botblock/hooksUtils";
+import { Loader } from "~~/ui";
 
 const SubscriptionDetails = () => {
   const router = useRouter();
