@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { Button } from "~~/ui";
-import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =

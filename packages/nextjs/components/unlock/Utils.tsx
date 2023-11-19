@@ -1,6 +1,6 @@
+import { ProfileButton } from "~~/components/Header/components/ProfileButton";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { ProfileButton } from "~~/ui/Header/components/ProfileButton";
-import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 export const getTimestampOneMonthFromNow = (): number => {
   const currentDate = new Date();

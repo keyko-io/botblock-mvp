@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
 
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();

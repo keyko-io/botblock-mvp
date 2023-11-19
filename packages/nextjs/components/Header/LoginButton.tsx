@@ -1,6 +1,6 @@
-import { Button } from "../Button/Button";
 import { ProfileButton } from "./components/ProfileButton";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Button } from "~~/ui/";
 
 export const LoginButton = () => {
   return (
