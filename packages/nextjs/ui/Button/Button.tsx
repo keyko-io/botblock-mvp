@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { Text } from "../Text/Text";
 import { baseButtonStyle, blackBorderButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
+import { Loader } from "~~/components/Loader";
 import { coreColors } from "~~/styles/colors";
 
 const ArrowIcon = dynamic(() => import("~~/public/assets/icons/arrow.svg"));
@@ -20,11 +21,20 @@ interface ButtonProps extends PropsWithChildren {
   color?: ButtonColors;
   disabled?: boolean;
   icon?: ButtonIcons;
+  isLoading?: boolean;
   onClick: () => void;
   size?: "sm" | "lg";
 }
 
-export const Button = ({ color = "primary", children, disabled = false, icon, onClick, size = "sm" }: ButtonProps) => {
+export const Button = ({
+  color = "primary",
+  children,
+  disabled = false,
+  icon,
+  isLoading,
+  onClick,
+  size = "sm",
+}: ButtonProps) => {
   const MappedIcon = iconMap[icon as ButtonIcons];
   return (
     <button
@@ -45,6 +55,7 @@ export const Button = ({ color = "primary", children, disabled = false, icon, on
         children
       )}
       {!!icon && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
+      {isLoading && <Loader />}
     </button>
   );
 };
