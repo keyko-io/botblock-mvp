@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
-import { Button } from "~~/components/Button";
 import { RobotsTxtDisplay } from "~~/components/robots-txt/RobotsTxtDisplay";
 import { UserAgentCheckList } from "~~/components/robots-txt/UserAgentCheckList";
 import { useRobotsContext } from "~~/context/RobotsContext";
+import { Button } from "~~/ui";
 
 export const RobotsTxt = () => {
   const router = useRouter();
@@ -14,7 +14,7 @@ export const RobotsTxt = () => {
     return (
       <div className="p-32 flex-grow" data-theme="exampleUi">
         <h1 className="text-4xl sm:text-6xl mb-32">Please go to the previous page to initiate the protect process</h1>
-        <Button onClick={redirectToLanding} title={"Click here"} />
+        <Button onClick={redirectToLanding}>{"Click here"}</Button>
       </div>
     );
   }

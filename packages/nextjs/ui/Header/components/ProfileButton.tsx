@@ -1,11 +1,15 @@
 import toast from "react-hot-toast";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { useDisconnect } from "wagmi";
 
-export const ProfileButton = () => {
-  const { disconnectWeb3Auth, username } = useWeb3AuthContext();
+interface ProfileButtonProps {
+  name?: string;
+}
+
+export const ProfileButton = ({ name }: ProfileButtonProps) => {
+  const { disconnect } = useDisconnect();
   const logOut = async () => {
     try {
-      await disconnectWeb3Auth();
+      disconnect();
       toast.success("Successfully logged out");
     } catch (error) {
       console.error(error);
@@ -15,7 +19,7 @@ export const ProfileButton = () => {
 
   return (
     <button className="btn btn-primary btn-sm" onClick={logOut} type="button">
-      {username && `[${username}] `}→ Log out
+      {name && `[${name}] `}→ Log out
     </button>
   );
 };

@@ -1,8 +1,8 @@
 import toast from "react-hot-toast";
-import { Button } from "~~/components/Button";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useNvmContext } from "~~/context/nvm/NvmContext";
+import { Button } from "~~/ui";
 
 const TITLE = "Confirm data and create a new plan";
 const DESCRIPTION = "Have a last check to the plan. when clicking confirm, the plan will be listed on Botblock market.";
@@ -30,7 +30,7 @@ const Confirm = () => {
       <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
       <div className="grid grid-cols-2 gap-4">{plan && <PlanDetailsBox title={"Recap"} plan={plan} />}</div>
       {payload ? (
-        <Button title={"Publish using NVM"} onClick={handlePublishPlan} />
+        <Button onClick={handlePublishPlan}>{"Publish using NVM"}</Button>
       ) : (
         <p>Please connect the wallet to publish the asset</p>
       )}

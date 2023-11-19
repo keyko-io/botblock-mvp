@@ -3,12 +3,11 @@ import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
-import { Button } from "~~/components/Button";
 import PlanDetailsBox from "~~/components/PlanDetailsBox";
 import { Plan } from "~~/context/Types";
 import { useBBContractReads, useBBMulticall } from "~~/hooks/Botblock";
 import { BBFunctions, ContractNames, ERC20Functions, UseBBContractWrite } from "~~/hooks/Botblock/hooksUtils";
-import { Loader } from "~~/ui";
+import { Button, Loader } from "~~/ui";
 
 const SubscriptionDetails = () => {
   const router = useRouter();
@@ -130,19 +129,16 @@ const SubscriptionDetails = () => {
           <h1 className="text-4xl sm:text-6xl">Subscribe to: {plan.uri}</h1>
           <h3 className="text-xl sm:text-2xl">Check out subscription details and purchase it!</h3>
           <PlanDetailsBox plan={plan} />
-          <Button
-            disabled={!isConnected}
-            title={isConnected ? "Buy access" : "Log in to purchase"}
-            isLoading={isPlanLoading}
-            onClick={handleOnPurchaseAttempt}
-          />
+          <Button disabled={!isConnected} isLoading={isPlanLoading} onClick={handleOnPurchaseAttempt}>
+            {isConnected ? "Buy access" : "Log in to purchase"}
+          </Button>
         </>
       ) : isPlanLoading ? (
         <Loader />
       ) : (
         <>
           <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
-          <Button title={"Click here to see available plans"} onClick={redirectToSubscribeLanding} />
+          <Button onClick={redirectToSubscribeLanding}>Click here to see available plans</Button>
         </>
       )}
     </div>
