@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
+import { LoginButton } from "~~/components/Header/LoginButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
@@ -32,7 +32,7 @@ const Profile = () => {
         <Text type="h2" style={{ margin: "24px 0" }}>
           Please log in to access this area
         </Text>
-        <RainbowKitCustomConnectButton />
+        <LoginButton />
       </div>
     );
   }
