@@ -1,6 +1,6 @@
-import { Button } from "../Button/Button";
-import { Text } from "../Text/Text";
+import { ProfileButton } from "./components/ProfileButton";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Button } from "~~/ui/";
 
 export const LoginButton = () => {
   return (
@@ -8,8 +8,7 @@ export const LoginButton = () => {
       {({ account, chain, openConnectModal, mounted, connectModalOpen }) => {
         const connected = mounted && account && chain;
         return connected ? (
-          // TODO: tweak this UI
-          <Text>Connected</Text>
+          <ProfileButton name={account.ensName ?? account.displayName} />
         ) : (
           <Button
             onClick={openConnectModal}

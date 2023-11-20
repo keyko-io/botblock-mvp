@@ -1,5 +1,6 @@
 import { ComponentType, PropsWithChildren, SVGProps } from "react";
 import dynamic from "next/dynamic";
+import { Loader } from "../Loader";
 import { Text } from "../Text/Text";
 import { baseButtonStyle, blackBorderButtonStyle, colorButtonStyle, grungeButtonStyle } from "./Button.styles";
 import { ButtonColors, ButtonIcons } from "./Button.types";
@@ -20,11 +21,20 @@ interface ButtonProps extends PropsWithChildren {
   color?: ButtonColors;
   disabled?: boolean;
   icon?: ButtonIcons;
+  isLoading?: boolean;
   onClick: () => void;
   size?: "sm" | "lg";
 }
 
-export const Button = ({ color = "primary", children, disabled = false, icon, onClick, size = "sm" }: ButtonProps) => {
+export const Button = ({
+  color = "primary",
+  children,
+  disabled = false,
+  icon,
+  isLoading,
+  onClick,
+  size = "sm",
+}: ButtonProps) => {
   const MappedIcon = iconMap[icon as ButtonIcons];
   return (
     <button
@@ -45,6 +55,7 @@ export const Button = ({ color = "primary", children, disabled = false, icon, on
         children
       )}
       {!!icon && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
+      {isLoading && <Loader />}
     </button>
   );
 };

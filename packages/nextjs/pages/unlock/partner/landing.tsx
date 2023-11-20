@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
-import { Button } from "~~/components/Button";
+import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { RainbowKitCustomConnectButton } from "~~/ui/Header/components/RainbowKitCustomConnectButton";
+import { Button } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
@@ -144,7 +144,9 @@ const Landing = () => {
         </div>
       )}
       {!!uri && isValid && isConnected && (
-        <Button onClick={handleOnSubmit} isLoading={isLoading} title={CTA_SUBMIT} showArrowIcon />
+        <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
+          {CTA_SUBMIT}
+        </Button>
       )}
     </div>
   );

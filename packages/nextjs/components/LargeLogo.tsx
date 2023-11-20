@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { Text } from "./Text/Text";
 import BotBlockIcon from "~~/public/assets/icons/botblock.svg";
 import { coreColors } from "~~/styles/colors";
+import { Text } from "~~/ui";
 
 export const LargeLogo = ({ isLight = false }) => {
   const router = useRouter();
