@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components/Header/LoginButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
-import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { Text } from "~~/ui";
@@ -10,7 +9,6 @@ import { Text } from "~~/ui";
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();
   const [userPlans, setUserPlans] = useState<Plan[]>();
-  const { username } = useWeb3AuthContext();
   const { address, isConnected } = useAccount();
   const { allPlans, allOrders } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
@@ -39,7 +37,7 @@ const Profile = () => {
 
   return (
     <div className="p-32 flex-grow">
-      <Text type="h1">Welcome to your profile, {username}</Text>
+      <Text type="h1">{address} - Welcome to your profile</Text>
       <>
         <div className="grid grid-cols-2 gap-4 mt-4 mb-16">
           <div className="container w-fit">
