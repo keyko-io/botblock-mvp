@@ -4,7 +4,7 @@ import { LoginButton } from "~~/components/Header/LoginButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import { Text } from "~~/ui";
+import { Column, Text } from "~~/ui";
 
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();
@@ -26,12 +26,12 @@ const Profile = () => {
 
   if (!isConnected) {
     return (
-      <div className="p-32 flex-grow">
+      <Column style={{ flex: 1 }}>
         <Text type="h2" style={{ margin: "24px 0" }}>
           Please log in to access this area
         </Text>
         <LoginButton />
-      </div>
+      </Column>
     );
   }
 

@@ -29,9 +29,7 @@ const App = ({ Component, pageProps }: AppProps) => (
       <BackgroundImage />
       <Header />
       <main className="relative flex flex-col flex-1">
-        <div style={{ flex: 1 }}>
-          <Component {...pageProps} />
-        </div>
+        <Component {...pageProps} />
         <Toaster />
       </main>
       <Footer />
