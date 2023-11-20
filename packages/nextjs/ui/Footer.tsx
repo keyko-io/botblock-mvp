@@ -2,7 +2,6 @@ import { PropsWithChildren } from "react";
 import { useRouter } from "next/router";
 import { LargeLogo } from "./LargeLogo";
 import { Text } from "./Text/Text";
-import { palette } from "~~/styles/colors";
 
 const TextButton = ({ children, onClick }: PropsWithChildren<{ onClick: () => void }>) => {
   return (
@@ -21,8 +20,14 @@ export const Footer = () => {
 
   return (
     <div
-      className="flex flex-row items-start my-12 p-12"
-      style={{ flex: 1, height: "110px", backgroundColor: palette.slate[100] }}
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        flexGrow: 0,
+        bottom: 0,
+        backgroundColor: "#1a5e73", // turquoise[100] + slate[50]
+        padding: "48px",
+      }}
     >
       <div className="flex-1">
         <LargeLogo isLight />
