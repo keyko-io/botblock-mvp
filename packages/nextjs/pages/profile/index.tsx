@@ -6,6 +6,68 @@ import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { Column, Text } from "~~/ui";
 
+const Table = ({
+  title,
+  headers,
+  emptyTableMessage,
+  rows,
+  textAlignment,
+  containerStyle,
+}: {
+  title?: string;
+  headers: string[];
+  emptyTableMessage: string;
+  rows?: string[][];
+  textAlignment?: ("left" | "center" | "right")[];
+  containerStyle?: React.CSSProperties;
+}) => {
+  return (
+    <div className="grid grid-cols-2 gap-4 mt-4 mb-16" style={{ ...containerStyle }}>
+      <div className="container w-fit">
+        <div className="bg-gray-200 shadow-md overflow-x-auto rounded p-4">
+          <Text type="h2" style={{ marginBottom: "8px" }}>
+            {title}
+          </Text>
+          <table className="w-full border-collapse bg-black">
+            <thead>
+              <tr>
+                {headers.map(header => (
+                  <Text key={`${header}-key`} as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
+                    {header}
+                  </Text>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows?.length ? (
+                rows.map((row, index) => (
+                  <tr key={index}>
+                    {row.map((cell, index) => (
+                      <Text
+                        key={`${cell}-${index}`}
+                        as="th"
+                        style={{ textAlign: textAlignment?.[index] ?? "center", padding: "8px", borderWidth: "1px" }}
+                      >
+                        {cell}
+                      </Text>
+                    ))}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={headers.length}>
+                    <Text style={{ textAlign: "center" }}>{emptyTableMessage}</Text>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Profile = () => {
   const [userOrders, setUserOrders] = useState<Order[]>();
   const [userPlans, setUserPlans] = useState<Plan[]>();
@@ -39,104 +101,30 @@ const Profile = () => {
     <div className="p-32 flex-grow">
       <Text type="h1">{address} - Welcome to your profile</Text>
       <>
-        <div className="grid grid-cols-2 gap-4 mt-4 mb-16">
-          <div className="container w-fit">
-            <div className="bg-gray-200 shadow-md overflow-x-auto rounded p-4">
-              <Text type="h2" style={{ marginBottom: "8px" }}>
-                Your orders
-              </Text>
-              <table className="w-full border-collapse bg-black">
-                <thead>
-                  <tr>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Website
-                    </Text>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Duration
-                    </Text>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Status
-                    </Text>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userOrders?.length ? (
-                    userOrders.map((order, index) => (
-                      <tr key={index}>
-                        <Text as="th" style={{ textAlign: "center", padding: "8px", borderWidth: "1px" }}>
-                          {order.plan.uri}
-                        </Text>
-                        <Text as="th" style={{ textAlign: "center", padding: "8px", borderWidth: "1px" }}>
-                          {order.plan.expirationBlock} Month{Number(order.plan.expirationBlock) > 1 ? "s" : ""}
-                        </Text>
-                        <Text as="th" style={{ textAlign: "center", padding: "8px", borderWidth: "1px" }}>
-                          {order.status}
-                        </Text>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>
-                        <Text style={{ textAlign: "center" }}>
-                          Looks like there are no subscriptions associated with this address!
-                        </Text>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="container w-fit">
-            <div className="bg-gray-200 shadow-md overflow-x-auto rounded p-4">
-              <Text type="h2" style={{ marginBottom: "8px" }}>
-                Your plans
-              </Text>
-              <table className="w-full border-collapse bg-white">
-                <thead>
-                  <tr>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Website
-                    </Text>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Duration
-                    </Text>
-                    <Text as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                      Price
-                    </Text>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userPlans?.length ? (
-                    userPlans.map((plan, index) => (
-                      <tr key={index}>
-                        <Text as="th" style={{ textAlign: "center", padding: "8px", borderWidth: "1px" }}>
-                          {plan.uri}
-                        </Text>
-                        <Text as="th" style={{ textAlign: "center", padding: "8px", borderWidth: "1px" }}>
-                          {plan.expirationBlock} Month{plan.expirationBlock !== "1" && "s"}
-                        </Text>
-                        <Text as="th" style={{ textAlign: "end", padding: "8px", borderWidth: "1px" }}>
-                          {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
-                        </Text>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={3}>
-                        <Text style={{ textAlign: "center" }}>
-                          Looks like there are no plans created with this address!
-                        </Text>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <Table
+          title={"Your orders"}
+          headers={["Website", "Duration", "Status"]}
+          emptyTableMessage="Looks like there are no subscriptions associated with this address!"
+          rows={userOrders?.map(order => [
+            order.plan.uri,
+            `${order.plan.expirationBlock} Month${Number(order.plan.expirationBlock) > 1 ? "s" : ""}`,
+            order.status.toString(),
+          ])}
+          containerStyle={{
+            marginTop: "16px",
+            marginBottom: "64px",
+          }}
+        />
+        <Table
+          title={"Your plans"}
+          headers={["Website", "Duration", "Price"]}
+          emptyTableMessage="Looks like there are no plans created with this address!"
+          rows={userPlans?.map(plan => [
+            plan.uri,
+            `${plan.expirationBlock} Month${Number(plan.expirationBlock) > 1 ? "s" : ""}`,
+            `${plan.price} ${tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}`,
+          ])}
+        />
       </>
     </div>
   );
