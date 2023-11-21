@@ -4,7 +4,7 @@ import { LoginButton } from "~~/components/Header/LoginButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
-import { palette } from "~~/styles/colors";
+import { coreColors, palette } from "~~/styles/colors";
 import { Column, Text } from "~~/ui";
 
 const Table = ({
@@ -23,50 +23,56 @@ const Table = ({
   containerStyle?: React.CSSProperties;
 }) => {
   return (
-    <div className="grid gap-4" style={{ ...containerStyle }}>
-      <div className="container w-fit">
-        <div className="shadow-md overflow-x-auto rounded p-4" style={{ backgroundColor: palette.turquoise[20] }}>
-          <Text type="h2" style={{ marginBottom: "8px" }}>
-            {title}
-          </Text>
-          <table className="w-full border-collapse bg-black">
-            <thead>
-              <tr>
-                {headers.map(header => (
-                  <Text key={`${header}-key`} as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
-                    {header}
+    <Column
+      style={{
+        width: undefined,
+        display: "grid",
+        padding: "16px",
+        gap: "16px",
+        borderRadius: "8px",
+        backgroundColor: palette.turquoise[20],
+        ...containerStyle,
+      }}
+    >
+      <Text type="h2" style={{ marginBottom: "8px" }}>
+        {title}
+      </Text>
+      <table style={{ backgroundColor: coreColors.black, borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            {headers.map(header => (
+              <Text key={`${header}-key`} as="th" type="subheading" style={{ borderWidth: "1px", padding: "8px" }}>
+                {header}
+              </Text>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows?.length ? (
+            rows.map((row, index) => (
+              <tr key={index}>
+                {row.map((cell, index) => (
+                  <Text
+                    key={`${cell}-${index}`}
+                    as="th"
+                    type="sm-print"
+                    style={{ textAlign: textAlignment?.[index] ?? "center", padding: "8px", borderWidth: "1px" }}
+                  >
+                    {cell}
                   </Text>
                 ))}
               </tr>
-            </thead>
-            <tbody>
-              {rows?.length ? (
-                rows.map((row, index) => (
-                  <tr key={index}>
-                    {row.map((cell, index) => (
-                      <Text
-                        key={`${cell}-${index}`}
-                        as="th"
-                        type="sm-print"
-                        style={{ textAlign: textAlignment?.[index] ?? "center", padding: "8px", borderWidth: "1px" }}
-                      >
-                        {cell}
-                      </Text>
-                    ))}
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={headers.length}>
-                    <Text style={{ textAlign: "center" }}>{emptyTableMessage}</Text>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={headers.length}>
+                <Text style={{ textAlign: "center" }}>{emptyTableMessage}</Text>
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </Column>
   );
 };
 
