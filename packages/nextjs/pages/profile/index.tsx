@@ -4,6 +4,7 @@ import { LoginButton } from "~~/components/Header/LoginButton";
 import { Order, Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
+import { palette } from "~~/styles/colors";
 import { Column, Text } from "~~/ui";
 
 const Table = ({
@@ -22,9 +23,9 @@ const Table = ({
   containerStyle?: React.CSSProperties;
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-4 mt-4 mb-16" style={{ ...containerStyle }}>
+    <div className="grid grid-cols-2 gap-4" style={{ ...containerStyle }}>
       <div className="container w-fit">
-        <div className="bg-gray-200 shadow-md overflow-x-auto rounded p-4">
+        <div className="shadow-md overflow-x-auto rounded p-4" style={{ backgroundColor: palette.turquoise[20] }}>
           <Text type="h2" style={{ marginBottom: "8px" }}>
             {title}
           </Text>
@@ -46,6 +47,7 @@ const Table = ({
                       <Text
                         key={`${cell}-${index}`}
                         as="th"
+                        type="sm-print"
                         style={{ textAlign: textAlignment?.[index] ?? "center", padding: "8px", borderWidth: "1px" }}
                       >
                         {cell}
@@ -111,7 +113,7 @@ const Profile = () => {
             order.status.toString(),
           ])}
           containerStyle={{
-            marginTop: "16px",
+            marginTop: "32px",
             marginBottom: "64px",
           }}
         />
