@@ -1,4 +1,4 @@
-import { ProfileButton } from "./Header/components/ProfileButton";
+import { ProfileButton } from "./UserButton/components/ProfileButton";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "~~/ui/";
 
