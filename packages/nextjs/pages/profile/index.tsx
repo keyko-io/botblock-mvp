@@ -23,7 +23,7 @@ const Table = ({
   containerStyle?: React.CSSProperties;
 }) => {
   return (
-    <div className="grid grid-cols-2 gap-4" style={{ ...containerStyle }}>
+    <div className="grid gap-4" style={{ ...containerStyle }}>
       <div className="container w-fit">
         <div className="shadow-md overflow-x-auto rounded p-4" style={{ backgroundColor: palette.turquoise[20] }}>
           <Text type="h2" style={{ marginBottom: "8px" }}>
@@ -100,9 +100,12 @@ const Profile = () => {
   }
 
   return (
-    <div className="p-32 flex-grow">
-      <Text type="h1">{address} - Welcome to your profile</Text>
-      <>
+    <Column style={{ padding: "48px" }}>
+      <Column style={{ gap: "16px" }}>
+        <Text type="h1">Welcome to your profile</Text>
+        <Text type="h3">{address}</Text>
+      </Column>
+      <Column style={{ alignItems: "center" }}>
         <Table
           title={"Your orders"}
           headers={["Website", "Duration", "Status"]}
@@ -127,8 +130,8 @@ const Profile = () => {
             `${plan.price} ${tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}`,
           ])}
         />
-      </>
-    </div>
+      </Column>
+    </Column>
   );
 };
 
