@@ -1,6 +1,10 @@
-import { ProfileButton } from "./components/ProfileButton";
+import { ProfileButton } from "./Header/components/ProfileButton";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Button } from "~~/ui/";
+
+/**
+ * Button to be used for connecting user's account
+ */
 
 export const LoginButton = () => {
   return (
@@ -24,3 +28,5 @@ export const LoginButton = () => {
     </ConnectButton.Custom>
   );
 };
+
+LoginButton.displayName = "LoginButton";
