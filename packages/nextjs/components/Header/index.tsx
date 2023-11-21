@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { LargeLogo } from "../LargeLogo";
 import { LoginButton } from "./LoginButton";
 import { palette } from "~~/styles/colors";
+import { Row } from "~~/ui";
 
 const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
  */
 export const Header = () => {
   const navLinks = (
-    <ul className="flex flex-row ml-32">
+    <Row as="ul" style={{ width: undefined }}>
       <li>
         <NavLink href="/protect/landing">Protect</NavLink>
       </li>
@@ -36,17 +37,16 @@ export const Header = () => {
       <li>
         <NavLink href="/subscribe">Subscribe</NavLink>
       </li>
-    </ul>
+    </Row>
   );
 
   return (
-    <div className="flex flex-row justify-between items-center px-12 py-6 border-b-gray-500 border-b-2">
-      <div className="flex flex-row">
+    <Row style={{ justifyContent: "space-between", padding: "24px" }} className="border-b-gray-500 border-b-2">
+      <Row style={{ width: undefined, gap: "24px" }}>
         <LargeLogo isLight />
-        <div className="w-8" />
         {navLinks}
-      </div>
+      </Row>
       <LoginButton />
-    </div>
+    </Row>
   );
 };
