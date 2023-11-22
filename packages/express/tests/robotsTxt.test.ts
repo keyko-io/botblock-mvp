@@ -16,7 +16,7 @@ describe('GET /fetch-robots-txt', () => {
     });
 
 
-    it('Service Should be alble to fetch a robots.txt', async () => {
+    it('Service Should be able to fetch a robots.txt', async () => {
 
         const req = { query: { url: 'https://example.com' } };
         const res = {
