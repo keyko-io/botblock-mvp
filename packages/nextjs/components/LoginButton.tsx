@@ -1,5 +1,5 @@
-import { ProfileButton } from "./UserButton/components/ProfileButton";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 import { Button } from "~~/ui/";
 
 /**
@@ -7,26 +7,19 @@ import { Button } from "~~/ui/";
  */
 
 export const LoginButton = () => {
-  return (
-    <ConnectButton.Custom>
-      {({ account, chain, openConnectModal, mounted, connectModalOpen }) => {
-        const connected = mounted && account && chain;
-        return connected ? (
-          <ProfileButton name={account.ensName ?? account.displayName} />
-        ) : (
-          <Button
-            onClick={openConnectModal}
-            disabled={connectModalOpen}
-            color="ternary"
-            icon={connectModalOpen ? undefined : "plus"}
-            size="lg"
-          >
-            {connectModalOpen ? "Logging in..." : "Log In"}
-          </Button>
-        );
-      }}
-    </ConnectButton.Custom>
-  );
+  const { connectModalOpen, openConnectModal } = useConnectModal();
+  const { isConnected } = useAccount();
+  return openConnectModal ? (
+    <Button
+      onClick={openConnectModal}
+      disabled={connectModalOpen || isConnected}
+      color="ternary"
+      icon={connectModalOpen ? undefined : "plus"}
+      size="lg"
+    >
+      {connectModalOpen ? "Logging in..." : isConnected ? "Logged In" : "Log In"}
+    </Button>
+  ) : null;
 };
 
 LoginButton.displayName = "LoginButton";

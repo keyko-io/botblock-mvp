@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LargeLogo } from "../LargeLogo";
-import { LoginButton } from "../LoginButton";
+import { UserButton } from "../UserButton/UserButton";
 import { palette } from "~~/styles/colors";
 import { Row } from "~~/ui";
 
@@ -46,7 +46,7 @@ export const Header = () => {
         <LargeLogo isLight />
         {navLinks}
       </Row>
-      <LoginButton />
+      <UserButton />
     </Row>
   );
 };
