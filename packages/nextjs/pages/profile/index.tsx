@@ -66,7 +66,7 @@ const Table = ({
           ) : (
             <tr>
               <td colSpan={headers.length}>
-                <Text style={{ textAlign: "center" }}>{emptyTableMessage}</Text>
+                <Text style={{ textAlign: "center", padding: "16px 8px" }}>{emptyTableMessage}</Text>
               </td>
             </tr>
           )}
