@@ -20,7 +20,7 @@ export const ProfileButton = ({}: ProfileButtonProps) => {
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   return (
-    <button onClick={toggleDropdown} style={{ position: "relative", width: "57px" }}>
+    <button onClick={toggleDropdown} style={{ position: "relative", width: "150px" }}>
       <ScribbleIcon
         color={palette.purple[100]}
         style={{
@@ -33,7 +33,7 @@ export const ProfileButton = ({}: ProfileButtonProps) => {
         }}
       />
       <Row style={{ position: "absolute", top: "50%", left: "45%", transform: "translate(-55%, -50%)", gap: "4px" }}>
-        <p style={{ fontSize: "27px" }}>🧑‍⚕️</p>
+        <p style={{ fontSize: "27px", paddingLeft: "16px" }}>🧑‍⚕️</p>
         <ChevronIcon color={coreColors.white} style={{ transform: "rotate(-90deg)", marginTop: "8px" }} />
       </Row>
       <Dropdown isOpen={isDropdownOpen}>
