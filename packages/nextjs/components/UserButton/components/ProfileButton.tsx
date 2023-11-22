@@ -1,11 +1,9 @@
-import { SVGProps } from "react";
+import { SVGProps, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { LogoutButton } from "./LogoutButton";
 import { coreColors, palette } from "~~/styles/colors";
-import { Button, Column, Row } from "~~/ui";
-import { Dropdown } from "~~/ui/Dropdown/Dropdown";
-import { useDropdown } from "~~/ui/Dropdown/Dropdown.hooks";
+import { Button, Column, Dropdown, Row } from "~~/ui";
 
 const ChevronIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/chevron.svg"));
 const ScribbleIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/scribble.svg"));
@@ -16,13 +14,18 @@ interface ProfileButtonProps {
 
 export const ProfileButton = ({}: ProfileButtonProps) => {
   const router = useRouter();
-  const { isDropdownOpen, setIsDropdownOpen } = useDropdown();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const browseToProfile = () => router.push("/profile");
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+  const openDropdown = () => setIsDropdownOpen(true);
+  const closeDropdown = () => setIsDropdownOpen(false);
+  const browseToProfile = () => {
+    setIsDropdownOpen(false);
+    router.push("/profile");
+  };
 
   return (
-    <button onClick={toggleDropdown} style={{ position: "relative", width: "150px" }}>
+    <div style={{ position: "relative", width: "150px" }}>
+      <button onClick={openDropdown}>
       <ScribbleIcon
         color={palette.purple[100]}
         style={{
@@ -38,7 +41,8 @@ export const ProfileButton = ({}: ProfileButtonProps) => {
         <p style={{ fontSize: "27px", paddingLeft: "16px" }}>🧑‍⚕️</p>
         <ChevronIcon color={coreColors.white} style={{ transform: "rotate(-90deg)", marginTop: "8px" }} />
       </Row>
-      <Dropdown isOpen={isDropdownOpen}>
+      </button>
+      <Dropdown isOpen={isDropdownOpen} close={closeDropdown}>
         <Column style={{ padding: "8px", gap: "8px" }}>
           <Button fullWidth size="lg" onClick={browseToProfile}>
             Profile
@@ -46,6 +50,6 @@ export const ProfileButton = ({}: ProfileButtonProps) => {
           <LogoutButton />
         </Column>
       </Dropdown>
-    </button>
+    </div>
   );
 };
