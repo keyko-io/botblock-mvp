@@ -1,6 +1,7 @@
 import { SVGProps, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import { LogoutButton } from "./LogoutButton";
 import { coreColors, palette } from "~~/styles/colors";
 import { Button, Column, Row } from "~~/ui";
 import { Dropdown } from "~~/ui/Dropdown/Dropdown";
@@ -41,6 +42,7 @@ export const ProfileButton = ({}: ProfileButtonProps) => {
           <Button fullWidth size="lg" onClick={browseToProfile}>
             Profile
           </Button>
+          <LogoutButton />
         </Column>
       </Dropdown>
     </button>

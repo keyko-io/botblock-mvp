@@ -15,7 +15,7 @@ export const LogoutButton = () => {
     }
   };
   return (
-    <Button onClick={logOut} color="ternary" size="lg">
+    <Button onClick={logOut} color="ternary" size="lg" fullWidth>
       Log Out
     </Button>
   );
