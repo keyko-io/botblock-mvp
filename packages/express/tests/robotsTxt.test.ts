@@ -43,7 +43,6 @@ describe('GET /fetch-robots-txt', () => {
         };
 
         await fetchRobotsTxt(req, res);
-        console.log(res)
 
         expect(res.status).toHaveBeenCalledWith(400);
         expect(res.status).not.toHaveBeenCalledWith(500);
