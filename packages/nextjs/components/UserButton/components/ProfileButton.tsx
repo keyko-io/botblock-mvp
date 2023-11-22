@@ -1,10 +1,11 @@
-import { SVGProps, useState } from "react";
+import { SVGProps } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { LogoutButton } from "./LogoutButton";
 import { coreColors, palette } from "~~/styles/colors";
 import { Button, Column, Row } from "~~/ui";
 import { Dropdown } from "~~/ui/Dropdown/Dropdown";
+import { useDropdown } from "~~/ui/Dropdown/Dropdown.hooks";
 
 const ChevronIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/chevron.svg"));
 const ScribbleIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/scribble.svg"));
@@ -15,7 +16,7 @@ interface ProfileButtonProps {
 
 export const ProfileButton = ({}: ProfileButtonProps) => {
   const router = useRouter();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { isDropdownOpen, setIsDropdownOpen } = useDropdown();
 
   const browseToProfile = () => router.push("/profile");
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
