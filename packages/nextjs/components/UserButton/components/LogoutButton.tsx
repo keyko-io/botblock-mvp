@@ -2,12 +2,17 @@ import toast from "react-hot-toast";
 import { useDisconnect } from "wagmi";
 import { Button } from "~~/ui";
 
-export const LogoutButton = () => {
+interface LogoutButtonProps {
+  onLogout?: () => void;
+}
+
+export const LogoutButton = ({ onLogout }: LogoutButtonProps) => {
   const { disconnect } = useDisconnect();
 
   const logOut = async () => {
     try {
       disconnect();
+      onLogout && onLogout();
       toast.success("Successfully logged out");
     } catch (error) {
       console.error(error);
