@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { Request, Response } from 'express';
 
 
-export const fetchRobotsTxt = async (req: any, res: any) => {
+export const fetchRobotsTxt = async (req: Request, res: Response) => {
     const { url } = req.query; // Extract the 'url' query parameter
 
     if (!url) {

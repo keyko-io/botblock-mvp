@@ -18,8 +18,8 @@ describe('GET /fetch-robots-txt', () => {
 
     it('Service Should be able to fetch a robots.txt', async () => {
 
-        const req = { query: { url: 'https://example.com' } };
-        const res = {
+        const req: any = { query: { url: 'https://example.com' } };
+        const res: any = {
             status: jest.fn().mockReturnThis(),
             send: jest.fn(),
         };
@@ -36,8 +36,8 @@ describe('GET /fetch-robots-txt', () => {
     });
 
     it('should handle missing url parameter', async () => {
-        const req = { query: {} };
-        const res = {
+        const req: any = { query: {} };
+        const res: any = {
             status: jest.fn().mockReturnThis(),
             send: jest.fn(),
         };
@@ -50,8 +50,8 @@ describe('GET /fetch-robots-txt', () => {
     });
 
     it('should handle error fetching robots.txt', async () => {
-        const req = { query: { url: 'https://example.com' } };
-        const res = {
+        const req: any = { query: { url: 'https://example.com' } };
+        const res: any = {
             status: jest.fn().mockReturnThis(),
             send: jest.fn(),
         };
