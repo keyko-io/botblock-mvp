@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
-import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
+import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { Button } from "~~/ui";
@@ -134,15 +134,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      {!isConnected && (
-        <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
-          <div className="flex rounded-full border border-primary p-1 flex-shrink-0">
-            <div className="flex rounded-full border-2 border-primary p-1">
-              <RainbowKitCustomConnectButton />
-            </div>
-          </div>
-        </div>
-      )}
+      {!isConnected && <LoginButton />}
       {!!uri && isValid && isConnected && (
         <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
           {CTA_SUBMIT}
