@@ -15,7 +15,7 @@ export const Footer = () => {
   const router = useRouter();
 
   const browseToProtect = () => router.push("/protect");
-  const browseToPartner = () => router.push("/unlock/partner");
+  const browseToPartner = () => router.push("/partner");
   const browseToSubscribe = () => router.push("/subscribe");
 
   return (

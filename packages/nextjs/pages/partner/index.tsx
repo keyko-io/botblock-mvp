@@ -39,7 +39,7 @@ const Landing = () => {
       uri,
     };
     setPlanData(plan);
-    router.push("/unlock/partner/confirm");
+    router.push("/partner/confirm");
   };
   const handleSetUrl = (input: string) => {
     if (input === "") {
