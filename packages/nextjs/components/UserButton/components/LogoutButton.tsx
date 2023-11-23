@@ -1,25 +1,27 @@
 import toast from "react-hot-toast";
 import { useDisconnect } from "wagmi";
+import { Button } from "~~/ui";
 
-interface ProfileButtonProps {
-  name?: string;
+interface LogoutButtonProps {
+  onLogout?: () => void;
 }
 
-export const ProfileButton = ({ name }: ProfileButtonProps) => {
+export const LogoutButton = ({ onLogout }: LogoutButtonProps) => {
   const { disconnect } = useDisconnect();
+
   const logOut = async () => {
     try {
       disconnect();
+      onLogout && onLogout();
       toast.success("Successfully logged out");
     } catch (error) {
       console.error(error);
       toast.error("Error while trying to disconnect. Please try again");
     }
   };
-
   return (
-    <button className="btn btn-primary btn-sm" onClick={logOut} type="button">
-      {name && `[${name}] `}→ Log out
-    </button>
+    <Button onClick={logOut} color="ternary" size="lg" fullWidth>
+      Log Out
+    </Button>
   );
 };

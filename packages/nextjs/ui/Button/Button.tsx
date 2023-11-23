@@ -20,6 +20,7 @@ const iconMap: Record<ButtonIcons, ComponentType<SVGProps<SVGElement>>> = {
 interface ButtonProps extends PropsWithChildren {
   color?: ButtonColors;
   disabled?: boolean;
+  fullWidth?: boolean;
   icon?: ButtonIcons;
   isLoading?: boolean;
   onClick: () => void;
@@ -30,6 +31,7 @@ export const Button = ({
   color = "primary",
   children,
   disabled = false,
+  fullWidth = false,
   icon,
   isLoading,
   onClick,
@@ -45,6 +47,7 @@ export const Button = ({
         ...colorButtonStyle[color],
         ...(size === "lg" ? grungeButtonStyle : {}),
         ...(color === "ternary" ? blackBorderButtonStyle : {}),
+        ...(fullWidth ? { width: "100%" } : {}),
       }}
     >
       {typeof children === "string" ? (
