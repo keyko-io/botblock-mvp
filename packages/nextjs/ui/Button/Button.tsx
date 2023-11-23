@@ -60,7 +60,7 @@ export const Button = ({
       ) : (
         children
       )}
-      {!!icon && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
+      {!!icon && !isLoading && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
       {isLoading && <Loader />}
     </button>
   );

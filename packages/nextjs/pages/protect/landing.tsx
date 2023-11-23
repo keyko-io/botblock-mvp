@@ -19,9 +19,17 @@ const Landing = () => {
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!url) {
-      toast.error(`Please write an url`);
+      toast.error(`Please enter a URL.`);
       return;
     }
+
+    const isUrlValid = isValidURL(url);
+
+    if (!isUrlValid) {
+      toast.error(`Please enter a valid URL.`);
+      return;
+    }
+
     try {
       setIsLoading(true);
       await getRobotsTxt(url);
@@ -30,6 +38,15 @@ const Landing = () => {
       alert(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const isValidURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
     }
   };
 
@@ -52,8 +69,8 @@ const Landing = () => {
             />
           </div>
 
-          <Button icon={"arrow-right"} disabled={isLoading} type="submit">
-            {CTA_TEXT}
+          <Button icon={"arrow-right"} disabled={isLoading} type="submit" isLoading={isLoading}>
+            <span className="font-medium text-white">{CTA_TEXT} </span>
           </Button>
         </form>
       </div>

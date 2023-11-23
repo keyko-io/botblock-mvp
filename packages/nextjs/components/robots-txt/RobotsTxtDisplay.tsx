@@ -24,7 +24,7 @@ export const RobotsTxtDisplay = () => {
           {rewrittenRobots}
         </code>
       </pre>
-      <div className="mt-16 flex flex-row justify-evenly">
+      <div className="mt-16 flex flex-row justify-evenly mb-10">
         <CopyToClipboard text={rewrittenRobots} onCopy={() => toast.success("Successfully copied")}>
           <Button
             onClick={() => {

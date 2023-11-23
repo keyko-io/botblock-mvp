@@ -5,7 +5,7 @@ import { parseRobots } from "~~/utils/robots/parseRobots";
 import { writeNewRobots } from "~~/utils/robots/writeNewRobots";
 
 // NGROK tunneling
-const EXPRESS_URL = "https://correctly-leading-chicken.ngrok-free.app";
+const EXPRESS_URL = "https://bxn.backend.botblock.keyko.rocks";
 
 // State variables only
 type RobotsContextState = {

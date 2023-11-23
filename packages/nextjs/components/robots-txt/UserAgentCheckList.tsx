@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRobotsContext } from "~~/context/RobotsContext";
-import { Loader } from "~~/ui";
+import { Button, Loader, Text } from "~~/ui";
 
 const recommendedAgentsToBlock = ["GPTBot", "CCBot"];
 
@@ -64,20 +64,19 @@ export const UserAgentCheckList = () => {
     <div>
       <ul>
         {userAgents.map((agent, idx) => (
-          <li key={`${agent}-${idx}`} className="flex flex-row gap-4" onClick={() => toggleAgent(agent)}>
+          <li key={`${agent}-${idx}`} className="flex flex-row mt-4" onClick={() => toggleAgent(agent)}>
             <input type="checkbox" value={agent} checked={userAgentBlockSelection[agent]} />
-            <p>
+            <Text style={{ marginLeft: "16px" }}>
               {recommendedAgentsToBlock.includes(agent) && "[Recommended]"} {agent}
-            </p>
+            </Text>
           </li>
         ))}
       </ul>
-      <button
-        className="btn btn-primary w-60 rounded-full capitalize font-normal font-white flex items-center gap-1 hover:gap-2 transition-all tracking-widest"
-        onClick={handleGenerateRobots}
-      >
-        Generate new robots file
-      </button>
+      <div className="mt-8">
+        <Button onClick={handleGenerateRobots}>
+          <span className="font-medium text-white">Generate new robots file</span>
+        </Button>
+      </div>
     </div>
   );
 };
