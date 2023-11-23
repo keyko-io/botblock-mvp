@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ClipboardIcon } from "@heroicons/react/24/solid";
 
-const CodeSnippetButton = ({ planId }: { planId: string }) => {
+export const CodeSnippetButton = ({ planId }: { planId: string }) => {
   const [isCopied, setIsCopied] = useState(false);
   const linkUrl = `https://botblock-3805ec.spheron.app/subscribe/${planId}`;
   const buttonText = "Go to Botblock to authorize crawler";
@@ -47,5 +47,3 @@ ${buttonText}
     </div>
   );
 };
-
-export default CodeSnippetButton;
