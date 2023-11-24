@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { useRobotsContext } from "~~/context/RobotsContext";
-import { Button } from "~~/ui";
+import { Button, Input, Text } from "~~/ui";
 
 const TITLE = "Title";
 const DESCRIPTION = "Description";
@@ -9,52 +10,70 @@ const INPUT_PLACEHOLDER = "Insert the URL of your site here";
 const CTA_TEXT = "Submit";
 
 const Landing = () => {
-  const [url, setUrl] = useState("");
-  const [submittedUrl, setSubmittedUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { getRobotsTxt } = useRobotsContext();
   const router = useRouter();
 
-  const handleOnSubmit = () => {
-    setIsLoading(true);
-    setSubmittedUrl(url);
+  const [url, setUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { getRobotsTxt } = useRobotsContext();
+
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!url) {
+      toast.error(`Please enter a URL.`);
+      return;
+    }
+
+    const isUrlValid = isValidURL(url);
+
+    if (!isUrlValid) {
+      toast.error(`Please enter a valid URL.`);
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      await getRobotsTxt(url);
+      await router.push("robots-txt");
+    } catch (error) {
+      alert(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  useEffect(() => {
-    const executeSubmission = async () => {
-      try {
-        await getRobotsTxt(submittedUrl);
-        await router.push("robots-txt");
-      } catch (error) {
-        alert(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (isLoading && submittedUrl) {
-      executeSubmission();
+  const isValidURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
     }
-  }, [getRobotsTxt, isLoading, router, submittedUrl]);
+  };
 
   return (
-    <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
-      <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
-      <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-5">
-        <input
-          type="text"
-          placeholder={INPUT_PLACEHOLDER}
-          className="input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-          onChange={e => setUrl(e.target.value)}
-          onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-        />
+    <div className="max-w-[1024px] flex mx-auto mt-24">
+      <div className="flex-grow">
+        <Text as={"h1"} type="h1">
+          {TITLE}
+        </Text>
+        <Text as={"h3"} type="h3" style={{ marginTop: "1rem" }}>
+          {DESCRIPTION}
+        </Text>
+
+        <form className="mt-8 text-black flex w-full" onSubmit={handleOnSubmit}>
+          <div className="flex-1 mr-2">
+            <Input
+              placeholder={INPUT_PLACEHOLDER}
+              value={url}
+              onChange={e => setUrl((e.target as HTMLInputElement).value)}
+            />
+          </div>
+
+          <Button icon={"arrow-right"} disabled={isLoading} type="submit" isLoading={isLoading}>
+            <span className="font-medium text-white">{CTA_TEXT} </span>
+          </Button>
+        </form>
       </div>
-      {!!url && (
-        <Button disabled={isLoading} icon={"arrow-right"} onClick={handleOnSubmit}>
-          {CTA_TEXT}
-        </Button>
-      )}
     </div>
   );
 };

@@ -23,8 +23,9 @@ interface ButtonProps extends PropsWithChildren {
   fullWidth?: boolean;
   icon?: ButtonIcons;
   isLoading?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   size?: "sm" | "lg";
+  type?: "submit";
 }
 
 export const Button = ({
@@ -36,10 +37,12 @@ export const Button = ({
   isLoading,
   onClick,
   size = "sm",
+  type,
 }: ButtonProps) => {
   const MappedIcon = iconMap[icon as ButtonIcons];
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       style={{
@@ -57,7 +60,7 @@ export const Button = ({
       ) : (
         children
       )}
-      {!!icon && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
+      {!!icon && !isLoading && <MappedIcon color={color === "ternary" ? coreColors.black : coreColors.white} />}
       {isLoading && <Loader />}
     </button>
   );

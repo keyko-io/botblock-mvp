@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { exoFont } from "~~/public/assets/fonts";
 import { coreColors, pressableColors } from "~~/styles/colors";
 
 export const containerStyle: CSSProperties = {
@@ -9,6 +10,7 @@ export const containerStyle: CSSProperties = {
   borderRadius: "8px",
   borderWidth: "1px",
   borderColor: coreColors.black,
+  fontFamily: exoFont.style.fontFamily,
 };
 
 export const labelStyle: CSSProperties = {
