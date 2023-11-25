@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 import { TextColors, Typography } from "./Text.types";
 import { courierPrimeFont, exoFont } from "~~/public/assets/fonts";
+import { coreColors } from "~~/styles/colors";
 
 export const baseTextStyles: CSSProperties = {
   margin: 0,
@@ -12,12 +13,14 @@ export const baseTextStyles: CSSProperties = {
 };
 
 export const textColorStyles: Record<TextColors, CSSProperties> = {
-  themed: {}, // Use default configuration that is controlled by the theme
+  error: {
+    color: coreColors.red,
+  },
   dark: {
-    color: "#000000",
+    color: coreColors.black,
   },
   light: {
-    color: "#FFFFFF",
+    color: coreColors.white,
   },
 };
 

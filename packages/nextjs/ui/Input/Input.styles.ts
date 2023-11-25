@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 import { exoFont } from "~~/public/assets/fonts";
-import { coreColors, pressableColors } from "~~/styles/colors";
+import { coreColors } from "~~/styles/colors";
 
 export const containerStyle: CSSProperties = {
   display: "flex",
@@ -14,7 +14,7 @@ export const containerStyle: CSSProperties = {
 };
 
 export const labelStyle: CSSProperties = {
-  color: pressableColors.placeholderText,
+  color: coreColors.gray,
 };
 
 export const inputStyle: CSSProperties = {

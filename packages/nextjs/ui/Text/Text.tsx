@@ -5,7 +5,7 @@ import { Typography } from "./Text.types";
 interface TextProps {
   as?: ElementType;
   onClick?: () => void;
-  color?: "themed" | "light" | "dark";
+  color?: "error" | "light" | "dark";
   type?: Typography;
   style?: CSSProperties;
 }
