@@ -4,16 +4,19 @@ import { Column } from "../Column";
 import { Dropdown } from "../Dropdown/Dropdown";
 import { Row } from "../Row";
 import { Text } from "../Text/Text";
+import { Option } from "./components/Option";
 import { coreColors, palette } from "~~/styles/colors";
 
 const ChevronIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/chevron.svg"));
 
 interface SelectProps extends Omit<InputHTMLAttributes<any>, "onChange"> {
   label?: string;
+  onChange: (newValue: string) => void;
+  options: readonly string[];
   selected: string;
 }
 
-export const Select = ({ disabled, id, label, selected }: SelectProps) => {
+export const Select = ({ disabled, id, label, onChange, options, selected }: SelectProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const openDropdown = () => setIsDropdownOpen(true);
@@ -61,7 +64,20 @@ export const Select = ({ disabled, id, label, selected }: SelectProps) => {
           backgroundColor: palette.slate[100],
         }}
       >
-        <Column></Column>
+        <Column>
+          {options.map(value => (
+            <Option
+              key={value.toString()}
+              isSelected={value === selected}
+              onClick={() => {
+                onChange(value);
+                closeDropdown();
+              }}
+            >
+              {value}
+            </Option>
+          ))}
+        </Column>
       </Dropdown>
     </Column>
   );
