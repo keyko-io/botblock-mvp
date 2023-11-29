@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
-import { Plan, Token, TokenAddress } from "~~/context/Types";
+import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { Button } from "~~/ui";
+import { Button, Row, Select } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
@@ -83,56 +83,26 @@ const Landing = () => {
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           value={price}
         />
-        {/* DURATION */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1 flex items-center">
-            <label htmlFor="select" className="text-lg font-medium text-gray-600">
-              {SUBSCRIPTION_DURATION_LABEL}
-            </label>
-          </div>
+        <Row style={{ gap: "16px" }}>
+          {/* DURATION */}
+          <Select
+            id="duration-select"
+            label={SUBSCRIPTION_DURATION_LABEL}
+            onChange={value => setDuration(value)}
+            options={["1Month", "3Months", "9Months", "12Months"]}
+            selected={duration}
+          />
 
-          <div className="col-span-2">
-            <div className="flex">
-              <select
-                id="select"
-                className="block w-full px-4 py-2 leading-5 text-gray-700 border rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
-                onChange={e => setDuration(e.target.value)}
-                value={duration}
-              >
-                <option value="1Month">1 Month</option>
-                <option value="3Months">3 Months</option>
-                <option value="9Months">9 Months</option>
-                <option value="12Months">12 Months</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* TOKEN */}
-        <div className="grid grid-cols-3 gap-4">
-          <div className="col-span-1 flex items-center">
-            <label htmlFor="select" className="text-lg font-medium text-gray-600">
-              {TOKEN_SELECTION_LABEL}
-            </label>
-          </div>
-
-          <div className="col-span-2">
-            <div className="flex">
-              <select
-                id="select"
-                className="block w-full px-4 py-2 leading-5 text-gray-700 border rounded-md focus:outline-none focus:border-blue-500 focus:ring focus:ring-blue-200"
-                onChange={e => setPaymentTokenAddress(e.target.value as TokenAddress)}
-                value={paymentTokenAddress}
-              >
-                <option value={TokenAddress[Token.USDC]}>{Token.USDC}</option>
-                <option value={TokenAddress[Token.DAI]}>{Token.DAI}</option>
-                <option value={TokenAddress[Token.USDT]}>{Token.USDT}</option>
-                <option value={TokenAddress[Token.APE]}>{Token.APE}</option>
-                <option value={TokenAddress[Token.KIT]}>{Token.KIT}</option>
-              </select>
-            </div>
-          </div>
-        </div>
+          {/* TOKEN */}
+          <Select
+            id="currency-select"
+            label={TOKEN_SELECTION_LABEL}
+            onChange={value => setPaymentTokenAddress(TokenAddress[value as Token])}
+            options={[Token.USDC, Token.DAI, Token.USDT, Token.APE, Token.KIT]}
+            selected={tokenAddressMap[paymentTokenAddress]}
+            value={paymentTokenAddress}
+          />
+        </Row>
       </div>
       {!isConnected && <LoginButton />}
       {!!uri && isValid && isConnected && (
