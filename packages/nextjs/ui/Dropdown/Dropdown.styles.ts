@@ -1,5 +1,4 @@
 import { CSSProperties } from "react";
-import { palette } from "~~/styles/colors";
 
 export const baseDropdownStyle: CSSProperties = {
   position: "absolute",
@@ -13,10 +12,12 @@ export const baseDropdownStyle: CSSProperties = {
   transform: "translate3d(0px, 2rem, 0px)",
   textAlign: "center",
   listStyle: "none",
-  borderWidth: "1px",
-  borderColor: palette.yellow[100],
   borderRadius: "8px",
   minWidth: "100%",
+};
+
+export const shadowDropdownStyle: CSSProperties = {
+  boxShadow: "3px 3px 12px rgba(231, 231, 237, 0.5)",
 };
 
 export const openDropdownStyle: CSSProperties = {

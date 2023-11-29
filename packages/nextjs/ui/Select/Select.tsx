@@ -60,14 +60,17 @@ export const Select = ({ disabled, id, label, onChange, options, selected }: Sel
         isOpen={isDropdownOpen}
         close={closeDropdown}
         isTwoLineButton={!!label}
+        shadowBox
         style={{
           backgroundColor: palette.slate[100],
         }}
       >
         <Column>
-          {options.map(value => (
+          {options.map((value, idx) => (
             <Option
               key={value.toString()}
+              roundTop={idx === 0}
+              roundBottom={idx === options.length - 1}
               isSelected={value === selected}
               onClick={() => {
                 onChange(value);

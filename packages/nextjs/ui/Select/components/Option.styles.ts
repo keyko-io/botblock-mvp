@@ -9,3 +9,13 @@ export const baseOptionStyle: CSSProperties = {
 export const selectedOptionStyle: CSSProperties = {
   backgroundColor: coreColors.gray,
 };
+
+export const roundBottomOptionStyle: CSSProperties = {
+  borderBottomLeftRadius: "8px",
+  borderBottomRightRadius: "8px",
+};
+
+export const roundTopOptionStyle: CSSProperties = {
+  borderTopLeftRadius: "8px",
+  borderTopRightRadius: "8px",
+};
