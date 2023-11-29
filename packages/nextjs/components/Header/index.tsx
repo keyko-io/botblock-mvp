@@ -29,10 +29,10 @@ export const Header = () => {
   const navLinks = (
     <Row as="ul" style={{ width: undefined }}>
       <li>
-        <NavLink href="/protect/landing">Protect</NavLink>
+        <NavLink href="/protect">Protect</NavLink>
       </li>
       <li>
-        <NavLink href="/unlock/partner/landing">Partner</NavLink>
+        <NavLink href="/partner">Partner</NavLink>
       </li>
       <li>
         <NavLink href="/subscribe">Subscribe</NavLink>

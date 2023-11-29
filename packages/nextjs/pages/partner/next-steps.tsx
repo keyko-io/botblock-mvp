@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { CodeSnippetButton } from "~~/components";
 import { BotBlockWidget } from "~~/components/BotBlockWidget/BotBlockWidget";
 import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
-import CodeSnippetButton from "~~/components/unlock/CodeSnippet";
 import { Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 
