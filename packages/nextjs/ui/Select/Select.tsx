@@ -1,9 +1,9 @@
 import { InputHTMLAttributes, SVGProps, useState } from "react";
 import dynamic from "next/dynamic";
-import { Column } from "./Column";
-import { Dropdown } from "./Dropdown/Dropdown";
-import { Row } from "./Row";
-import { Text } from "./Text/Text";
+import { Column } from "../Column";
+import { Dropdown } from "../Dropdown/Dropdown";
+import { Row } from "../Row";
+import { Text } from "../Text/Text";
 import { coreColors, palette } from "~~/styles/colors";
 
 const ChevronIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/chevron.svg"));
