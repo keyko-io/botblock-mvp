@@ -56,6 +56,7 @@ export const Select = ({ disabled, id, label, selected }: SelectProps) => {
       <Dropdown
         isOpen={isDropdownOpen}
         close={closeDropdown}
+        isTwoLineButton={!!label}
         style={{
           backgroundColor: palette.slate[100],
         }}

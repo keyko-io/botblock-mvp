@@ -23,3 +23,7 @@ export const openDropdownStyle: CSSProperties = {
   display: "block",
   zIndex: 1,
 };
+
+export const twoLineButtonDropdownStyle: CSSProperties = {
+  transform: "translate3d(0px, 4rem, 0px)",
+};
