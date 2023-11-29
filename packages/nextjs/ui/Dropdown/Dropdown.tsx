@@ -1,13 +1,14 @@
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { CSSProperties, PropsWithChildren, useEffect, useRef } from "react";
 import { baseDropdownStyle, openDropdownStyle } from "./Dropdown.styles";
 
 interface DropdownProps {
   close: () => void;
   id?: string;
   isOpen?: boolean;
+  style?: CSSProperties;
 }
 
-export const Dropdown = ({ children, close, id, isOpen = false }: PropsWithChildren<DropdownProps>) => {
+export const Dropdown = ({ children, id, close, isOpen = false, style }: PropsWithChildren<DropdownProps>) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export const Dropdown = ({ children, close, id, isOpen = false }: PropsWithChild
       ref={ref}
       style={{
         ...baseDropdownStyle,
+        ...style,
         ...(isOpen && openDropdownStyle),
       }}
     >

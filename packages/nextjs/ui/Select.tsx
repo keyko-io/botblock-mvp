@@ -1,6 +1,7 @@
 import { InputHTMLAttributes, useState } from "react";
 import { Dropdown } from "./Dropdown/Dropdown";
 import { Text } from "./Text/Text";
+import { palette } from "~~/styles/colors";
 
 interface SelectProps extends Omit<InputHTMLAttributes<any>, "onChange"> {
   label?: string;
@@ -21,7 +22,11 @@ export const Select = ({ id, label }: SelectProps) => {
           </Text>
         )}
       </button>
-      <Dropdown isOpen={isDropdownOpen} close={closeDropdown}></Dropdown>
+      <Dropdown
+        isOpen={isDropdownOpen}
+        close={closeDropdown}
+        style={{ backgroundColor: palette.slate[100] }}
+      ></Dropdown>
     </>
   );
 };
