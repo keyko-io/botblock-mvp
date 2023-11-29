@@ -6,6 +6,7 @@ interface TextProps {
   as?: ElementType;
   onClick?: () => void;
   color?: "error" | "light" | "dark";
+  htmlFor?: string;
   type?: Typography;
   style?: CSSProperties;
 }

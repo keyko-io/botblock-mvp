@@ -3,10 +3,11 @@ import { baseDropdownStyle, openDropdownStyle } from "./Dropdown.styles";
 
 interface DropdownProps {
   close: () => void;
+  id?: string;
   isOpen?: boolean;
 }
 
-export const Dropdown = ({ children, close, isOpen = false }: PropsWithChildren<DropdownProps>) => {
+export const Dropdown = ({ children, close, id, isOpen = false }: PropsWithChildren<DropdownProps>) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ export const Dropdown = ({ children, close, isOpen = false }: PropsWithChildren<
 
   return (
     <div
+      id={id}
       ref={ref}
       style={{
         ...baseDropdownStyle,

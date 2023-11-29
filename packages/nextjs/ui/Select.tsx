@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { InputHTMLAttributes, useState } from "react";
 import { Dropdown } from "./Dropdown/Dropdown";
 import { Text } from "./Text/Text";
 
-export const Select = () => {
+interface SelectProps extends Omit<InputHTMLAttributes<any>, "onChange"> {
+  label?: string;
+}
+
+export const Select = ({ id, label }: SelectProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const openDropdown = () => setIsDropdownOpen(true);
@@ -10,8 +14,12 @@ export const Select = () => {
 
   return (
     <>
-      <button onClick={openDropdown}>
-        <Text>Label</Text>
+      <button id={id} onClick={openDropdown}>
+        {label && (
+          <Text htmlFor={id} type="label">
+            {label}
+          </Text>
+        )}
       </button>
       <Dropdown isOpen={isDropdownOpen} close={closeDropdown}></Dropdown>
     </>
