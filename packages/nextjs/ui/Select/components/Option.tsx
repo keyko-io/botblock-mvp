@@ -1,16 +1,18 @@
 import { HTMLProps, PropsWithChildren } from "react";
 import { Text } from "../../Text/Text";
-import { baseOptionStyle } from "./Option.styles";
+import { baseOptionStyle, selectedOptionStyle } from "./Option.styles";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface OptionProps extends HTMLProps<HTMLButtonElement> {}
+interface OptionProps extends HTMLProps<HTMLButtonElement> {
+  isSelected?: boolean;
+}
 
-export const Option = ({ children, key, onClick, style }: PropsWithChildren<OptionProps>) => (
+export const Option = ({ children, key, isSelected, onClick, style }: PropsWithChildren<OptionProps>) => (
   <button
     key={key}
     onClick={onClick}
     style={{
       ...baseOptionStyle,
+      ...(isSelected && selectedOptionStyle),
       ...style,
     }}
   >
