@@ -5,12 +5,11 @@ import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
 import { coreColors } from "~~/styles/colors";
-import { Button, Column, Row, Select, Text } from "~~/ui";
+import { Button, Column, Input, Row, Select, Text } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
   "Create a plan. Once an AI bot will subscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
-const URI_PLACEHOLDER = "Insert the URL of your site here";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
 const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
@@ -59,14 +58,10 @@ const Landing = () => {
       <Text type="h3">{DESCRIPTION}</Text>
       <Column style={{ gap: "16px" }}>
         {/* URI */}
-        <input
+        <Input
+          label={"Website URL"}
+          placeholder={"https://www.example.com/"}
           type="text"
-          placeholder={URI_PLACEHOLDER}
-          className={
-            isValid
-              ? "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-              : "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
-          }
           onChange={e => handleSetUrl(e.target.value)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
         />
@@ -77,11 +72,11 @@ const Landing = () => {
         )}
 
         {/* PRICE */}
-        <input
+        <Input
+          label={"Price"}
           type="number"
           min="1"
           placeholder={PRICE_PLACEHOLDER}
-          className="input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
           onChange={e => setPrice(Number(e.target.value))}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           value={price}
