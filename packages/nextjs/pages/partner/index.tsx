@@ -4,7 +4,6 @@ import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { coreColors } from "~~/styles/colors";
 import { Button, Column, Input, Row, Select, Text } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
@@ -70,12 +69,8 @@ const Landing = () => {
           type="text"
           onChange={e => handleSetUrl(e.target.value)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
+          errorMessage={isValid ? undefined : URL_INPUT_ERROR}
         />
-        {!isValid && (
-          <Text type="sm-print" style={{ marginTop: "4px", color: coreColors.red }}>
-            {URL_INPUT_ERROR}
-          </Text>
-        )}
 
         {/* PRICE */}
         <Input

@@ -28,3 +28,12 @@ export const inputStyle: CSSProperties = {
 export const focusedContainerInputStyle: CSSProperties = {
   borderColor: coreColors.lightGray,
 };
+
+export const errorMessageStyle: CSSProperties = {
+  marginTop: "4px",
+  color: coreColors.red,
+};
+
+export const errorContainerStyle: CSSProperties = {
+  borderColor: coreColors.red,
+};
