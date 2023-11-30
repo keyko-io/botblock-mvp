@@ -4,7 +4,8 @@ import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { Button, Row, Select } from "~~/ui";
+import { coreColors } from "~~/styles/colors";
+import { Button, Column, Row, Select, Text } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
@@ -53,25 +54,27 @@ const Landing = () => {
   };
 
   return (
-    <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
-      <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <Column style={{ padding: "48px", gap: "48px" }}>
+      <Text type="h1">{TITLE}</Text>
+      <Text type="h3">{DESCRIPTION}</Text>
+      <Column style={{ gap: "16px" }}>
         {/* URI */}
-        <div>
-          <input
-            type="text"
-            placeholder={URI_PLACEHOLDER}
-            className={
-              isValid
-                ? "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-                : "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
-            }
-            onChange={e => handleSetUrl(e.target.value)}
-            onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-          />
-          {!isValid && <p className="text-error text-sm mt-1">Please enter a valid website URL.</p>}
-        </div>
+        <input
+          type="text"
+          placeholder={URI_PLACEHOLDER}
+          className={
+            isValid
+              ? "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
+              : "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
+          }
+          onChange={e => handleSetUrl(e.target.value)}
+          onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
+        />
+        {!isValid && (
+          <Text type="sm-print" style={{ marginTop: "4px", color: coreColors.red }}>
+            Please enter a valid website URL.
+          </Text>
+        )}
 
         {/* PRICE */}
         <input
@@ -103,14 +106,21 @@ const Landing = () => {
             value={paymentTokenAddress}
           />
         </Row>
-      </div>
-      {!isConnected && <LoginButton />}
-      {!!uri && isValid && isConnected && (
-        <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
-          {CTA_SUBMIT}
-        </Button>
+      </Column>
+      {!isConnected ? (
+        <Row style={{ gap: "16px" }}>
+          <Text type="h3">Please log in to continue:</Text>
+          <LoginButton />
+        </Row>
+      ) : (
+        !!uri &&
+        isValid && (
+          <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
+            {CTA_SUBMIT}
+          </Button>
+        )
       )}
-    </div>
+    </Column>
   );
 };
 
