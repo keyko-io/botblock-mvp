@@ -1,8 +1,8 @@
-import { HTMLProps } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import { Text } from "../Text/Text";
 import { containerStyle, inputStyle, labelStyle } from "./Input.styles";
 
-interface InputProps extends HTMLProps<HTMLInputElement> {
+interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   label?: string;
 }
 
