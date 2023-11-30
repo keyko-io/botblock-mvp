@@ -26,7 +26,7 @@ const Landing = () => {
   const [uri, setUrl] = useState("");
   const [price, setPrice] = useState(1);
   const [paymentTokenAddress, setPaymentTokenAddress] = useState(TokenAddress[Token.KIT]);
-  const [duration, setDuration] = useState("1Month");
+  const [duration, setDuration] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
@@ -36,7 +36,7 @@ const Landing = () => {
     setIsLoading(true);
     const plan: Plan = {
       contentCreator: address || "",
-      expirationBlock: 1,
+      expirationBlock: duration, // TODO: use duration to calculate expiration block
       price,
       paymentTokenAddress,
       uri,
@@ -92,9 +92,9 @@ const Landing = () => {
         <Select
           id="duration-select"
           label={SUBSCRIPTION_DURATION_LABEL}
-          onChange={value => setDuration(value)}
-          options={["1Month", "3Months", "9Months", "12Months"]}
-          selected={duration}
+          onChange={value => (!!Number(value.split(" ")[0]) ? setDuration(Number(value.split(" ")[0])) : null)}
+          options={["1 Month", "3 Months", "9 Months", "12 Months"]}
+          selected={`${duration} Month${duration > 1 ? "s" : ""}`}
         />
 
         {/* TOKEN */}
