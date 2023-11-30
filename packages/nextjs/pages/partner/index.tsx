@@ -9,10 +9,13 @@ import { Button, Column, Input, Row, Select, Text } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
-  "Create a plan. Once an AI bot will subscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
+  "Create a subscription plan for your website. Once the crawler owners subscribes to it, you will be notified to update your robots.txt file. After that, you should head back here to confirm the update and start getting paid!";
+const COMPLETE_FORM = "Please fill out the form below to create your subscription plan.";
+const URL_INPUT_ERROR = "Please enter a valid website URL.";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
 const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
+const LOGIN_AUX_TEXT = "to submit";
 
 const CTA_SUBMIT = "Submit";
 
@@ -53,9 +56,12 @@ const Landing = () => {
   };
 
   return (
-    <Column style={{ padding: "48px", gap: "48px" }}>
+    <Column style={{ padding: "48px", gap: "24px" }}>
       <Text type="h1">{TITLE}</Text>
-      <Text type="h3">{DESCRIPTION}</Text>
+      <Text type="h3" style={{ marginBottom: "24px" }}>
+        {DESCRIPTION}
+      </Text>
+      <Text type="subheading">{COMPLETE_FORM}</Text>
       <Column style={{ gap: "16px" }}>
         {/* URI */}
         <Input
@@ -67,7 +73,7 @@ const Landing = () => {
         />
         {!isValid && (
           <Text type="sm-print" style={{ marginTop: "4px", color: coreColors.red }}>
-            Please enter a valid website URL.
+            {URL_INPUT_ERROR}
           </Text>
         )}
 
@@ -81,31 +87,30 @@ const Landing = () => {
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           value={price}
         />
-        <Row style={{ gap: "16px" }}>
-          {/* DURATION */}
-          <Select
-            id="duration-select"
-            label={SUBSCRIPTION_DURATION_LABEL}
-            onChange={value => setDuration(value)}
-            options={["1Month", "3Months", "9Months", "12Months"]}
-            selected={duration}
-          />
 
-          {/* TOKEN */}
-          <Select
-            id="currency-select"
-            label={TOKEN_SELECTION_LABEL}
-            onChange={value => setPaymentTokenAddress(TokenAddress[value as Token])}
-            options={[Token.USDC, Token.DAI, Token.USDT, Token.APE, Token.KIT]}
-            selected={tokenAddressMap[paymentTokenAddress]}
-            value={paymentTokenAddress}
-          />
-        </Row>
+        {/* DURATION */}
+        <Select
+          id="duration-select"
+          label={SUBSCRIPTION_DURATION_LABEL}
+          onChange={value => setDuration(value)}
+          options={["1Month", "3Months", "9Months", "12Months"]}
+          selected={duration}
+        />
+
+        {/* TOKEN */}
+        <Select
+          id="currency-select"
+          label={TOKEN_SELECTION_LABEL}
+          onChange={value => setPaymentTokenAddress(TokenAddress[value as Token])}
+          options={[Token.USDC, Token.DAI, Token.USDT, Token.APE, Token.KIT]}
+          selected={tokenAddressMap[paymentTokenAddress]}
+          value={paymentTokenAddress}
+        />
       </Column>
       {!isConnected ? (
-        <Row style={{ gap: "16px" }}>
-          <Text type="h3">Please log in to continue:</Text>
+        <Row style={{ gap: "8px" }}>
           <LoginButton />
+          <Text type="h3">{LOGIN_AUX_TEXT}</Text>
         </Row>
       ) : (
         !!uri &&
