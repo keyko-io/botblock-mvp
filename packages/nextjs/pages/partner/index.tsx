@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
@@ -22,36 +23,52 @@ const Landing = () => {
   const { setPlanData } = useWeb3AuthContext();
   const { address, isConnected } = useAccount();
 
-  const [uri, setUrl] = useState("");
-  const [price, setPrice] = useState(1);
+  const [url, setUrl] = useState("");
+  const [price, setPrice] = useState<number>();
   const [paymentTokenAddress, setPaymentTokenAddress] = useState(TokenAddress[Token.KIT]);
   const [duration, setDuration] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(true);
+  const [isValidUrl, setIsValidUrl] = useState(true);
+  const [isValidPrice, setIsValidPrice] = useState(true);
 
   const router = useRouter();
 
   const handleOnSubmit = () => {
     setIsLoading(true);
+    if (!isConnected) {
+      setIsLoading(false);
+      toast.error(`Please login to continue.`);
+      return;
+    }
+
+    // Validate inputs
+    const isUrlValid = isValidURL(url);
+    setIsValidUrl(isUrlValid);
+    const isPriceValid = !!price && price > 0;
+    setIsValidPrice(isPriceValid);
+
+    // Abort if any input is invalid
+    if (!isUrlValid || !isPriceValid) {
+      setIsLoading(false);
+      return;
+    }
     const plan: Plan = {
       contentCreator: address || "",
       expirationBlock: duration, // TODO: use duration to calculate expiration block
       price,
       paymentTokenAddress,
-      uri,
+      uri: url,
     };
     setPlanData(plan);
-    router.push("/partner/confirm");
+    router.push("/partner/confirm").finally(() => setIsLoading(false));
   };
-  const handleSetUrl = (input: string) => {
-    if (input === "") {
-      setIsValid(true);
-      return;
+  const isValidURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
     }
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    const isValidURL = urlRegex.test(input);
-    setIsValid(isValidURL);
-    if (isValidURL) setUrl(input);
   };
 
   return (
@@ -67,9 +84,9 @@ const Landing = () => {
           label={"Website URL"}
           placeholder={"https://www.example.com/"}
           type="text"
-          onChange={e => handleSetUrl(e.target.value)}
+          onChange={e => setUrl(e.target.value)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-          errorMessage={isValid ? undefined : URL_INPUT_ERROR}
+          errorMessage={isValidUrl ? undefined : URL_INPUT_ERROR}
         />
 
         {/* PRICE */}
@@ -78,9 +95,9 @@ const Landing = () => {
           type="number"
           min="1"
           placeholder={PRICE_PLACEHOLDER}
-          onChange={e => setPrice(Number(e.target.value))}
+          onChange={e => setPrice(Number(e.target.value) > 0 ? Number(e.target.value) : undefined)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-          value={price}
+          errorMessage={isValidPrice ? undefined : "Please enter a price greater than 0"}
         />
 
         {/* DURATION */}
@@ -108,12 +125,9 @@ const Landing = () => {
           <Text type="h3">{LOGIN_AUX_TEXT}</Text>
         </Row>
       ) : (
-        !!uri &&
-        isValid && (
-          <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
-            {CTA_SUBMIT}
-          </Button>
-        )
+        <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
+          {CTA_SUBMIT}
+        </Button>
       )}
     </Column>
   );
