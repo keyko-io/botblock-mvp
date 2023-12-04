@@ -10,7 +10,9 @@ const Subscribe = () => {
   const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    setPlans(allPlans as Plan[]);
+    if (allPlans) {
+      setPlans(allPlans as Plan[]);
+    }
   }, [allPlans]);
 
   const browseToSubscriptionDetails = (plan: Plan) => {

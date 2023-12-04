@@ -101,8 +101,10 @@ const SubscriptionOverviewSection = () => {
   const { allPlans } = useBBContractReads({ contractName: ContractNames.BOTBLOCK });
 
   useEffect(() => {
-    // Just take the first 5 plans for now
-    setPlans((allPlans as Plan[]).slice(0, 5));
+    if (allPlans) {
+      // Just take the first 5 plans for now
+      setPlans((allPlans as Plan[]).slice(0, 5));
+    }
   }, [allPlans]);
 
   const browseToSubscriptionDetails = (plan: Plan) => {
