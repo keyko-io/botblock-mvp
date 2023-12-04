@@ -39,6 +39,7 @@ export const Select = ({ disabled, id, label, onChange, options, selected }: Sel
         style={{
           borderWidth: "1px",
           borderRadius: "8px",
+          borderColor: isDropdownOpen ? coreColors.lightGray : coreColors.gray,
           padding: "12px 20px",
           gap: "16px",
           backgroundColor: palette.slate[100],
@@ -46,7 +47,7 @@ export const Select = ({ disabled, id, label, onChange, options, selected }: Sel
       >
         <Column style={{ alignItems: "flex-start", flex: 1, width: "100%", ...(label && { gap: "8px" }) }}>
           {label && (
-            <Text htmlFor={id} type="label">
+            <Text htmlFor={id} type="label" style={{ color: coreColors.gray }}>
               {label}
             </Text>
           )}

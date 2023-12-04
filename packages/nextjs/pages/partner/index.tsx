@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
 import { Plan, Token, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
-import { Button, Row, Select } from "~~/ui";
+import { Button, Column, Input, Row, Select, Text } from "~~/ui";
 
 const TITLE = "Partner with Botblock to get paid from AI";
 const DESCRIPTION =
-  "Create a plan. Once an AI bot will subscribe, Botblock will send a robot.txt you'll have 10 days to update in your website. then, you'll get the money in you wallet";
-const URI_PLACEHOLDER = "Insert the URL of your site here";
+  "Create a subscription plan for your website. Once the crawler owners subscribes to it, you will be notified to update your robots.txt file. After that, you should head back here to confirm the update and start getting paid!";
+const COMPLETE_FORM = "Please fill out the form below to create your subscription plan.";
+const URL_INPUT_ERROR = "Please enter a valid website URL.";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
 const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
+const LOGIN_AUX_TEXT = "to submit";
 
 const CTA_SUBMIT = "Submit";
 
@@ -20,97 +23,113 @@ const Landing = () => {
   const { setPlanData } = useWeb3AuthContext();
   const { address, isConnected } = useAccount();
 
-  const [uri, setUrl] = useState("");
-  const [price, setPrice] = useState(1);
+  const [url, setUrl] = useState("");
+  const [price, setPrice] = useState<number>();
   const [paymentTokenAddress, setPaymentTokenAddress] = useState(TokenAddress[Token.KIT]);
-  const [duration, setDuration] = useState("1Month");
+  const [duration, setDuration] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isValid, setIsValid] = useState(true);
+  const [isValidUrl, setIsValidUrl] = useState(true);
+  const [isValidPrice, setIsValidPrice] = useState(true);
 
   const router = useRouter();
 
   const handleOnSubmit = () => {
     setIsLoading(true);
-    const plan: Plan = {
-      contentCreator: address || "",
-      expirationBlock: 1,
-      price,
-      paymentTokenAddress,
-      uri,
-    };
-    setPlanData(plan);
-    router.push("/partner/confirm");
-  };
-  const handleSetUrl = (input: string) => {
-    if (input === "") {
-      setIsValid(true);
+    if (!isConnected) {
+      setIsLoading(false);
+      toast.error(`Please login to continue.`);
       return;
     }
-    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-    const isValidURL = urlRegex.test(input);
-    setIsValid(isValidURL);
-    if (isValidURL) setUrl(input);
+
+    // Validate inputs
+    const isUrlValid = isValidURL(url);
+    setIsValidUrl(isUrlValid);
+    const isPriceValid = !!price && price > 0;
+    setIsValidPrice(isPriceValid);
+
+    // Abort if any input is invalid
+    if (!isUrlValid || !isPriceValid) {
+      setIsLoading(false);
+      return;
+    }
+    const plan: Plan = {
+      contentCreator: address || "",
+      expirationBlock: duration, // TODO: use duration to calculate expiration block
+      price,
+      paymentTokenAddress,
+      uri: url,
+    };
+    setPlanData(plan);
+    router.push("/partner/confirm").finally(() => setIsLoading(false));
+  };
+  const isValidURL = (url: string) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (error) {
+      return false;
+    }
   };
 
   return (
-    <div className="p-32 flex-grow" data-theme="exampleUi">
-      <h1 className="text-4xl sm:text-6xl">{TITLE}</h1>
-      <h3 className="text-xl sm:text-2xl">{DESCRIPTION}</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <Column style={{ padding: "48px", gap: "24px" }}>
+      <Text type="h1">{TITLE}</Text>
+      <Text type="h3" style={{ marginBottom: "24px" }}>
+        {DESCRIPTION}
+      </Text>
+      <Text type="subheading">{COMPLETE_FORM}</Text>
+      <Column style={{ gap: "16px" }}>
         {/* URI */}
-        <div>
-          <input
-            type="text"
-            placeholder={URI_PLACEHOLDER}
-            className={
-              isValid
-                ? "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-                : "input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-error text-lg sm:text-2xl placeholder-white uppercase"
-            }
-            onChange={e => handleSetUrl(e.target.value)}
-            onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-          />
-          {!isValid && <p className="text-error text-sm mt-1">Please enter a valid website URL.</p>}
-        </div>
+        <Input
+          label={"Website URL"}
+          placeholder={"https://www.example.com/"}
+          type="text"
+          onChange={e => setUrl(e.target.value)}
+          onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
+          errorMessage={isValidUrl ? undefined : URL_INPUT_ERROR}
+        />
 
         {/* PRICE */}
-        <input
+        <Input
+          label={"Price"}
           type="number"
           min="1"
           placeholder={PRICE_PLACEHOLDER}
-          className="input font-bai-jamjuree w-full px-5 bg-[length:100%_100%] border border-primary text-lg sm:text-2xl placeholder-white uppercase"
-          onChange={e => setPrice(Number(e.target.value))}
+          onChange={e => setPrice(Number(e.target.value) > 0 ? Number(e.target.value) : undefined)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
-          value={price}
+          errorMessage={isValidPrice ? undefined : "Please enter a price greater than 0"}
         />
-        <Row style={{ gap: "16px" }}>
-          {/* DURATION */}
-          <Select
-            id="duration-select"
-            label={SUBSCRIPTION_DURATION_LABEL}
-            onChange={value => setDuration(value)}
-            options={["1Month", "3Months", "9Months", "12Months"]}
-            selected={duration}
-          />
 
-          {/* TOKEN */}
-          <Select
-            id="currency-select"
-            label={TOKEN_SELECTION_LABEL}
-            onChange={value => setPaymentTokenAddress(TokenAddress[value as Token])}
-            options={[Token.USDC, Token.DAI, Token.USDT, Token.APE, Token.KIT]}
-            selected={tokenAddressMap[paymentTokenAddress]}
-            value={paymentTokenAddress}
-          />
+        {/* DURATION */}
+        <Select
+          id="duration-select"
+          label={SUBSCRIPTION_DURATION_LABEL}
+          onChange={value => (!!Number(value.split(" ")[0]) ? setDuration(Number(value.split(" ")[0])) : null)}
+          options={["1 Month", "3 Months", "9 Months", "12 Months"]}
+          selected={`${duration} Month${duration > 1 ? "s" : ""}`}
+        />
+
+        {/* TOKEN */}
+        <Select
+          id="currency-select"
+          label={TOKEN_SELECTION_LABEL}
+          onChange={value => setPaymentTokenAddress(TokenAddress[value as Token])}
+          options={[Token.USDC, Token.DAI, Token.USDT, Token.APE, Token.KIT]}
+          selected={tokenAddressMap[paymentTokenAddress]}
+          value={paymentTokenAddress}
+        />
+      </Column>
+      {!isConnected ? (
+        <Row style={{ gap: "8px" }}>
+          <LoginButton />
+          <Text type="h3">{LOGIN_AUX_TEXT}</Text>
         </Row>
-      </div>
-      {!isConnected && <LoginButton />}
-      {!!uri && isValid && isConnected && (
+      ) : (
         <Button onClick={handleOnSubmit} disabled={isLoading} icon="arrow-right">
           {CTA_SUBMIT}
         </Button>
       )}
-    </div>
+    </Column>
   );
 };
 
