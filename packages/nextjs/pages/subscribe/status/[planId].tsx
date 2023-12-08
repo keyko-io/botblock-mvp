@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Button } from "~~/components/Button";
 import { RainbowKitCustomConnectButton } from "~~/components/Header/components/RainbowKitCustomConnectButton";
-import { Loader } from "~~/components/Loader";
 import { Order, Plan } from "~~/context/Types";
 import { useWeb3AuthContext } from "~~/context/Web3AuthContext";
+import { Button, Loader } from "~~/ui";
 
 const statusMessages = [
   "Success! Site is up and ready for crawling",
@@ -78,12 +77,12 @@ const StatusPage = () => {
           <h1 className="text-4xl sm:text-6xl mb-16">
             Looks like you are looking for <i>{plan.uri}</i> subscription plan
           </h1>
-          <Button title={"Click here to see more details about it"} onClick={browseToSubscriptionDetails} />
+          <Button onClick={browseToSubscriptionDetails}>{"Click here to see more details about it"} </Button>
         </>
       ) : (
         <>
           <h1 className="text-4xl sm:text-6xl mb-16">{`Oops! Looks like this sub' plan does not exists`}</h1>
-          <Button title={"Click here to see available plans"} onClick={redirectToSubscribeLanding} />
+          <Button onClick={redirectToSubscribeLanding}>{"Click here to see available plans"}</Button>
         </>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import { ButtonColors } from "./Button.types";
+import { exoFont } from "~~/public/assets/fonts";
 import WhiteGrungeImage from "~~/public/assets/images/white-grunge.png";
 import { coreColors, palette } from "~~/styles/colors";
 
@@ -9,9 +10,10 @@ export const baseButtonStyle: CSSProperties = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  gap: "20px",
+  gap: "8px",
   width: "fit-content",
   borderRadius: "20px",
+  fontFamily: exoFont.style.fontFamily,
 };
 
 export const colorButtonStyle: Record<ButtonColors, CSSProperties> = {

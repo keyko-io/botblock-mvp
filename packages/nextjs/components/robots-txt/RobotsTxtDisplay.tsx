@@ -1,7 +1,7 @@
-import { Button } from "../Button";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import toast from "react-hot-toast";
 import { useRobotsContext } from "~~/context/RobotsContext";
+import { Button } from "~~/ui";
 
 export const RobotsTxtDisplay = () => {
   const { rewrittenRobots } = useRobotsContext();
@@ -24,11 +24,17 @@ export const RobotsTxtDisplay = () => {
           {rewrittenRobots}
         </code>
       </pre>
-      <div className="mt-16 flex flex-row justify-evenly">
+      <div className="mt-16 flex flex-row justify-evenly mb-10">
         <CopyToClipboard text={rewrittenRobots} onCopy={() => toast.success("Successfully copied")}>
-          <Button title={"Copy to clipboard"} />
+          <Button
+            onClick={() => {
+              return;
+            }}
+          >
+            {"Copy to clipboard"}
+          </Button>
         </CopyToClipboard>
-        <Button onClick={exportRobotsTxt} title={"Download file"} />
+        <Button onClick={exportRobotsTxt}>{"Download file"}</Button>
       </div>
     </div>
   ) : (

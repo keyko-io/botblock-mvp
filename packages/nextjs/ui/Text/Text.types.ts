@@ -1,4 +1,4 @@
-export type TextColors = "themed" | "dark" | "light";
+export type TextColors = "error" | "dark" | "light";
 
 export type Typography =
   | "h1"

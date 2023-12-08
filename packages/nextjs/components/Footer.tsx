@@ -1,65 +1,46 @@
-import { hardhat } from "wagmi/chains";
-import { CurrencyDollarIcon } from "@heroicons/react/24/outline";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { SwitchTheme } from "~~/components/SwitchTheme";
-import { BuidlGuidlLogo } from "~~/components/assets/BuidlGuidlLogo";
-import { Faucet } from "~~/components/scaffold-eth";
-import { useGlobalState } from "~~/services/store/store";
-import { getTargetNetwork } from "~~/utils/scaffold-eth";
+import { PropsWithChildren } from "react";
+import { useRouter } from "next/router";
+import { LargeLogo } from "./LargeLogo";
+import { Text } from "~~/ui";
 
-/**
- * Site footer
- */
+const TextButton = ({ children, onClick }: PropsWithChildren<{ onClick: () => void }>) => {
+  return (
+    <Text as="button" onClick={onClick} type="btn-sm" color="light" style={{ width: "fit-content", padding: "4px" }}>
+      {children}
+    </Text>
+  );
+};
+
 export const Footer = () => {
-  const nativeCurrencyPrice = useGlobalState(state => state.nativeCurrencyPrice);
+  const router = useRouter();
+
+  const browseToProtect = () => router.push("/protect");
+  const browseToPartner = () => router.push("/partner");
+  const browseToSubscribe = () => router.push("/subscribe");
 
   return (
-    <div className="min-h-0 py-5 px-1 mb-11 lg:mb-0">
-      <div>
-        <div className="fixed flex justify-between items-center w-full z-10 p-4 bottom-0 left-0 pointer-events-none">
-          <div className="flex space-x-2 pointer-events-auto">
-            {nativeCurrencyPrice > 0 && (
-              <div className="btn btn-primary btn-sm font-normal cursor-auto gap-0">
-                <CurrencyDollarIcon className="h-4 w-4 mr-0.5" />
-                <span>{nativeCurrencyPrice}</span>
-              </div>
-            )}
-            {getTargetNetwork().id === hardhat.id && <Faucet />}
-          </div>
-          <SwitchTheme className="pointer-events-auto" />
-        </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        flexGrow: 0,
+        bottom: 0,
+        backgroundColor: "#1a5e73", // turquoise[100] + slate[50]
+        padding: "48px",
+      }}
+    >
+      <div className="flex-1">
+        <LargeLogo isLight />
       </div>
-      <div className="w-full">
-        <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
-            <div className="text-center">
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
-                Fork me
-              </a>
-            </div>
-            <span>·</span>
-            <div className="flex justify-center items-center gap-2">
-              <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
-              </p>
-              <a
-                className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
-              </a>
-            </div>
-            <span>·</span>
-            <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
-                Support
-              </a>
-            </div>
-          </div>
-        </ul>
+      <div className="flex flex-col flex-1 justify-start items-start">
+        <Text type="h3" color="light">
+          Sections
+        </Text>
+        <div className="flex flex-col mt-4 gap-2">
+          <TextButton onClick={browseToProtect}>Protect</TextButton>
+          <TextButton onClick={browseToPartner}>Partner</TextButton>
+          <TextButton onClick={browseToSubscribe}>Subscribe</TextButton>
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,3 @@
-export const pressableColors = {
-  iconBackground: "#000000",
-  placeholderText: "#A1A1A1",
-  labelBackground: "#E7E7ED",
-};
-
 type PaletteColors = "purple" | "slate" | "pink" | "yellow" | "turquoise";
 export const palette: Record<PaletteColors, { 100: string; 50: string; 20: string }> = {
   // Primary palette
@@ -35,13 +29,12 @@ export const palette: Record<PaletteColors, { 100: string; 50: string; 20: strin
   },
 };
 
-export const webColors = {
-  info: "#0F90FE",
-  positive: "#08DD5A",
-  negative: "#C71313",
-};
-
 export const coreColors = {
   black: "#000000",
   white: "#FFFFFF",
+  red: "#C71313",
+  green: "#08DD5A",
+  blue: "#0F90FE",
+  gray: "#A1A1A1",
+  lightGray: "#E7E7ED",
 };

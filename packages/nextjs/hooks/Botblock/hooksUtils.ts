@@ -1,5 +1,5 @@
-import * as BotBlockMarketArtifact from "~~/public/artifacts/BotblockMarket.json";
-import * as ERC20Artifact from "~~/public/artifacts/ERC20.json";
+import BotBlockMarketArtifact from "~~/public/artifacts/BotblockMarket.json";
+import ERC20Artifact from "~~/public/artifacts/ERC20.json";
 
 export const ContractsAndAbis = {
   Botblock: {
@@ -29,5 +29,5 @@ export enum ERC20Functions {
 export type UseBBContractWrite = {
   contractName: "Botblock" | "KIT";
   functionName?: string;
-  args?: any[]
+  args?: any[];
 };
