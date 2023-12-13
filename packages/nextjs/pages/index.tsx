@@ -8,7 +8,7 @@ import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
-import { Button, Input, Text } from "~~/ui";
+import { Button, Input, Text } from "../ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -20,17 +20,18 @@ const Title = () => {
         flexDirection: "column",
         display: "flex",
         alignItems: "center",
-        padding: "240px 0px",
+        padding: "50px 0px",
       }}
     >
       <div style={{ width: "66.666667%" }}>
-        <Text type="h1" style={{ marginBottom: "30px", textAlign: "center" }}>
-          Get paid for your content by AI crawlers
+        <Text type="h1" style={{ marginBottom: "30px", fontWeight: "bold", textAlign: "center" }}>
+          Make AI Crawlers pay for your content...
+        </Text>
+        <Text type="subheading" style={{ marginBottom: "10px", textAlign: "center" }}>
+          Protect your site from AI crawlers from getting your content for their datasets.
         </Text>
         <Text type="subheading" style={{ textAlign: "center" }}>
-          With BotBlock you can protect your site from AI crawlers from getting your content for their datasets. When
-          your site is protected, you can create a subscription plan for AI companies to pay for access in just a couple
-          of clicks!
+          Once protected, create a subscription plan for AI companies to pay for access with just a couple of clicks!
         </Text>
       </div>
     </div>
@@ -70,14 +71,14 @@ const ProtectSection = () => {
   }, [getRobotsTxt, isLoading, router, submittedUrl, url]);
 
   return (
-    <div className="flex flex-col" style={{ backgroundColor: "transparent", padding: "24px 0px" }}>
-      <div className="mx-12 flex flex-row justify-start items-center">
+    <div className="flex flex-col" style={{ backgroundColor: "transparent", padding: "0px 0px" }}>
+      <div className="mx-20 flex flex-row justify-start items-center">
         <ScribbleIcon color={palette.turquoise[100]} />
-        <Text type="h2">Protect your site from bots</Text>
+        <Text type="h2">Protect your site from bots right now</Text>
       </div>
-      <div className="flex flex-col justify-center items-center px-12 gap-4" style={{ margin: "48px 0px" }}>
+      <div className="flex flex-col justify-center items-center px-12 gap-4" style={{ margin: "20px 0px" }}>
         <Text>{`Enter your site's URL to scan your robots.txt file`}</Text>
-        <div className="flex flex-row gap-8">
+        <div className="flex flex-row gap-2">
           <Input
             label="URL"
             value={url}
@@ -117,12 +118,12 @@ const SubscriptionOverviewSection = () => {
   };
   // TODO: tweak this UI
   return (
-    <div style={{ display: "flex", flexDirection: "column", padding: "48px" }}>
-      <div className="flex flex-row justify-start items-center">
+    <div style={{ display: "flex", flexDirection: "column", padding: "20px 0px" }}>
+      <div className="mx-20 flex flex-row justify-start items-center">
         <ScribbleIcon color={palette.turquoise[100]} />
         <Text type="h2">Available Subscriptions</Text>
       </div>
-      <div className="flex flex-col justify-center items-center py-12 gap-8">
+      <div className="flex flex-col justify-center items-center py-12 gap-8" data-theme="exampleUi">
         <div className="grid gap-4">
           <div className="container w-fit">
             <div className="bg-white shadow-md overflow-x-auto">
@@ -146,14 +147,17 @@ const SubscriptionOverviewSection = () => {
                           {plan.expirationBlock} Month{plan.expirationBlock !== "1" && "s"}
                         </td>
                         {/* <td className="border p-2">{plan.paymentTokenAddress}</td> */}
-                        <td className="border p-2 text-end">
+                        <td className="border p-2 text-center">
                           {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
                         </td>
-                        <td className="border p-2 text-center">
-                          <Button color="secondary" onClick={() => browseToSubscriptionDetails(plan)}>
-                            More details
-                          </Button>
-                        </td>
+                      <td className="border p-2 text-center">
+                        <button 
+                          className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
+                          onClick={() => browseToSubscriptionDetails(plan)}
+                        >
+                          More details
+                        </button>
+                      </td>
                       </tr>
                     ))}
                 </tbody>

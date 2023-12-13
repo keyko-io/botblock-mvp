@@ -11,7 +11,7 @@ export const LargeLogo = ({ isLight = false }) => {
     <Row as="button" className="gap-2" onClick={browseToHome}>
       <BotBlockIcon height={16} width={16} color={isLight ? coreColors.white : coreColors.black} />
       <Text color={isLight ? "light" : "dark"} type="h3">
-        BotBlock | by Keyko powered by NVM
+        BotBlock | Built by Keyko powered by Nevermined
       </Text>
     </Row>
   );

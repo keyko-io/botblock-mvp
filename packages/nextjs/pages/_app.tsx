@@ -3,7 +3,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { Toaster } from "react-hot-toast";
 import { Footer, Header } from "~~/components";
 import { Layout } from "~~/layout/Layout";
-import Background from "~~/public/assets/images/dark_background.png";
+import Background from "~~/public/assets/images/light_background.png";
 import { palette } from "~~/styles/colors";
 import "~~/styles/globals.css";
 

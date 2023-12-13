@@ -20,7 +20,7 @@ export const textColorStyles: Record<TextColors, CSSProperties> = {
     color: coreColors.black,
   },
   light: {
-    color: coreColors.white,
+    color: coreColors.black,
   },
 };
 
@@ -33,10 +33,10 @@ export const typographyStyles: Record<Typography, CSSProperties> = {
     fontSize: "24px",
   },
   h3: {
-    fontSize: "18px",
+    fontSize: "20px",
   },
   subheading: {
-    fontSize: "16px",
+    fontSize: "18px",
     lineHeight: "107%",
   },
   "p-lg": {
@@ -62,9 +62,11 @@ export const typographyStyles: Record<Typography, CSSProperties> = {
   },
   "btn-lg": {
     fontSize: "15px",
+    cursor: "pointer",
   },
   "btn-sm": {
     fontSize: "12px",
+    cursor: "pointer",
   },
   markdown: {
     fontFamily: courierPrimeFont.style.fontFamily,

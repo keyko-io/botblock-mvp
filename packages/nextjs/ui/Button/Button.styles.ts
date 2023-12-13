@@ -21,7 +21,7 @@ export const colorButtonStyle: Record<ButtonColors, CSSProperties> = {
     backgroundColor: palette.purple[100],
   },
   secondary: {
-    backgroundColor: palette.slate[100],
+    backgroundColor: palette.purple[50],
   },
   ternary: {
     backgroundColor: "#FFFFFF",
