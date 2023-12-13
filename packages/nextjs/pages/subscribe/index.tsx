@@ -54,7 +54,7 @@ const Subscribe = () => {
                         {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
                       </td>
                       <td className="border p-2 text-center">
-                        <button 
+                        <button
                           className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
                           onClick={() => browseToSubscriptionDetails(plan)}
                         >

@@ -8,7 +8,7 @@ import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
-import { Button, Input, Text } from "../ui";
+import { Button, Input, Text } from "~~/ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -150,14 +150,14 @@ const SubscriptionOverviewSection = () => {
                         <td className="border p-2 text-center">
                           {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
                         </td>
-                      <td className="border p-2 text-center">
-                        <button 
-                          className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
-                          onClick={() => browseToSubscriptionDetails(plan)}
-                        >
-                          More details
-                        </button>
-                      </td>
+                        <td className="border p-2 text-center">
+                          <button
+                            className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
+                            onClick={() => browseToSubscriptionDetails(plan)}
+                          >
+                            More details
+                          </button>
+                        </td>
                       </tr>
                     ))}
                 </tbody>
