@@ -1,14 +1,14 @@
-import { SVGProps, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { SVGProps } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
-import toast from "react-hot-toast";
-import { useRobotsContext } from "~~/context/RobotsContext";
+import ProtectSection from "~~/components/ProtectSection";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
-import { Button, Input, Text } from "~~/ui";
+import { Button, Text } from "~~/ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
@@ -33,64 +33,6 @@ const Title = () => {
         <Text type="subheading" style={{ textAlign: "center" }}>
           Once protected, create a subscription plan for AI companies to pay for access with just a couple of clicks!
         </Text>
-      </div>
-    </div>
-  );
-};
-
-const ProtectSection = () => {
-  const [url, setUrl] = useState("");
-  const [submittedUrl, setSubmittedUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { getRobotsTxt } = useRobotsContext();
-  const router = useRouter();
-
-  const handleOnSubmit = () => {
-    setIsLoading(true);
-    setSubmittedUrl(url);
-  };
-
-  useEffect(() => {
-    const executeSubmission = async () => {
-      try {
-        new URL(url);
-        await getRobotsTxt(submittedUrl);
-        router.push("/protect/robots-txt");
-      } catch (error: any) {
-        if (error.message && error.message.includes("URL")) {
-          toast.error("Please enter a valid URL");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (isLoading && submittedUrl) {
-      executeSubmission();
-    }
-  }, [getRobotsTxt, isLoading, router, submittedUrl, url]);
-
-  return (
-    <div className="flex flex-col" style={{ backgroundColor: "transparent", padding: "0px 0px" }}>
-      <div className="mx-20 flex flex-row justify-start items-center">
-        <ScribbleIcon color={palette.turquoise[100]} />
-        <Text type="h2">Protect your site from bots right now</Text>
-      </div>
-      <div className="flex flex-col justify-center items-center px-12 gap-4" style={{ margin: "20px 0px" }}>
-        <Text>{`Enter your site's URL to scan your robots.txt file`}</Text>
-        <div className="flex flex-row gap-2">
-          <Input
-            label="URL"
-            value={url}
-            disabled={isLoading}
-            placeholder="https://www.example.com"
-            onChange={e => setUrl(e.currentTarget.value)}
-            onKeyDown={e => e.key === "Enter" && handleOnSubmit()}
-          />
-          <Button size="lg" onClick={handleOnSubmit}>
-            Scan
-          </Button>
-        </div>
       </div>
     </div>
   );
