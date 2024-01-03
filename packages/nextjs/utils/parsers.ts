@@ -16,3 +16,12 @@ export const parseOrderStruct = (order: BotblockMarket.OrderStructOutput): Order
   plan: parsePlanStruct(order.plan),
   status: order.status,
 });
+
+export const isValidURL = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

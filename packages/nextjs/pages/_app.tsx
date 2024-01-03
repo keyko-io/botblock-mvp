@@ -28,7 +28,7 @@ const App = ({ Component, pageProps }: AppProps) => (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <BackgroundImage />
       <Header />
-      <main className="relative flex flex-col flex-1">
+      <main className="relative flex flex-col flex-1 min-h-screen">
         <Component {...pageProps} />
         <Toaster />
       </main>

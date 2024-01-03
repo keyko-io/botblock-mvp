@@ -11,14 +11,6 @@ body {
   min-height: 100vh;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  margin-bottom: 0.5rem;
-  line-height: 1;
-}
-
 p {
   margin: 1rem 0;
 }

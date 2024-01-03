@@ -1,77 +1,42 @@
 import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import toast from "react-hot-toast";
 import { useAccount } from "wagmi";
 import { LoginButton } from "~~/components";
-import { useRobotsContext } from "~~/context/RobotsContext";
+import ProtectForm from "~~/components/ProtectForm";
+import ProtectIcon from "~~/components/ProtectIcon";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
 import { useNvmContext } from "~~/context/nvm/NvmContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
-import { Button, Input, Text } from "~~/ui";
+import { Button, Text } from "~~/ui";
 
 const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons/scribble.svg"));
 
-const Title = () => {
+const Hero = () => {
   return (
-    <div
-      style={{
-        flex: 1,
-        flexDirection: "column",
-        display: "flex",
-        alignItems: "center",
-        padding: "240px 0px",
-      }}
-    >
-      <div style={{ width: "66.666667%" }}>
-        <Text type="h1" style={{ marginBottom: "30px", textAlign: "center" }}>
-          Get paid for your content by AI crawlers
-        </Text>
-        <Text type="subheading" style={{ textAlign: "center" }}>
+    <div className="container mx-auto min-h-screen flex justify-center items-center text-white -mt-20">
+      <div className="w-4/5 mx-auto text-center">
+        <h1 className="text-[64px] mb-10">Get paid for your content by AI crawlers</h1>
+        <p className="text-[18px]">
           With BotBlock you can protect your site from AI crawlers from getting your content for their datasets. When
           your site is protected, you can create a subscription plan for AI companies to pay for access in just a couple
           of clicks!
-        </Text>
+        </p>
+        <Link href="/protect" className="flex items-center justify-center mt-10 cursor-pointer">
+          <ProtectIcon />
+          <span className="absolute font-bold text-[18px]">Protect</span>
+        </Link>
       </div>
     </div>
   );
 };
 
 const ProtectSection = () => {
-  const [url, setUrl] = useState("");
-  const [submittedUrl, setSubmittedUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { getRobotsTxt } = useRobotsContext();
-  const router = useRouter();
-
-  const handleOnSubmit = () => {
-    setIsLoading(true);
-    setSubmittedUrl(url);
-  };
-
-  useEffect(() => {
-    const executeSubmission = async () => {
-      try {
-        new URL(url);
-        await getRobotsTxt(submittedUrl);
-        router.push("/protect/robots-txt");
-      } catch (error: any) {
-        if (error.message && error.message.includes("URL")) {
-          toast.error("Please enter a valid URL");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (isLoading && submittedUrl) {
-      executeSubmission();
-    }
-  }, [getRobotsTxt, isLoading, router, submittedUrl, url]);
-
   return (
     <div className="flex flex-col" style={{ backgroundColor: "transparent", padding: "24px 0px" }}>
       <div className="mx-12 flex flex-row justify-start items-center">
@@ -81,17 +46,7 @@ const ProtectSection = () => {
       <div className="flex flex-col justify-center items-center px-12 gap-4" style={{ margin: "48px 0px" }}>
         <Text>{`Enter your site's URL to scan your robots.txt file`}</Text>
         <div className="flex flex-row gap-8">
-          <Input
-            label="URL"
-            value={url}
-            disabled={isLoading}
-            placeholder="https://www.example.com"
-            onChange={e => setUrl(e.currentTarget.value)}
-            onKeyDown={e => e.key === "Enter" && handleOnSubmit()}
-          />
-          <Button size="lg" onClick={handleOnSubmit}>
-            Scan
-          </Button>
+          <ProtectForm />
         </div>
       </div>
     </div>
@@ -211,7 +166,7 @@ export const NvmTest = () => {
 
 const Landing: NextPage = () => (
   <div className="flex flex-col">
-    <Title />
+    <Hero />
     <ProtectSection />
     <SubscriptionOverviewSection />
     {/* Uncomment below to check the NVM test */}
