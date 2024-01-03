@@ -3,8 +3,12 @@ import { SVGProps } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
+import toast from "react-hot-toast";
+import { useAccount } from "wagmi";
+import { LoginButton } from "~~/components";
 import ProtectSection from "~~/components/ProtectSection";
 import { Plan, TokenAddress, tokenAddressMap } from "~~/context/Types";
+import { useNvmContext } from "~~/context/nvm/NvmContext";
 import { useBBContractReads } from "~~/hooks/Botblock";
 import { ContractNames } from "~~/hooks/Botblock/hooksUtils";
 import { palette } from "~~/styles/colors";
@@ -115,11 +119,50 @@ const SubscriptionOverviewSection = () => {
   );
 };
 
+// Component meant to troubleshoot and test the NVM context
+export const NvmTest = () => {
+  const [assets, setAssets] = useState<string[]>();
+  const [shouldQuery, setShouldQuery] = useState(false);
+  const { isConnected } = useAccount();
+  const { queryAssets } = useNvmContext();
+
+  useEffect(() => {
+    if (shouldQuery) {
+      queryAssets()
+        .then(res => {
+          setAssets(res.results.map(asset => asset.service.find(s => s.type === "metadata")?.attributes.main.name));
+        })
+        .catch(err => toast.error(err.message))
+        .finally(() => setShouldQuery(false));
+    }
+  }, [queryAssets, shouldQuery]);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", padding: "48px" }}>
+      {!isConnected ? (
+        <>
+          <Text>Please log in</Text>
+          <LoginButton />
+        </>
+      ) : (
+        <>
+          <Button onClick={() => setShouldQuery(true)}>Query Assets</Button>
+          {assets?.map((asset, idx) => (
+            <Text key={`${asset}-${idx}`}>{asset}</Text>
+          ))}
+        </>
+      )}
+    </div>
+  );
+};
+
 const Landing: NextPage = () => (
   <div className="flex flex-col">
     <Title />
     <ProtectSection />
     <SubscriptionOverviewSection />
+    {/* Uncomment below to check the NVM test */}
+    {/* <NvmTest /> */}
   </div>
 );
 

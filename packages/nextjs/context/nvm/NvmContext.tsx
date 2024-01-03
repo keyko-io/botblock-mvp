@@ -8,6 +8,8 @@ import {
   CreateProgressStep,
   Nevermined,
   NeverminedOptions,
+  QueryResult,
+  SearchQuery,
 } from "@nevermined-io/sdk";
 import { JWTPayload, decodeJwt } from "jose";
 import { useAccount } from "wagmi";
@@ -27,6 +29,7 @@ type NvmContextState = {
 interface NvmContext extends NvmContextState {
   loginNevermined: (address: string, nevermined: Nevermined) => Promise<void>;
   publishAsset: (uri: string, price: number | string) => Promise<string | undefined>;
+  queryAssets: (q?: SearchQuery) => Promise<QueryResult>;
 }
 
 const INITIAL_STATE = {} as NvmContextState;
@@ -42,13 +45,16 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
 
   const initSdk = async (web3Provider: any) => {
     const config: NeverminedOptions = {
-      web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
       web3Provider,
+      web3ProviderUri: "https://goerli-rollup.arbitrum.io/rpc",
       marketplaceUri: "https://marketplace-api.goerli.nevermined.app",
       neverminedNodeUri: "https://node.goerli.nevermined.app",
+      // neverminedNodeUri: "http://localhost:8030", // Use this when running the NVM Node Fork locally
       neverminedNodeAddress: "0x5838B5512cF9f12FE9f2beccB20eb47211F9B0bc",
+      // neverminedNodeAddress: "0x068ed00cf0441e4829d9784fcbe7b9e26d4bd8d0", // Use this when running the NVM Node Fork locally
       graphHttpUri: "https://api.thegraph.com/subgraphs/name/nevermined-io/public",
-      artifactsFolder: "http://localhost:3000/artifacts",
+      artifactsFolder: "./artifacts",
+      // artifactsFolder: "http://localhost:3000/artifacts", // Use this when running the NVM Node Fork locally
       marketplaceAuthToken:
         localStorage.getItem("marketplaceAuthToken") != null
           ? (localStorage.getItem("marketplaceAuthToken") as string)
@@ -80,6 +86,60 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
       setState(prevState => ({ ...prevState, payload, publisher }));
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const queryAssets = async (q?: SearchQuery) => {
+    try {
+      const filter: unknown[] = [
+        { match: { "service.type": "metadata" } },
+        {
+          match: {
+            "service.attributes.main.nftType": "nft1155-credit",
+          },
+        },
+        // AssetType === 'asset'
+        {
+          bool: {
+            must_not: [
+              {
+                match: {
+                  "service.attributes.main.type": "subscription",
+                },
+              },
+            ],
+          },
+        },
+      ];
+      const mustArray: unknown[] = [
+        {
+          nested: {
+            path: ["service"],
+            query: {
+              bool: {
+                filter,
+              },
+            },
+          },
+        },
+      ];
+      const queryMetadata = await nevermined?.services.metadata.queryMetadata(
+        q ??
+          ({
+            query: {
+              bool: {
+                must: mustArray,
+              },
+            },
+            sort: {
+              created: "desc",
+            },
+          } as SearchQuery),
+      );
+      return queryMetadata ?? ({} as QueryResult);
+    } catch (error) {
+      console.error(error);
+      return {} as QueryResult;
     }
   };
 
@@ -145,6 +205,7 @@ export const NvmProvider = ({ children }: PropsWithChildren) => {
         ...state,
         loginNevermined,
         publishAsset,
+        queryAssets,
       }}
     >
       {children}
