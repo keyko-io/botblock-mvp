@@ -22,7 +22,7 @@ const Subscribe = () => {
   };
 
   return (
-    <div className="p-32 flex-grow" data-theme="exampleUi">
+    <div className="p-32 flex-grow">
       <h1 className="text-4xl sm:text-6xl">Subscribe</h1>
       <h3 className="text-xl sm:text-2xl">Click on any website you want to purchase on the list below</h3>
       <div className="grid grid-cols-2 gap-4">
