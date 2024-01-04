@@ -25,12 +25,12 @@ export const Footer = () => {
         flexDirection: "row",
         flexGrow: 0,
         bottom: 0,
-        backgroundColor: "#1a5e73", // turquoise[100] + slate[50]
+        backgroundColor: "#ffffff", // turquoise[100] + slate[50]
         padding: "48px",
       }}
     >
       <div className="flex-1">
-        <LargeLogo isLight />
+        <LargeLogo isDark />
       </div>
       <div className="flex flex-col flex-1 justify-start items-start">
         <Text type="h3" color="light">

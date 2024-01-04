@@ -50,7 +50,7 @@ const Subscribe = () => {
                         {plan.expirationBlock} Month{plan.expirationBlock !== "1" && "s"}
                       </td>
                       {/* <td className="border p-2">{plan.paymentTokenAddress}</td> */}
-                      <td className="border p-2 text-end">
+                      <td className="border p-2 text-center">
                         {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
                       </td>
                       <td className="border p-2 text-center">
