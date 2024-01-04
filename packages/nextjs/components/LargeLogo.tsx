@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Row, Text } from "~~/ui";
+import { Text } from "~~/ui";
 
 export const LargeLogo = () => {
   const keykoWebsite = "https://www.keyko.io";
   const neverminedWebsite = "https://www.nevermined.io";
 
   return (
-    <Row className="">
+    <div className="flex items-center">
       <Link href="/" className="flex items-center">
         <Image alt="BotBlock" height="30" width="30" src="/assets/icons/botblock.png" className="mr-2" />
         <Text type="h3" as="button">
@@ -25,6 +25,6 @@ export const LargeLogo = () => {
           Nevermined
         </Link>
       </Text>
-    </Row>
+    </div>
   );
 };
