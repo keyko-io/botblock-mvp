@@ -15,13 +15,13 @@ export const LargeLogo = () => {
         </Text>
       </Link>
 
-      <Text type="h3" style={{ marginLeft: "4px" }}>
+      <Text type="h3" style={{ marginLeft: "4px", fontSize: "16px" }}>
         {""} Built by{" "}
-        <Link href={keykoWebsite} target="_blank">
+        <Link href={keykoWebsite} target="_blank" className="text-[#EC0D46] font-medium">
           Keyko
         </Link>
         , Powered by{" "}
-        <Link href={neverminedWebsite} target="_blank">
+        <Link href={neverminedWebsite} target="_blank" className="text-[#763EFF] font-medium">
           Nevermined
         </Link>
       </Text>
