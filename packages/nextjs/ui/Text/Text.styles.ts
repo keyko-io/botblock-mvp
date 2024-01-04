@@ -35,6 +35,10 @@ export const typographyStyles: Record<Typography, CSSProperties> = {
   h3: {
     fontSize: "20px",
   },
+  "h3-hyperlink": {
+    fontSize: "20px",
+    cursor: "pointer",
+  },
   subheading: {
     fontSize: "18px",
     lineHeight: "107%",

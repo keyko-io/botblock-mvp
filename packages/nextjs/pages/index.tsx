@@ -17,20 +17,23 @@ const Title = () => {
     <div
       style={{
         flex: 1,
-        flexDirection: "column",
         display: "flex",
         alignItems: "center",
-        padding: "50px 0px",
+        padding: "20px 0px",
       }}
     >
-      <div style={{ width: "66.666667%" }}>
-        <Text type="h1" style={{ marginBottom: "30px", fontWeight: "bold", textAlign: "center" }}>
+      <div className="mx-20 flex flex-col justify-start items-center" style={{ width: 300 }}>
+        <img src="/images/whoyagonnacall.png"></img>
+      </div>
+
+      <div style={{ width: "66%" }}>
+        <Text type="h1" style={{ marginBottom: "30px", fontWeight: "bold", textAlign: "left" }}>
           Make AI Crawlers pay for your content...
         </Text>
-        <Text type="subheading" style={{ marginBottom: "10px", textAlign: "center" }}>
+        <Text type="subheading" style={{ marginBottom: "20px", textAlign: "left" }}>
           Protect your site from AI crawlers from getting your content for their datasets.
         </Text>
-        <Text type="subheading" style={{ textAlign: "center" }}>
+        <Text type="subheading" style={{ textAlign: "left" }}>
           Once protected, create a subscription plan for AI companies to pay for access with just a couple of clicks!
         </Text>
       </div>

@@ -4,6 +4,7 @@ export type Typography =
   | "h1"
   | "h2"
   | "h3"
+  | "h3-hyperlink"
   | "subheading"
   | "p-lg"
   | "p-sm"
