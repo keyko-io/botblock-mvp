@@ -15,7 +15,7 @@ const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
       href={href}
       passHref
       className={`hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
-      style={{ backgroundColor: isActive ? palette.purple[50] : "transparent", color: "#F6F6F6" }}
+      style={{ backgroundColor: isActive ? palette.slate[50] : "#000000", color: "#FFFFFF" }}
     >
       {children}
     </Link>
@@ -28,13 +28,13 @@ const NavLink = ({ children, href }: PropsWithChildren<{ href: string }>) => {
 export const Header = () => {
   const navLinks = (
     <Row as="ul" style={{ width: undefined }}>
-      <li>
-        <NavLink href="/protect">Protect</NavLink>
+      <li style={{ padding: "0px 5px 0px 0px" }}>
+        <NavLink href="/protect/landing">Protect</NavLink>
       </li>
-      <li>
+      <li style={{ padding: "0px 5px 0px 0px" }}>
         <NavLink href="/partner">Partner</NavLink>
       </li>
-      <li>
+      <li style={{ padding: "0px 5px 0px 0px" }}>
         <NavLink href="/subscribe">Subscribe</NavLink>
       </li>
     </Row>
@@ -43,7 +43,7 @@ export const Header = () => {
   return (
     <Row style={{ justifyContent: "space-between", padding: "24px" }} className="border-b-gray-500 border-b-2">
       <Row style={{ width: undefined, gap: "24px" }}>
-        <LargeLogo isLight />
+        <LargeLogo isDark  />
         {navLinks}
       </Row>
       <UserButton />
