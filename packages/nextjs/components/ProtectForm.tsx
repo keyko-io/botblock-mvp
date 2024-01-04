@@ -8,7 +8,7 @@ import { isValidURL } from "~~/utils/validate";
 const INPUT_PLACEHOLDER = "Insert the URL of your site here";
 const CTA_TEXT = "Submit";
 
-const ProtectForm = () => {
+export const ProtectForm = () => {
   const router = useRouter();
 
   const [url, setUrl] = useState("");
@@ -56,5 +56,3 @@ const ProtectForm = () => {
     </form>
   );
 };
-
-export default ProtectForm;

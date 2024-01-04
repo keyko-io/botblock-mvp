@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 import dynamic from "next/dynamic";
-import ProtectForm from "~~/components/ProtectForm";
+import { ProtectForm } from "~~/components/ProtectForm";
 import { palette } from "~~/styles/colors";
 import { Text } from "~~/ui";
 

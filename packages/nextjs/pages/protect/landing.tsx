@@ -1,4 +1,4 @@
-import ProtectForm from "~~/components/ProtectForm";
+import { ProtectForm } from "~~/components/ProtectForm";
 import { Text } from "~~/ui";
 
 const TITLE = "Title";
