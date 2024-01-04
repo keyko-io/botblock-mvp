@@ -1,5 +1,6 @@
 import { SVGProps, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import toast from "react-hot-toast";
@@ -17,19 +18,10 @@ const ScribbleIcon = dynamic<SVGProps<any>>(() => import("~~/public/assets/icons
 
 const Title = () => {
   return (
-    <div
-      style={{
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        padding: "20px 0px",
-      }}
-    >
-      <div className="mx-20 flex flex-col justify-start items-center" style={{ width: 300 }}>
-        <img src="/images/whoyagonnacall.png"></img>
-      </div>
+    <div className="min-h-screen flex items-center mx-auto -translate-y-10 space-x-10">
+      <Image src="/images/whoyagonnacall.png" height={300} width={300} alt="botblock logo png" />
 
-      <div style={{ width: "66%" }}>
+      <div>
         <Text type="h1" style={{ marginBottom: "30px", fontWeight: "bold", textAlign: "left" }}>
           Make AI Crawlers pay for your content...
         </Text>
