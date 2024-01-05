@@ -5,7 +5,7 @@ import { Dropdown } from "../Dropdown/Dropdown";
 import { Row } from "../Row";
 import { Text } from "../Text/Text";
 import { Option } from "./components/Option";
-import { coreColors, palette } from "~~/styles/colors";
+import { coreColors } from "~~/styles/colors";
 
 const ChevronIcon = dynamic<SVGProps<SVGSVGElement>>(() => import("~~/public/assets/icons/chevron.svg"));
 
@@ -37,24 +37,24 @@ export const Select = ({ disabled, id, label, onChange, options, selected }: Sel
         disabled={isDropdownOpen || disabled}
         onClick={openDropdown}
         style={{
-          borderWidth: "1px",
+          borderWidth: "2px",
           borderRadius: "8px",
-          borderColor: isDropdownOpen ? coreColors.lightGray : coreColors.gray,
-          padding: "12px 20px",
+          borderColor: coreColors.black,
+          padding: "10px 20px",
           gap: "16px",
-          backgroundColor: palette.slate[100],
+          backgroundColor: "white",
         }}
       >
         <Column style={{ alignItems: "flex-start", flex: 1, width: "100%", ...(label && { gap: "8px" }) }}>
           {label && (
-            <Text htmlFor={id} type="label" style={{ color: coreColors.gray }}>
+            <Text htmlFor={id} type="label" style={{ color: coreColors.gray, fontSize: "10px" }}>
               {label}
             </Text>
           )}
-          <Text>{selected}</Text>
+          <Text style={{ fontSize: "14px" }}>{selected}</Text>
         </Column>
         <Column style={{ alignItems: "flex-end", width: undefined }}>
-          <ChevronIcon color={coreColors.lightGray} style={{ transform: "rotate(-90deg)" }} />
+          <ChevronIcon color={coreColors.black} style={{ transform: "rotate(-90deg)", marginLeft: "10px" }} />
         </Column>
       </Row>
       <Dropdown
@@ -63,7 +63,7 @@ export const Select = ({ disabled, id, label, onChange, options, selected }: Sel
         isTwoLineButton={!!label}
         shadowBox
         style={{
-          backgroundColor: palette.slate[100],
+          backgroundColor: "white",
         }}
       >
         <Column>

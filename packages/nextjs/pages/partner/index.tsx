@@ -12,6 +12,7 @@ const DESCRIPTION =
   "Create a subscription plan for your website. Once the crawler owners subscribes to it, you will be notified to update your robots.txt file. After that, you should head back here to confirm the update and start getting paid!";
 const COMPLETE_FORM = "Please fill out the form below to create your subscription plan.";
 const URL_INPUT_ERROR = "Please enter a valid website URL.";
+const WEBSITE_PLACEHOLDER = "https://www.example.com/";
 const PRICE_PLACEHOLDER = "How much you want to charge?";
 const TOKEN_SELECTION_LABEL = "Which Stablecoin you want to get?";
 const SUBSCRIPTION_DURATION_LABEL = "Select subscription length";
@@ -62,6 +63,7 @@ const Landing = () => {
     setPlanData(plan);
     router.push("/partner/confirm").finally(() => setIsLoading(false));
   };
+
   const isValidURL = (url: string) => {
     try {
       new URL(url);
@@ -82,11 +84,12 @@ const Landing = () => {
         {/* URI */}
         <Input
           label={"Website URL"}
-          placeholder={"https://www.example.com/"}
+          placeholder={WEBSITE_PLACEHOLDER}
           type="text"
           onChange={e => setUrl(e.target.value)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           errorMessage={isValidUrl ? undefined : URL_INPUT_ERROR}
+          className="placeholder:text-black/60"
         />
 
         {/* PRICE */}
@@ -95,9 +98,10 @@ const Landing = () => {
           type="number"
           min="1"
           placeholder={PRICE_PLACEHOLDER}
-          onChange={e => setPrice(Number(e.target.value) > 0 ? Number(e.target.value) : undefined)}
+          onChange={e => setPrice(e.target.valueAsNumber > 0 ? e.target.valueAsNumber : undefined)}
           onKeyUp={e => e.key === "Enter" && handleOnSubmit()}
           errorMessage={isValidPrice ? undefined : "Please enter a price greater than 0"}
+          className="placeholder:text-black/60"
         />
 
         {/* DURATION */}
