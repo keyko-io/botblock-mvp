@@ -59,7 +59,7 @@ export const typographyStyles: Record<Typography, CSSProperties> = {
     fontSize: "15px",
   },
   label: {
-    fontSize: "11px",
+    fontSize: "10px",
   },
   "sm-print": {
     fontSize: "11px",

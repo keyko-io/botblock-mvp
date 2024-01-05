@@ -28,6 +28,6 @@ export const Option = ({
       ...style,
     }}
   >
-    {typeof children === "string" ? <Text>{children}</Text> : children}
+    {typeof children === "string" ? <Text style={{ fontSize: "14px" }}>{children}</Text> : children}
   </button>
 );

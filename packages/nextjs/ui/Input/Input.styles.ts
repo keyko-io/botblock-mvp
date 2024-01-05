@@ -6,12 +6,13 @@ export const containerStyle: CSSProperties = {
   display: "flex",
   flexDirection: "column",
   padding: "10px 20px",
-  backgroundColor: palette.slate[100],
+  backgroundColor: "white",
   borderRadius: "8px",
-  borderWidth: "1px",
-  borderColor: coreColors.gray,
+  borderWidth: "2px",
+  borderColor: palette.slate[100],
   fontFamily: exoFont.style.fontFamily,
   width: undefined,
+  fontSize: "14px",
 };
 
 export const labelStyle: CSSProperties = {
@@ -22,11 +23,11 @@ export const inputStyle: CSSProperties = {
   backgroundColor: "transparent",
   minWidth: "320px",
   outline: "none",
-  color: coreColors.lightGray,
+  color: coreColors.black,
 };
 
 export const focusedContainerInputStyle: CSSProperties = {
-  borderColor: coreColors.lightGray,
+  borderColor: palette.purple[100],
 };
 
 export const errorMessageStyle: CSSProperties = {

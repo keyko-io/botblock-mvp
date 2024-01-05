@@ -129,7 +129,7 @@ const SubscriptionOverviewSection = () => {
         <ScribbleIcon color={palette.turquoise[100]} />
         <Text type="h2">Available Subscriptions</Text>
       </div>
-      <div className="flex flex-col justify-center items-center py-12 gap-8" data-theme="exampleUi">
+      <div className="flex flex-col justify-center items-center py-12 gap-8">
         <div className="grid gap-4">
           <div className="container w-fit">
             <div className="bg-white shadow-md overflow-x-auto">
@@ -157,12 +157,7 @@ const SubscriptionOverviewSection = () => {
                           {plan.price} {tokenAddressMap[plan.paymentTokenAddress as TokenAddress]}
                         </td>
                         <td className="border p-2 text-center">
-                          <button
-                            className="btn btn-primary w-32 rounded-full capitalize font-normal font-white flex items-center transition-all tracking-widest"
-                            onClick={() => browseToSubscriptionDetails(plan)}
-                          >
-                            More details
-                          </button>
+                          <Button onClick={() => browseToSubscriptionDetails(plan)}>More details</Button>
                         </td>
                       </tr>
                     ))}
